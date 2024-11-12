@@ -42,3 +42,9 @@ liveSocket.connect()
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
 
+let mobileMenu = document.getElementById('mobile-menu');
+if (mobileMenu) {
+  document.querySelector('[aria-controls="mobile-menu"]').addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+  });
+}

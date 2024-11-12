@@ -18,6 +18,9 @@ defmodule DejavideoWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    live "/videos", VideoBrowserLive
+    live "/collection", CollectionLive
+    live "/videos/:id", VideoDetailLive
   end
 
   # Other scopes may use custom stacks.

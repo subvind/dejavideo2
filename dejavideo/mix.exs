@@ -56,9 +56,14 @@ defmodule Dejavideo.MixProject do
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.20"},
+      {:httpoison, "~> 2.0"},
+      {:tesla, "~> 1.7"},
+      {:hackney, "~> 1.18"},
+      {:jose, "~> 1.11"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:number, "~> 1.0"}
     ]
   end
 
