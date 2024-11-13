@@ -21,6 +21,8 @@ defmodule DejavideoWeb.Router do
     live "/videos", VideoBrowserLive
     live "/collection", CollectionLive
     live "/videos/:id", VideoDetailLive
+    live "/playlists", PlaylistLive, :index
+    live "/playlists/:id", PlaylistDetailLive, :show
   end
 
   # Other scopes may use custom stacks.

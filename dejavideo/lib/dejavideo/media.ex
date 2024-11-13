@@ -4,6 +4,7 @@ defmodule Dejavideo.Media do
   alias Dejavideo.Repo
   alias Dejavideo.Media.Video
   alias Dejavideo.YouTube
+  alias Dejavideo.Media.Playlist
 
   def list_videos do
     Repo.all(Video)
@@ -38,5 +39,49 @@ defmodule Dejavideo.Media do
       {:ok, details} -> details
       _ -> nil
     end
+  end
+
+  def list_playlists do
+    Repo.all(Playlist) |> Repo.preload(:videos)
+  end
+
+  def get_playlist!(id) do
+    Repo.get!(Playlist, id) |> Repo.preload(:videos)
+  end
+
+  def create_playlist(attrs \\ %{}) do
+    %Playlist{}
+    |> Playlist.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_playlist(%Playlist{} = playlist, attrs) do
+    playlist
+    |> Playlist.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_playlist(%Playlist{} = playlist) do
+    Repo.delete(playlist)
+  end
+
+  def add_video_to_playlist(%Playlist{} = playlist, %Video{} = video) do
+    playlist = Repo.preload(playlist, :videos)
+
+    playlist
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.put_assoc(:videos, [video | playlist.videos])
+    |> Repo.update()
+  end
+
+  def remove_video_from_playlist(%Playlist{} = playlist, video_id) do
+    playlist = Repo.preload(playlist, :videos)
+
+    updated_videos = Enum.reject(playlist.videos, &(&1.id == video_id))
+
+    playlist
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.put_assoc(:videos, updated_videos)
+    |> Repo.update()
   end
 end
