@@ -2,9 +2,8 @@
 defmodule Dejavideo.Media do
   import Ecto.Query
   alias Dejavideo.Repo
-  alias Dejavideo.Media.Video
   alias Dejavideo.YouTube
-  alias Dejavideo.Media.Playlist
+  alias Dejavideo.Media.{Video, Playlist, PlaylistVideo}
 
   def list_videos do
     Repo.all(Video)
@@ -41,12 +40,15 @@ defmodule Dejavideo.Media do
     end
   end
 
+  # Playlist-related functions
   def list_playlists do
-    Repo.all(Playlist) |> Repo.preload(:videos)
+    Repo.all(Playlist)
+    |> Repo.preload(:videos)
   end
 
   def get_playlist!(id) do
-    Repo.get!(Playlist, id) |> Repo.preload(:videos)
+    Repo.get!(Playlist, id)
+    |> Repo.preload(:videos)
   end
 
   def create_playlist(attrs \\ %{}) do
@@ -55,33 +57,100 @@ defmodule Dejavideo.Media do
     |> Repo.insert()
   end
 
-  def update_playlist(%Playlist{} = playlist, attrs) do
-    playlist
-    |> Playlist.changeset(attrs)
-    |> Repo.update()
-  end
-
   def delete_playlist(%Playlist{} = playlist) do
     Repo.delete(playlist)
   end
 
-  def add_video_to_playlist(%Playlist{} = playlist, %Video{} = video) do
-    playlist = Repo.preload(playlist, :videos)
-
-    playlist
-    |> Ecto.Changeset.change()
-    |> Ecto.Changeset.put_assoc(:videos, [video | playlist.videos])
-    |> Repo.update()
+  def get_video_playlists(video) do
+    Repo.all(
+      from p in Playlist,
+      join: pv in PlaylistVideo,
+      on: pv.playlist_id == p.id,
+      where: pv.video_id == ^video.id,
+      order_by: [asc: p.name]
+    )
   end
 
-  def remove_video_from_playlist(%Playlist{} = playlist, video_id) do
-    playlist = Repo.preload(playlist, :videos)
+  def add_video_to_playlist(video, playlist) do
+    # Get the next position
+    next_position =
+      from(pv in PlaylistVideo,
+        where: pv.playlist_id == ^playlist.id,
+        select: count("*")
+      )
+      |> Repo.one()
 
-    updated_videos = Enum.reject(playlist.videos, &(&1.id == video_id))
+    # Use a direct SQL query for the insert
+    timestamp = DateTime.utc_now()
 
-    playlist
-    |> Ecto.Changeset.change()
-    |> Ecto.Changeset.put_assoc(:videos, updated_videos)
-    |> Repo.update()
+    result = Ecto.Adapters.SQL.query(
+      Repo,
+      "INSERT INTO playlist_videos (position, playlist_id, video_id, inserted_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5)
+       ON CONFLICT (playlist_id, video_id) DO NOTHING",
+      [
+        next_position + 1,
+        playlist.id,
+        video.id,
+        timestamp,
+        timestamp
+      ]
+    )
+
+    case result do
+      {:ok, %{num_rows: 1}} ->
+        {:ok, %PlaylistVideo{
+          playlist_id: playlist.id,
+          video_id: video.id,
+          position: next_position + 1,
+          inserted_at: timestamp,
+          updated_at: timestamp
+        }}
+      {:ok, %{num_rows: 0}} ->
+        # Already exists - return success
+        {:ok, %PlaylistVideo{
+          playlist_id: playlist.id,
+          video_id: video.id,
+          position: next_position + 1,
+          inserted_at: timestamp,
+          updated_at: timestamp
+        }}
+      {:error, _} = error -> error
+    end
+  end
+
+  def remove_video_from_playlist(video, playlist) do
+    from(pv in PlaylistVideo,
+      where: pv.playlist_id == ^playlist.id and pv.video_id == ^video.id
+    )
+    |> Repo.delete_all()
+
+    # Reorder remaining videos
+    from(pv in PlaylistVideo,
+      where: pv.playlist_id == ^playlist.id,
+      order_by: [asc: pv.position]
+    )
+    |> Repo.all()
+    |> Enum.with_index(1)
+    |> Enum.each(fn {video, index} ->
+      Ecto.Changeset.change(video, position: index)
+      |> Repo.update()
+    end)
+
+    {:ok, get_playlist!(playlist.id)}
+  end
+
+  def reorder_playlist_videos(playlist, video_ids) do
+    # Update positions based on the new order
+    video_ids
+    |> Enum.with_index(1)
+    |> Enum.each(fn {video_id, index} ->
+      from(pv in PlaylistVideo,
+        where: pv.playlist_id == ^playlist.id and pv.video_id == ^video_id
+      )
+      |> Repo.update_all(set: [position: index])
+    end)
+
+    {:ok, get_playlist!(playlist.id)}
   end
 end

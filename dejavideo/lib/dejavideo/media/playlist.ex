@@ -5,7 +5,10 @@ defmodule Dejavideo.Media.Playlist do
   schema "playlists" do
     field :name, :string
     field :description, :string
-    many_to_many :videos, Dejavideo.Media.Video, join_through: "playlist_videos"
+
+    many_to_many :videos, Dejavideo.Media.Video,
+      join_through: Dejavideo.Media.PlaylistVideo,
+      on_replace: :delete
 
     timestamps()
   end

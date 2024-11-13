@@ -1,4 +1,4 @@
-# Dejavideo
+# Deja Video
 
 To start your Phoenix server:
 

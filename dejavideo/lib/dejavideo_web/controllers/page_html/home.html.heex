@@ -47,93 +47,80 @@
       />
     </svg>
     <h1 class="text-brand mt-10 flex items-center text-sm font-semibold leading-6">
-      Phoenix Framework
+      Deja Video
       <small class="bg-brand/5 text-[0.8125rem] ml-3 rounded-full px-2 font-medium leading-6">
-        v<%= Application.spec(:phoenix, :vsn) %>
+        v<%= Application.spec(:dejavideo, :vsn) %>
       </small>
     </h1>
     <p class="text-[2rem] mt-4 font-semibold leading-10 tracking-tighter text-zinc-900 text-balance">
-      Peace of mind from prototype to production.
+      The feeling that you've already watched a video, even though you know you haven't.
     </p>
     <p class="mt-4 text-base leading-7 text-zinc-600">
-      Build rich, interactive web applications quickly, with less code and fewer moving parts. Join our growing community of developers using Phoenix to craft APIs, HTML5 apps and more, for fun or at scale.
+      Disc Jockey the best videos quickly, with more control and fewer moving parts. Join our growing community of DJs using Deja Video to craft playlists, channels, and more, for fun or at broadcast scale.
     </p>
     <div class="flex">
       <div class="w-full sm:w-auto">
         <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-3">
           <a
-            href="https://hexdocs.pm/phoenix/overview.html"
+            href="/videos"
             class="group relative rounded-2xl px-6 py-4 text-sm font-semibold leading-6 text-zinc-900 sm:py-6"
           >
             <span class="absolute inset-0 rounded-2xl bg-zinc-50 transition group-hover:bg-zinc-100 sm:group-hover:scale-105">
             </span>
             <span class="relative flex items-center gap-4 sm:flex-col">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="h-6 w-6">
-                <path d="m12 4 10-2v18l-10 2V4Z" fill="#18181B" fill-opacity=".15" />
-                <path
-                  d="M12 4 2 2v18l10 2m0-18v18m0-18 10-2v18l-10 2"
-                  stroke="#18181B"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-6 w-6">
+                {/* Video Player Icon */}
+                <rect x="2" y="4" width="20" height="16" rx="2" stroke="#18181B" strokeWidth="2" />
+                <path d="M10 9l6 3-6 3V9z" fill="#18181B" fillOpacity=".15" stroke="#18181B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              Guides &amp; Docs
+              Video Browser
             </span>
           </a>
           <a
-            href="https://github.com/phoenixframework/phoenix"
+            href="/collection"
             class="group relative rounded-2xl px-6 py-4 text-sm font-semibold leading-6 text-zinc-900 sm:py-6"
           >
             <span class="absolute inset-0 rounded-2xl bg-zinc-50 transition group-hover:bg-zinc-100 sm:group-hover:scale-105">
             </span>
             <span class="relative flex items-center gap-4 sm:flex-col">
-              <svg viewBox="0 0 24 24" aria-hidden="true" class="h-6 w-6">
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M12 0C5.37 0 0 5.506 0 12.303c0 5.445 3.435 10.043 8.205 11.674.6.107.825-.262.825-.585 0-.292-.015-1.261-.015-2.291C6 21.67 5.22 20.346 4.98 19.654c-.135-.354-.72-1.446-1.23-1.738-.42-.23-1.02-.8-.015-.815.945-.015 1.62.892 1.845 1.261 1.08 1.86 2.805 1.338 3.495 1.015.105-.8.42-1.338.765-1.645-2.67-.308-5.46-1.37-5.46-6.075 0-1.338.465-2.446 1.23-3.307-.12-.308-.54-1.569.12-3.26 0 0 1.005-.323 3.3 1.26.96-.276 1.98-.415 3-.415s2.04.139 3 .416c2.295-1.6 3.3-1.261 3.3-1.261.66 1.691.24 2.952.12 3.26.765.861 1.23 1.953 1.23 3.307 0 4.721-2.805 5.767-5.475 6.075.435.384.81 1.122.81 2.276 0 1.645-.015 2.968-.015 3.383 0 .323.225.707.825.585a12.047 12.047 0 0 0 5.919-4.489A12.536 12.536 0 0 0 24 12.304C24 5.505 18.63 0 12 0Z"
-                  fill="#18181B"
-                />
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-6 w-6">
+                {/* Collection/Gallery Icon */}
+                <path d="M4 4h4v4H4V4z" stroke="#18181B" strokeWidth="2" />
+                <path d="M10 4h4v4h-4V4z" stroke="#18181B" strokeWidth="2" />
+                <path d="M16 4h4v4h-4V4z" stroke="#18181B" strokeWidth="2" />
+                <path d="M4 10h4v4H4v-4z" stroke="#18181B" strokeWidth="2" />
+                <path d="M10 10h4v4h-4v-4z" fill="#18181B" fillOpacity=".15" stroke="#18181B" strokeWidth="2" />
+                <path d="M16 10h4v4h-4v-4z" stroke="#18181B" strokeWidth="2" />
+                <path d="M4 16h4v4H4v-4z" stroke="#18181B" strokeWidth="2" />
+                <path d="M10 16h4v4h-4v-4z" stroke="#18181B" strokeWidth="2" />
+                <path d="M16 16h4v4h-4v-4z" stroke="#18181B" strokeWidth="2" />
               </svg>
-              Source Code
+              My Collection
             </span>
           </a>
           <a
-            href={"https://github.com/phoenixframework/phoenix/blob/v#{Application.spec(:phoenix, :vsn)}/CHANGELOG.md"}
+            href={"/playlists"}
             class="group relative rounded-2xl px-6 py-4 text-sm font-semibold leading-6 text-zinc-900 sm:py-6"
           >
             <span class="absolute inset-0 rounded-2xl bg-zinc-50 transition group-hover:bg-zinc-100 sm:group-hover:scale-105">
             </span>
             <span class="relative flex items-center gap-4 sm:flex-col">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="h-6 w-6">
-                <path
-                  d="M12 1v6M12 17v6"
-                  stroke="#18181B"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="4"
-                  fill="#18181B"
-                  fill-opacity=".15"
-                  stroke="#18181B"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className="h-6 w-6">
+                {/* Playlist Icon */}
+                <rect x="4" y="5" width="16" height="2" fill="#18181B" />
+                <rect x="4" y="11" width="16" height="2" fill="#18181B" />
+                <rect x="4" y="17" width="12" height="2" fill="#18181B" />
+                <circle cx="19" cy="18" r="2" fill="#18181B" fillOpacity=".15" stroke="#18181B" strokeWidth="2" />
               </svg>
-              Changelog
+              Playlists
             </span>
           </a>
         </div>
         <div class="mt-10 grid grid-cols-1 gap-y-4 text-sm leading-6 text-zinc-700 sm:grid-cols-2">
           <div>
             <a
-              href="https://twitter.com/elixirphoenix"
+              href="https://github.com/subvind/dejavideo2"
+              target="_blank"
               class="group -mx-2 -my-0.5 inline-flex items-center gap-3 rounded-lg px-2 py-0.5 hover:bg-zinc-50 hover:text-zinc-900"
             >
               <svg
@@ -141,11 +128,12 @@
                 aria-hidden="true"
                 class="h-4 w-4 fill-zinc-400 group-hover:fill-zinc-600"
               >
-                <path d="M5.403 14c5.283 0 8.172-4.617 8.172-8.62 0-.131 0-.262-.008-.391A6.033 6.033 0 0 0 15 3.419a5.503 5.503 0 0 1-1.65.477 3.018 3.018 0 0 0 1.263-1.676 5.579 5.579 0 0 1-1.824.736 2.832 2.832 0 0 0-1.63-.916 2.746 2.746 0 0 0-1.821.319A2.973 2.973 0 0 0 8.076 3.78a3.185 3.185 0 0 0-.182 1.938 7.826 7.826 0 0 1-3.279-.918 8.253 8.253 0 0 1-2.64-2.247 3.176 3.176 0 0 0-.315 2.208 3.037 3.037 0 0 0 1.203 1.836A2.739 2.739 0 0 1 1.56 6.22v.038c0 .7.23 1.377.65 1.919.42.54 1.004.912 1.654 1.05-.423.122-.866.14-1.297.052.184.602.541 1.129 1.022 1.506a2.78 2.78 0 0 0 1.662.598 5.656 5.656 0 0 1-2.007 1.074A5.475 5.475 0 0 1 1 12.64a7.827 7.827 0 0 0 4.403 1.358" />
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
               </svg>
-              Follow on Twitter
+              Source Code on GitHub
             </a>
           </div>
+          <!--
           <div>
             <a
               href="https://elixirforum.com"
@@ -215,6 +203,7 @@
               Deploy your application
             </a>
           </div>
+          -->
         </div>
       </div>
     </div>

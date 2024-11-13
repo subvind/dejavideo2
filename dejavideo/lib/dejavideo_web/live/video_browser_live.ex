@@ -53,7 +53,7 @@ defmodule DejavideoWeb.VideoBrowserLive do
   def render(assigns) do
     ~H"""
     <div class="container mx-auto p-4">
-      <h1 class="text-2xl font-bold mb-4">DJ Video Browser</h1>
+      <h1 class="text-2xl font-bold mb-4">Video Browser</h1>
 
       <form phx-submit="search" class="mb-4">
         <input type="text" name="query" value={@search_query}

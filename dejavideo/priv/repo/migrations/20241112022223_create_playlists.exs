@@ -6,13 +6,15 @@ defmodule Dejavideo.Repo.Migrations.CreatePlaylists do
       add :name, :string, null: false
       add :description, :string
 
-      timestamps()
+      timestamps(type: :utc_datetime)
     end
 
     create table(:playlist_videos, primary_key: false) do
-      add :playlist_id, references(:playlists, on_delete: :delete_all), primary_key: true
-      add :video_id, references(:videos, on_delete: :delete_all), primary_key: true
+      add :playlist_id, references(:playlists, on_delete: :delete_all), null: false
+      add :video_id, references(:videos, on_delete: :delete_all), null: false
       add :position, :integer, null: false
+
+      timestamps(type: :utc_datetime)
     end
 
     create index(:playlist_videos, [:playlist_id])
