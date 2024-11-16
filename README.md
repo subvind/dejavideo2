@@ -1,5 +1,13 @@
 dejavideo2
 ========
+@UseWithBroadcastPattern()
+@UseWithGuardPattern()
+member permission types:
+- publisher: able to edit video records
+- subscriber: able to view video records
+- pending: in line to become a subscriber
+- bounced: denied from becoming a subscriber
+- banned: canceled from everything
 
 ```bash
 # 1. First, ensure Elixir and Phoenix are installed

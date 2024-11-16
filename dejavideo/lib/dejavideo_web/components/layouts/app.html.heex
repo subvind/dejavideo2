@@ -14,22 +14,40 @@
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline space-x-4">
               <.link
-                navigate={~p"/videos"}
+                navigate={~p"/upload"}
                 class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
               >
-                Video Browser
+                Upload
               </.link>
               <.link
                 navigate={~p"/collection"}
                 class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
               >
-                My Collection
+                Collection
               </.link>
               <.link
                 navigate={~p"/playlists"}
                 class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
               >
                 Playlists
+              </.link>
+              <.link
+                navigate={~p"/channels"}
+                class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+              >
+                Channels
+              </.link>
+              <.link
+                navigate={~p"/members"}
+                class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+              >
+                Members
+              </.link>
+              <.link
+                navigate={~p"/station"}
+                class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+              >
+                Station
               </.link>
             </div>
           </div>
@@ -68,22 +86,40 @@
     <div class="md:hidden hidden" id="mobile-menu">
       <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
         <.link
-          navigate={~p"/videos"}
+          navigate={~p"/upload"}
           class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
         >
-          Video Browser
+          Upload
         </.link>
         <.link
           navigate={~p"/collection"}
           class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
         >
-          My Collection
+          Collection
         </.link>
         <.link
           navigate={~p"/playlists"}
           class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
         >
           Playlists
+        </.link>
+        <.link
+          navigate={~p"/channels"}
+          class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+        >
+          Channels
+        </.link>
+        <.link
+          navigate={~p"/members"}
+          class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+        >
+          Members
+        </.link>
+        <.link
+          navigate={~p"/station"}
+          class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+        >
+          Station
         </.link>
       </div>
     </div>
