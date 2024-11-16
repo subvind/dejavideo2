@@ -4,7 +4,14 @@ defmodule DejavideoWeb.PlaylistDetailLive do
 
   def mount(%{"id" => id}, _session, socket) do
     playlist = Media.get_playlist!(id)
-    {:ok, assign(socket, playlist: playlist)}
+
+    socket = socket
+      |> assign(:playlist, playlist)
+      |> assign(:current_video_index, 0)
+      |> assign(:current_video, List.first(playlist.videos))
+      |> assign(:is_playing, false)
+
+    {:ok, socket}
   end
 
   def handle_event("remove-video", %{"video_id" => video_id}, socket) do
@@ -39,6 +46,52 @@ defmodule DejavideoWeb.PlaylistDetailLive do
     end
   end
 
+  # Handle selecting a video from the list
+  def handle_event("select-video", %{"index" => index}, socket) do
+    index = String.to_integer(index)
+    video = Enum.at(socket.assigns.playlist.videos, index)
+
+    {:noreply,
+     socket
+     |> assign(:current_video_index, index)
+     |> assign(:current_video, video)
+     |> push_event("load-video", %{youtube_id: video.youtube_id})}
+  end
+
+  def handle_event("next-video", _, socket) do
+    next_index = socket.assigns.current_video_index + 1
+
+    if next_index < length(socket.assigns.playlist.videos) do
+      next_video = Enum.at(socket.assigns.playlist.videos, next_index)
+      {:noreply,
+       socket
+       |> assign(:current_video_index, next_index)
+       |> assign(:current_video, next_video)
+       |> push_event("load-video", %{youtube_id: next_video.youtube_id})}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("prev-video", _, socket) do
+    prev_index = socket.assigns.current_video_index - 1
+
+    if prev_index >= 0 do
+      prev_video = Enum.at(socket.assigns.playlist.videos, prev_index)
+      {:noreply,
+       socket
+       |> assign(:current_video_index, prev_index)
+       |> assign(:current_video, prev_video)
+       |> push_event("load-video", %{youtube_id: prev_video.youtube_id})}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("video-ended", _, socket) do
+    handle_event("next-video", nil, socket)
+  end
+
   def render(assigns) do
     ~H"""
     <div class="container mx-auto p-4">
@@ -59,26 +112,85 @@ defmodule DejavideoWeb.PlaylistDetailLive do
           </div>
         </div>
 
+        <%!-- Video Player Section --%>
+        <%= if @current_video do %>
+          <div class="mb-8">
+            <div class="relative pb-[56.25%] h-0 overflow-hidden bg-black rounded-lg mb-4">
+              <div
+                id="youtube-player"
+                phx-hook="YouTubePlayer"
+                data-youtube-id={@current_video.youtube_id}
+                class="absolute top-0 left-0 w-full h-full"
+              >
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between bg-gray-100 p-4 rounded-lg">
+              <div>
+                <h3 class="font-medium text-lg"><%= @current_video.title %></h3>
+                <p class="text-sm text-gray-600">
+                  Playing <%= @current_video_index + 1 %> of <%= length(@playlist.videos) %>
+                </p>
+                <.link navigate={~p"/videos/#{@current_video.id}"} class="text-blue-500 hover:underline text-sm">
+                  View Full Video Details →
+                </.link>
+              </div>
+
+              <div class="flex items-center gap-4">
+                <button
+                  phx-click="prev-video"
+                  disabled={@current_video_index == 0}
+                  class="p-2 rounded-full hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+
+                <button
+                  phx-click="next-video"
+                  disabled={@current_video_index == length(@playlist.videos) - 1}
+                  class="p-2 rounded-full hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <%!-- Playlist Section --%>
         <div class="space-y-4" id="playlist-videos" phx-hook="Sortable">
           <%= for {video, index} <- Enum.with_index(@playlist.videos) do %>
-            <div class="flex items-center gap-4 p-4 bg-gray-50 rounded" data-video-id={video.id}>
+            <div class={[
+              "flex items-center gap-4 p-4 rounded hover:bg-gray-100 transition-colors",
+              if(@current_video_index == index, do: "bg-blue-50", else: "bg-gray-50")
+            ]} data-video-id={video.id}>
               <div class="flex-none text-gray-400 cursor-move">
                 <%= index + 1 %>
               </div>
-              <div class="flex-none w-40">
-                <img src={video.thumbnail_url} alt={video.title} class="w-full rounded"/>
-              </div>
-              <div class="flex-grow">
-                <h3 class="font-medium">
-                  <.link navigate={~p"/videos/#{video.id}"}>
+
+              <%!-- Make the thumbnail and title clickable to play the video --%>
+              <div class="flex flex-grow items-center gap-4 cursor-pointer" phx-click="select-video" phx-value-index={index}>
+                <div class="flex-none w-40">
+                  <img src={video.thumbnail_url} alt={video.title} class="w-full rounded"/>
+                </div>
+                <div class="flex-grow">
+                  <h3 class="font-medium mb-1">
                     <%= video.title %>
+                  </h3>
+                  <.link navigate={~p"/videos/#{video.id}"} class="text-blue-500 hover:underline text-sm">
+                    View Video →
                   </.link>
-                </h3>
+                </div>
               </div>
+
               <button
                 phx-click="remove-video"
                 phx-value-video_id={video.id}
-                class="text-red-500 hover:text-red-700"
+                class="text-red-500 hover:text-red-700 flex-none"
                 data-confirm="Remove this video from the playlist?"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
