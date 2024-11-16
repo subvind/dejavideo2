@@ -19,7 +19,7 @@ defmodule DejavideoWeb.Router do
 
     get "/", PageController, :home
     live "/videos", VideoBrowserLive
-    live "/collection", CollectionLive
+    live "/collection", CollectionLive, :index
     live "/videos/:id", VideoDetailLive
     live "/playlists", PlaylistLive, :index
     live "/playlists/:id", PlaylistDetailLive, :show

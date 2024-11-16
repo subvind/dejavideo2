@@ -10,6 +10,26 @@ defmodule Dejavideo.Media do
     Repo.all(Video)
   end
 
+  def list_videos_paginated(page, per_page, sort_by, sort_order, filter) do
+    filter_string = "%#{String.replace(filter, "%", "\\%")}%"
+
+    query =
+      from v in Video,
+        where: like(fragment("lower(?)", v.title), fragment("lower(?)", ^filter_string)) or
+               like(fragment("lower(?)", v.description), fragment("lower(?)", ^filter_string)),
+        order_by: [{^sort_order, ^sort_by}],
+        limit: ^per_page,
+        offset: ^((page - 1) * per_page)
+
+    total_query =
+      from v in Video,
+        where: like(fragment("lower(?)", v.title), fragment("lower(?)", ^filter_string)) or
+               like(fragment("lower(?)", v.description), fragment("lower(?)", ^filter_string)),
+        select: count(v.id)
+
+    {Repo.all(query), Repo.one(total_query)}
+  end
+
   def get_video!(id), do: Repo.get!(Video, id)
 
   def get_video_by_youtube_id(youtube_id) do
