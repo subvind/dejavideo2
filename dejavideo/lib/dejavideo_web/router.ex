@@ -23,6 +23,7 @@ defmodule DejavideoWeb.Router do
     live "/videos/:id", VideoDetailLive
     live "/playlists", PlaylistLive, :index
     live "/playlists/:id", PlaylistDetailLive, :show
+    live "/upload", ChannelUploadLive
   end
 
   # Other scopes may use custom stacks.

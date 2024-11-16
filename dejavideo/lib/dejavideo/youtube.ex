@@ -326,4 +326,244 @@ defmodule Dejavideo.YouTube do
       like_count: get_in(item, ["statistics", "likeCount"])
     }
   end
+
+  def get_channel_info(channel_id) do
+    case get_access_token() do
+      {:ok, token} -> get_channel_info_with_token(channel_id, token)
+      error -> error
+    end
+  end
+
+  defp get_channel_info_with_token(channel_id, token) do
+    client = Tesla.client([
+      {Tesla.Middleware.Headers, [{"authorization", "Bearer #{token}"}]},
+      Tesla.Middleware.JSON
+    ])
+
+    with {:ok, channel} <- fetch_channel_details(client, channel_id),
+         {:ok, playlists} <- fetch_channel_playlists(client, channel_id),
+         {:ok, recent_videos} <- fetch_channel_videos(client, channel_id) do
+      {:ok, %{
+        channel: channel,
+        playlists: playlists,
+        recent_videos: recent_videos
+      }}
+    end
+  end
+
+  defp fetch_channel_details(client, channel_id) do
+    case Tesla.get(client, "https://www.googleapis.com/youtube/v3/channels", query: [
+      part: "snippet,statistics",
+      id: channel_id
+    ]) do
+      {:ok, %{status: 200, body: %{"items" => [channel | _]}}} ->
+        {:ok, parse_channel_details(channel)}
+      {:ok, %{status: 200, body: %{"items" => []}}} ->
+        {:error, "Channel not found"}
+      error ->
+        Logger.error("Failed to fetch channel details: #{inspect(error)}")
+        {:error, "Failed to fetch channel details"}
+    end
+  end
+
+  defp fetch_channel_playlists(client, channel_id) do
+    case Tesla.get(client, "https://www.googleapis.com/youtube/v3/playlists", query: [
+      part: "snippet,contentDetails",
+      channelId: channel_id,
+      maxResults: 50
+    ]) do
+      {:ok, %{status: 200, body: %{"items" => playlists}}} ->
+        {:ok, Enum.map(playlists, &parse_playlist_details/1)}
+      error ->
+        Logger.error("Failed to fetch playlists: #{inspect(error)}")
+        {:error, "Failed to fetch playlists"}
+    end
+  end
+
+  defp fetch_channel_videos(client, channel_id) do
+    case Tesla.get(client, "https://www.googleapis.com/youtube/v3/search", query: [
+      part: "snippet",
+      channelId: channel_id,
+      maxResults: 50,
+      order: "date",
+      type: "video"
+    ]) do
+      {:ok, %{status: 200, body: body}} ->
+        videos = parse_search_results(body)
+        {:ok, videos}
+      error ->
+        Logger.error("Failed to fetch channel videos: #{inspect(error)}")
+        {:error, "Failed to fetch channel videos"}
+    end
+  end
+
+  def import_playlist(playlist_id) do
+    case get_access_token() do
+      {:ok, token} -> import_playlist_with_token(playlist_id, token)
+      error -> error
+    end
+  end
+
+  defp import_playlist_with_token(playlist_id, token) do
+    client = Tesla.client([
+      {Tesla.Middleware.Headers, [{"authorization", "Bearer #{token}"}]},
+      Tesla.Middleware.JSON
+    ])
+
+    case Tesla.get(client, "https://www.googleapis.com/youtube/v3/playlistItems", query: [
+      part: "snippet,contentDetails",
+      playlistId: playlist_id,
+      maxResults: 50
+    ]) do
+      {:ok, %{status: 200, body: %{"items" => items}}} ->
+        {:ok, Enum.map(items, &parse_playlist_item/1)}
+      error ->
+        Logger.error("Failed to import playlist: #{inspect(error)}")
+        {:error, "Failed to import playlist"}
+    end
+  end
+
+  defp parse_channel_details(channel) do
+    %{
+      id: channel["id"],
+      title: get_in(channel, ["snippet", "title"]),
+      description: get_in(channel, ["snippet", "description"]),
+      thumbnail_url: get_in(channel, ["snippet", "thumbnails", "medium", "url"]),
+      subscriber_count: get_in(channel, ["statistics", "subscriberCount"]),
+      video_count: get_in(channel, ["statistics", "videoCount"])
+    }
+  end
+
+  defp parse_playlist_details(playlist) do
+    %{
+      youtube_id: playlist["id"],  # Added youtube_id for playlists
+      title: get_in(playlist, ["snippet", "title"]),
+      description: get_in(playlist, ["snippet", "description"]),
+      thumbnail_url: get_in(playlist, ["snippet", "thumbnails", "medium", "url"]),
+      video_count: get_in(playlist, ["contentDetails", "itemCount"])
+    }
+  end
+
+  defp parse_playlist_item(item) do
+    %{
+      youtube_id: get_in(item, ["contentDetails", "videoId"]),  # Changed from video_id to youtube_id
+      title: get_in(item, ["snippet", "title"]),
+      description: get_in(item, ["snippet", "description"]),
+      thumbnail_url: get_in(item, ["snippet", "thumbnails", "medium", "url"]),
+      position: get_in(item, ["snippet", "position"])
+    }
+  end
+
+  defp parse_search_results(%{"items" => items}) do
+    Enum.map(items, fn item ->
+      %{
+        youtube_id: get_in(item, ["id", "videoId"]),  # Ensure this is consistent
+        title: get_in(item, ["snippet", "title"]),
+        thumbnail_url: get_in(item, ["snippet", "thumbnails", "medium", "url"]),
+        channel_title: get_in(item, ["snippet", "channelTitle"]),
+        published_at: get_in(item, ["snippet", "publishedAt"]),
+        description: get_in(item, ["snippet", "description"])
+      }
+    end)
+  end
+
+  # New function to fetch full video details for playlist items
+  defp enrich_playlist_videos(client, videos) do
+    # Get video IDs as comma-separated string
+    video_ids = Enum.map_join(videos, ",", & &1.youtube_id)
+
+    case Tesla.get(client, "https://www.googleapis.com/youtube/v3/videos", query: [
+      part: "snippet,contentDetails,statistics",
+      id: video_ids
+    ]) do
+      {:ok, %{status: 200, body: %{"items" => items}}} ->
+        enriched_videos = Enum.map(videos, fn video ->
+          case Enum.find(items, &(&1["id"] == video.youtube_id)) do
+            nil -> video
+            item ->
+              Map.merge(video, %{
+                duration: format_duration(get_in(item, ["contentDetails", "duration"])),
+                view_count: get_in(item, ["statistics", "viewCount"]),
+                like_count: get_in(item, ["statistics", "likeCount"])
+              })
+          end
+        end)
+        {:ok, enriched_videos}
+      error ->
+        Logger.error("Failed to enrich video details: #{inspect(error)}")
+        {:ok, videos}  # Return original videos if enrichment fails
+    end
+  end
+
+  def import_playlist(playlist_id) do
+    case get_access_token() do
+      {:ok, token} -> import_playlist_with_token(playlist_id, token)
+      error -> error
+    end
+  end
+
+  defp import_playlist_with_token(playlist_id, token) do
+    client = Tesla.client([
+      {Tesla.Middleware.Headers, [{"authorization", "Bearer #{token}"}]},
+      Tesla.Middleware.JSON
+    ])
+
+    with {:ok, %{status: 200, body: %{"items" => items}}} <- Tesla.get(client, "https://www.googleapis.com/youtube/v3/playlistItems", query: [
+           part: "snippet,contentDetails",
+           playlistId: playlist_id,
+           maxResults: 50
+         ]),
+         videos = Enum.map(items, &parse_playlist_item/1),
+         {:ok, enriched_videos} <- enrich_playlist_videos(client, videos) do
+      {:ok, enriched_videos}
+    else
+      error ->
+        Logger.error("Failed to import playlist: #{inspect(error)}")
+        {:error, "Failed to import playlist"}
+    end
+  end
+
+  def get_playlist_videos(playlist_id) do
+    case get_access_token() do
+      {:ok, token} -> get_playlist_videos_with_token(playlist_id, token)
+      error -> error
+    end
+  end
+
+  defp get_playlist_videos_with_token(playlist_id, token) do
+    client = Tesla.client([
+      {Tesla.Middleware.Headers, [{"authorization", "Bearer #{token}"}]},
+      Tesla.Middleware.JSON
+    ])
+
+    get_all_playlist_items(client, playlist_id, nil, [])
+  end
+
+  defp get_all_playlist_items(client, playlist_id, page_token, acc) do
+    params = [
+      part: "snippet,contentDetails",
+      playlistId: playlist_id,
+      maxResults: 50
+    ]
+
+    params = if page_token, do: [{:pageToken, page_token} | params], else: params
+
+    case Tesla.get(client, "https://www.googleapis.com/youtube/v3/playlistItems", query: params) do
+      {:ok, %{status: 200, body: body}} ->
+        items = Enum.map(body["items"], &parse_playlist_item/1)
+        all_items = acc ++ items
+
+        case body do
+          %{"nextPageToken" => next_token} ->
+            get_all_playlist_items(client, playlist_id, next_token, all_items)
+
+          _ ->
+            {:ok, all_items}
+        end
+
+      error ->
+        Logger.error("Failed to fetch playlist items: #{inspect(error)}")
+        {:error, "Failed to fetch playlist items"}
+    end
+  end
 end
