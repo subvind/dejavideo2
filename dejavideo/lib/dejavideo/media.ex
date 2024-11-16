@@ -66,12 +66,8 @@ defmodule Dejavideo.Media do
     |> Repo.insert()
   end
 
-  def create_youtube_playlist(attrs \\ %{}) do
-    attrs = Map.merge(attrs, %{source: "youtube"})
-
-    %Playlist{}
-    |> Playlist.changeset(attrs)
-    |> Repo.insert()
+  def create_youtube_playlist(attrs) do
+    do_create_playlist(Map.put(attrs, :source, "youtube"))
   end
 
   def delete_playlist(%Playlist{} = playlist) do
@@ -171,45 +167,73 @@ defmodule Dejavideo.Media do
     {:ok, get_playlist!(playlist.id)}
   end
 
-  def get_playlist_by_youtube_id(youtube_id) do
-    Repo.get_by(Playlist, youtube_id: youtube_id, source: "youtube")
+  # Update the lookup function to be more robust
+  def get_playlist_by_youtube_id(youtube_id) when is_binary(youtube_id) and youtube_id != "" do
+    Logger.debug("Searching for playlist with youtube_id: #{youtube_id}")
+    query = from p in Playlist,
+            where: p.youtube_id == ^youtube_id,
+            limit: 1
+
+    case Repo.one(query) do
+      nil ->
+        Logger.debug("No playlist found with youtube_id: #{youtube_id}")
+        nil
+      playlist ->
+        Logger.debug("Found existing playlist: id=#{playlist.id}, youtube_id=#{playlist.youtube_id}")
+        playlist
+    end
   end
+  def get_playlist_by_youtube_id(_), do: nil
 
   def import_youtube_playlist(playlist_attrs, videos) do
     # Start a transaction to ensure playlist and videos are created atomically
     Repo.transaction(fn ->
-      # Ensure required fields are present
-      playlist_attrs = playlist_attrs
-        |> Map.merge(%{
-          source: "youtube",
-          name: playlist_attrs.title, # Map title to name for Playlist schema
-          description: playlist_attrs.description
-        })
-        |> Map.take([:name, :description, :youtube_id, :thumbnail_url, :source])
+      # Ensure required fields are present with correct source
+      playlist_attrs = %{
+        name: playlist_attrs.title,
+        description: playlist_attrs.description,
+        youtube_id: playlist_attrs.youtube_id,
+        thumbnail_url: playlist_attrs.thumbnail_url,
+        source: "youtube"  # Explicitly set source
+      }
+
+      Logger.debug("Looking for existing playlist with youtube_id: #{playlist_attrs.youtube_id}")
 
       # First check if playlist already exists
-      result = case get_playlist_by_youtube_id(playlist_attrs.youtube_id) do
+      case get_playlist_by_youtube_id(playlist_attrs.youtube_id) do
         nil ->
-          # Create new playlist
-          case create_youtube_playlist(playlist_attrs) do
+          Logger.debug("No existing playlist found, creating new one")
+          # Create new playlist only if it doesn't exist
+          case do_create_playlist(playlist_attrs) do
             {:ok, playlist} ->
-              import_playlist_videos(playlist, videos)
+              case import_playlist_videos(playlist, videos) do
+                {:ok, updated_playlist} ->
+                  Map.put(updated_playlist, :is_new, true)
+                {:error, error} -> Repo.rollback(error)
+              end
             {:error, changeset} ->
               Logger.error("Failed to create playlist: #{inspect(changeset)}")
               Repo.rollback(changeset)
           end
 
-        playlist ->
-          # Update existing playlist with new videos
-          import_playlist_videos(playlist, videos)
-      end
-
-      case result do
-        {:ok, playlist} -> playlist  # Already wrapped in {:ok, _}
-        {:error, error} -> Repo.rollback(error)
-        error -> Repo.rollback(error)
+        existing_playlist ->
+          Logger.debug("Found existing playlist: id=#{existing_playlist.id}")
+          case import_playlist_videos(existing_playlist, videos) do
+            {:ok, updated_playlist} ->
+              Map.put(updated_playlist, :is_new, false)
+            {:error, error} -> Repo.rollback(error)
+          end
       end
     end)
+  end
+
+  # Separate function for actual playlist creation
+  defp do_create_playlist(attrs) do
+    Logger.debug("Creating YouTube playlist with attrs: #{inspect(attrs)}")
+
+    %Playlist{}
+    |> Playlist.changeset(attrs)
+    |> Repo.insert()
   end
 
   defp import_playlist_videos(playlist, videos) do
@@ -235,12 +259,7 @@ defmodule Dejavideo.Media do
       nil ->
         # All videos imported successfully, now associate them with the playlist
         imported_videos = Enum.map(results, fn {:ok, video} -> video end)
-        case associate_videos_with_playlist(playlist, imported_videos) do
-          {:ok, updated_playlist} -> {:ok, updated_playlist}
-          {:error, error} ->
-            Logger.error("Failed to associate videos with playlist: #{inspect(error)}")
-            {:error, error}
-        end
+        associate_videos_with_playlist(playlist, imported_videos)
 
       {:error, error} ->
         {:error, error}

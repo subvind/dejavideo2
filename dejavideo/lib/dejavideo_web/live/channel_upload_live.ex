@@ -71,7 +71,7 @@ defmodule DejavideoWeb.ChannelUploadLive do
 
   def handle_event("import_selected", _params, socket) do
     socket = assign(socket, loading: true)
-    results = %{playlists: 0, playlist_videos: 0, videos: 0, failed: 0}
+    results = %{playlists: 0, playlist_videos: 0, videos: 0, failed: 0, updated: 0}
 
     # Import selected playlists
     results =
@@ -89,18 +89,31 @@ defmodule DejavideoWeb.ChannelUploadLive do
               {:ok, videos} ->
                 case Media.import_youtube_playlist(playlist_data, videos) do
                   {:ok, playlist} ->
+                    # Properly handle the tuple response
                     inserted_count = Map.get(playlist, :inserted_count, 0)
-                    %{
-                      acc |
-                      playlists: acc.playlists + 1,
-                      playlist_videos: acc.playlist_videos + inserted_count
-                    }
+                    if Map.get(playlist, :is_new, false) do
+                      # New playlist created
+                      %{
+                        acc |
+                        playlists: acc.playlists + 1,
+                        playlist_videos: acc.playlist_videos + inserted_count
+                      }
+                    else
+                      # Existing playlist updated
+                      %{
+                        acc |
+                        updated: acc.updated + 1,
+                        playlist_videos: acc.playlist_videos + inserted_count
+                      }
+                    end
 
                   {:error, _} ->
+                    Logger.error("Failed to import playlist")
                     %{acc | failed: acc.failed + 1}
                 end
 
               {:error, _} ->
+                Logger.error("Failed to fetch playlist videos")
                 %{acc | failed: acc.failed + 1}
             end
         end
@@ -118,7 +131,10 @@ defmodule DejavideoWeb.ChannelUploadLive do
       end)
 
     cond do
-      results.playlists == 0 and results.videos == 0 and MapSet.size(socket.assigns.selected_playlists) == 0 and MapSet.size(socket.assigns.selected_videos) == 0 ->
+      results.playlists == 0 and results.videos == 0 and
+      results.updated == 0 and
+      MapSet.size(socket.assigns.selected_playlists) == 0 and
+      MapSet.size(socket.assigns.selected_videos) == 0 ->
         {:noreply,
          socket
          |> put_flash(:error, "No items selected for import")
@@ -126,8 +142,9 @@ defmodule DejavideoWeb.ChannelUploadLive do
 
       results.failed > 0 ->
         message =
-          "Imported #{results.playlists} playlists (#{results.playlist_videos} videos) " <>
-          "and #{results.videos} individual videos. #{results.failed} items failed."
+          "Imported #{results.playlists} new playlists, updated #{results.updated} existing playlists " <>
+          "(#{results.playlist_videos} total videos) and #{results.videos} individual videos. " <>
+          "#{results.failed} items failed."
 
         {:noreply,
          socket
@@ -136,8 +153,8 @@ defmodule DejavideoWeb.ChannelUploadLive do
 
       true ->
         message =
-          "Successfully imported #{results.playlists} playlists (#{results.playlist_videos} videos) " <>
-          "and #{results.videos} individual videos."
+          "Successfully imported #{results.playlists} new playlists, updated #{results.updated} existing playlists " <>
+          "(#{results.playlist_videos} total videos) and #{results.videos} individual videos."
 
         {:noreply,
          socket
