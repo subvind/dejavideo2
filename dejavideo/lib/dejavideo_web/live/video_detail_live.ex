@@ -67,7 +67,7 @@ defmodule DejavideoWeb.VideoDetailLive do
         </.link>
       </div>
 
-      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="bg-white rounded-lg shadow-lg">
         <div class="aspect-w-16 aspect-h-9">
           <iframe
             src={"https://www.youtube.com/embed/#{@video.youtube_id}"}
