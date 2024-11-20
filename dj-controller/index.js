@@ -12,6 +12,15 @@ const activeDeck = {
   deckB: null
 };
 
+// Track active streams
+const activeStreams = {
+  deckA: false,
+  deckB: false
+};
+
+// Keep track of active broadcasts by channel ID
+const activeBroadcasts = new Map();
+
 // Configurations
 const config = {
   rtmp: {
@@ -195,53 +204,28 @@ app.post('/api/deck/stop', (req, res) => {
   const { deck } = req.body;
   
   console.log(`Stop request received for deck: ${deck}`);
-  console.log('Active deck state:', activeDeck[deck]); // Debug log current deck state
   
   if (!activeDeck[deck]) {
-    console.error(`Error: No video loaded in deck ${deck}`);
     return res.status(400).json({ error: 'No video loaded in deck' });
   }
   
   try {
-    // Check if ffmpeg instance exists
     if (activeDeck[deck].ffmpeg) {
-      console.log(`Stopping playback for ${deck}`);
-      
-      // Kill the FFmpeg process more gracefully
-      try {
-        activeDeck[deck].ffmpeg.kill();
-      } catch (killError) {
-        console.error('Error killing FFmpeg process:', killError);
-        // Continue execution even if kill fails
-      }
-      
-      // Update deck status
-      activeDeck[deck].status = 'stopped';
-      
-      console.log(`Successfully stopped ${deck}. New state:`, activeDeck[deck]);
-      
-      res.json({ 
-        message: 'Video stopped',
-        deck,
-        status: activeDeck[deck].status
-      });
-    } else {
-      // If no ffmpeg instance but deck exists, just update status
-      console.log(`No active FFmpeg instance for ${deck}, updating status only`);
-      activeDeck[deck].status = 'stopped';
-      
-      res.json({ 
-        message: 'Video stopped (no active stream)',
-        deck,
-        status: activeDeck[deck].status
-      });
+      activeDeck[deck].ffmpeg.kill();
     }
+    
+    // Ensure stream is marked as inactive
+    activeStreams[deck] = false;
+    activeDeck[deck].status = 'stopped';
+    
+    res.json({ 
+      message: 'Video stopped',
+      deck,
+      status: 'stopped'
+    });
   } catch (error) {
     console.error(`Error stopping deck ${deck}:`, error);
-    res.status(500).json({ 
-      error: error.message,
-      details: 'Internal server error while stopping video'
-    });
+    res.status(500).json({ error: error.message });
   }
 });
 
@@ -262,6 +246,8 @@ app.post('/api/deck/play', (req, res) => {
     if (activeDeck[deck].ffmpeg) {
       try {
         activeDeck[deck].ffmpeg.kill();
+        // Ensure stream is marked as inactive during transition
+        activeStreams[deck] = false;
       } catch (e) {
         console.log('Error killing existing FFmpeg process:', e);
       }
@@ -290,6 +276,7 @@ app.post('/api/deck/play', (req, res) => {
       ])
       .on('start', (commandLine) => {
         console.log('FFmpeg start command:', commandLine);
+        // Don't mark stream as active yet - wait for actual RTMP connection
       })
       .on('stderr', (stderrLine) => {
         console.log('FFmpeg stderr:', stderrLine);
@@ -297,11 +284,12 @@ app.post('/api/deck/play', (req, res) => {
       .on('error', (err, stdout, stderr) => {
         console.error('FFmpeg error:', err.message);
         console.error('FFmpeg stderr:', stderr);
-        // Don't kill the process here, just log the error
+        activeStreams[deck] = false;
         activeDeck[deck].status = 'error';
       })
       .on('end', () => {
         console.log(`FFmpeg process ended for ${deck}`);
+        activeStreams[deck] = false;
         activeDeck[deck].status = 'stopped';
       });
 
@@ -323,6 +311,7 @@ app.post('/api/deck/play', (req, res) => {
     });
   } catch (error) {
     console.error(`Error playing deck ${deck}:`, error);
+    activeStreams[deck] = false;
     res.status(500).json({ error: error.message });
   }
 });
@@ -394,6 +383,285 @@ app.post('/api/deck/load', async (req, res) => {
   }
 });
 
+// First, update the broadcast/start endpoint to store more information
+app.post('/api/broadcast/start', async (req, res) => {
+  const { channelId } = req.body;
+  
+  if (!channelId) {
+    return res.status(400).json({ error: 'Channel ID is required' });
+  }
+  
+  try {
+    // Stop existing broadcast if any
+    if (activeBroadcasts.has(channelId)) {
+      const existingBroadcast = activeBroadcasts.get(channelId);
+      existingBroadcast.ffmpeg.kill();
+      activeBroadcasts.delete(channelId);
+    }
+
+    // Create initial ffmpeg command
+    const ffmpegCommand = createBroadcastCommand(channelId, 0.5);
+    
+    // Run the command
+    ffmpegCommand.run();
+
+    // Store the broadcast instance with more info
+    activeBroadcasts.set(channelId, {
+      ffmpeg: ffmpegCommand,
+      startTime: Date.now(),
+      crossfaderPosition: 0.5
+    });
+
+    res.json({
+      message: 'Broadcast started',
+      channelId,
+      streamUrl: `rtmp://localhost:1935/live/channel_${channelId}`
+    });
+  } catch (error) {
+    console.error('Failed to start broadcast:', error);
+    res.status(500).json({ error: 'Failed to start broadcast' });
+  }
+});
+
+// Add a helper function to create the FFmpeg command
+// First, update the createBroadcastCommand function to handle crossfading properly
+function createBroadcastCommand(channelId, position) {
+  // Calculate weights - position 0 is full deckA, position 1 is full deckB
+  const weight1 = 1 - position;
+  const weight2 = position;
+
+  console.log(`Creating broadcast command with weights: ${weight1} ${weight2}`);
+
+  const ffmpegCommand = ffmpeg()
+    // Input deck A
+    .input('rtmp://localhost:1935/live/deckA')
+    .inputOptions(['-re'])
+    
+    // Input deck B
+    .input('rtmp://localhost:1935/live/deckB')
+    .inputOptions(['-re'])
+    
+    // Add complex filtergraph with corrected mixing
+    .complexFilter([
+      // First normalize video streams to same fps and resolution
+      {
+        filter: 'fps',
+        options: { fps: 30 },
+        inputs: '0:v',
+        outputs: 'v0_fps'
+      },
+      {
+        filter: 'fps',
+        options: { fps: 30 },
+        inputs: '1:v',
+        outputs: 'v1_fps'
+      },
+      {
+        filter: 'scale',
+        options: { w: 1280, h: 720 },
+        inputs: 'v0_fps',
+        outputs: 'v0_scaled'
+      },
+      {
+        filter: 'scale',
+        options: { w: 1280, h: 720 },
+        inputs: 'v1_fps',
+        outputs: 'v1_scaled'
+      },
+      // Add fade transition between videos
+      {
+        filter: 'blend',
+        options: {
+          all_mode: 'overlay',
+          all_opacity: weight2
+        },
+        inputs: ['v0_scaled', 'v1_scaled'],
+        outputs: 'v_blended'
+      },
+      // Handle audio mixing with proper normalization
+      {
+        filter: 'aresample',
+        options: {
+          async: 1000,
+          first_pts: 0
+        },
+        inputs: '0:a',
+        outputs: 'a0_resampled'
+      },
+      {
+        filter: 'aresample',
+        options: {
+          async: 1000,
+          first_pts: 0
+        },
+        inputs: '1:a',
+        outputs: 'a1_resampled'
+      },
+      {
+        filter: 'volume',
+        options: { volume: weight1 },
+        inputs: 'a0_resampled',
+        outputs: 'a0_vol'
+      },
+      {
+        filter: 'volume',
+        options: { volume: weight2 },
+        inputs: 'a1_resampled',
+        outputs: 'a1_vol'
+      },
+      {
+        filter: 'amix',
+        options: {
+          inputs: 2,
+          duration: 'first'
+        },
+        inputs: ['a0_vol', 'a1_vol'],
+        outputs: 'a_mixed'
+      }
+    ], ['v_blended', 'a_mixed'])
+    
+    // Output options optimized for streaming
+    .outputOptions([
+      '-c:v', 'libx264',
+      '-preset', 'veryfast',
+      '-maxrate', '2500k',
+      '-bufsize', '5000k',
+      '-g', '60',
+      '-keyint_min', '60',
+      '-sc_threshold', '0',
+      '-c:a', 'aac',
+      '-b:a', '160k',
+      '-ar', '44100',
+      '-ac', '2',
+      '-profile:v', 'high',
+      '-level', '4.1',
+      '-f', 'flv'
+    ])
+    .on('start', (commandLine) => {
+      console.log('Started/Updated broadcast for channel:', channelId);
+      console.log('FFmpeg command:', commandLine);
+    })
+    .on('error', (err, stdout, stderr) => {
+      console.error('Broadcasting error:', err);
+      console.error('FFmpeg stderr:', stderr);
+      activeBroadcasts.delete(channelId);
+    });
+
+  // Set output
+  ffmpegCommand.output(`rtmp://localhost:1935/live/channel_${channelId}`);
+
+  return ffmpegCommand;
+}
+
+// Update the crossfade endpoint to validate stream status
+app.post('/api/crossfade', async (req, res) => {
+  const { position, channelId } = req.body;
+  console.log('corssfade', position, channelId);
+  
+  if (!channelId || !activeBroadcasts.has(channelId)) {
+    return res.status(400).json({ error: 'Invalid channel ID or no active broadcast' });
+  }
+
+  // Verify both decks are streaming
+  if (!activeStreams.deckA || !activeStreams.deckB) {
+    return res.status(400).json({ error: 'Both decks must be streaming to use crossfader' });
+  }
+
+  try {
+    const broadcast = activeBroadcasts.get(channelId);
+    
+    // Kill the existing FFmpeg process
+    if (broadcast.ffmpeg) {
+      console.log('Stopping existing broadcast for crossfade update');
+      broadcast.ffmpeg.kill();
+    }
+
+    // Create new FFmpeg command with updated position
+    console.log('Creating new broadcast with updated crossfader position:', position);
+    const newCommand = createBroadcastCommand(channelId, position);
+    
+    // Start the new stream
+    newCommand.run();
+
+    // Update the broadcast instance
+    activeBroadcasts.set(channelId, {
+      ffmpeg: newCommand,
+      startTime: broadcast.startTime,
+      crossfaderPosition: position
+    });
+
+    res.json({
+      message: 'Crossfader updated',
+      position,
+      channelId
+    });
+  } catch (error) {
+    console.error('Failed to update crossfader:', error);
+    res.status(500).json({ error: 'Failed to update crossfader' });
+  }
+});
+
+// Stop broadcasting
+app.post('/api/broadcast/stop', async (req, res) => {
+  const { channelId } = req.body;
+  
+  if (!channelId || !activeBroadcasts.has(channelId)) {
+    return res.status(400).json({ error: 'Invalid channel ID or no active broadcast' });
+  }
+
+  try {
+    const broadcast = activeBroadcasts.get(channelId);
+    broadcast.ffmpeg.kill();
+    activeBroadcasts.delete(channelId);
+
+    res.json({
+      message: 'Broadcast stopped',
+      channelId
+    });
+  } catch (error) {
+    console.error('Failed to stop broadcast:', error);
+    res.status(500).json({ error: 'Failed to stop broadcast' });
+  }
+});
+
+// Get broadcast status
+app.get('/api/broadcast/status/:channelId', (req, res) => {
+  const { channelId } = req.params;
+  
+  if (!channelId) {
+    return res.status(400).json({ error: 'Channel ID is required' });
+  }
+
+  const broadcast = activeBroadcasts.get(channelId);
+  
+  if (!broadcast) {
+    return res.json({
+      channelId,
+      status: 'inactive'
+    });
+  }
+
+  res.json({
+    channelId,
+    status: 'active',
+    uptime: Date.now() - broadcast.startTime,
+    streamUrl: `rtmp://localhost:1935/live/channel_${channelId}`
+  });
+});
+
+// Add stream status endpoint
+app.get('/api/streams/status', (req, res) => {
+  const hasActiveStreams = Object.values(activeStreams).some(status => status);
+  
+  res.json({
+    streams: {
+      deckA: activeStreams.deckA,
+      deckB: activeStreams.deckB
+    },
+    hasActiveStreams
+  });
+});
+
 // Add this error handler at the bottom of your Express app
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
@@ -407,6 +675,23 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`API Server running on port ${PORT}`);
+});
+
+// Update stream status when streams start/stop
+nms.on('prePublish', (id, StreamPath, args) => {
+  const streamKey = StreamPath.split('/').pop(); // Gets "deckA" or "deckB" from path
+  if (streamKey === 'deckA' || streamKey === 'deckB') {
+    activeStreams[streamKey] = true;
+    console.log(`Stream started: ${streamKey}`);
+  }
+});
+
+nms.on('donePublish', (id, StreamPath, args) => {
+  const streamKey = StreamPath.split('/').pop();
+  if (streamKey === 'deckA' || streamKey === 'deckB') {
+    activeStreams[streamKey] = false;
+    console.log(`Stream ended: ${streamKey}`);
+  }
 });
 
 nms.run();
