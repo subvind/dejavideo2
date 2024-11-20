@@ -8,7 +8,7 @@ defmodule DejavideoWeb.DjLive do
   def mount(_params, _session, socket) do
     if connected?(socket) do
       :timer.send_interval(1000, self(), :update_status)
-      :timer.send_interval(2000, self(), :update_broadcast_status)
+      :timer.send_interval(1000, self(), :update_broadcast_status)
       :timer.send_interval(1000, self(), :update_stream_status)
     end
 
@@ -32,23 +32,52 @@ defmodule DejavideoWeb.DjLive do
          "deckA" => false,
          "deckB" => false
        },
-       has_active_streams: false
+       has_active_streams: false,
+       last_broadcast_check: nil
      ), temporary_assigns: []}
   end
 
-  # Add stream status polling handler
+  # Stream status handler
   def handle_info(:update_stream_status, socket) do
     case HTTPoison.get!("#{@api_base_url}/streams/status") do
       %{status_code: 200, body: body} ->
         status = Jason.decode!(body)
-        {:noreply,
-         assign(socket,
-           deck_streams: status["streams"],  # Changed from streams to deck_streams
-           has_active_streams: status["hasActiveStreams"]
-         )}
+        Logger.debug("Stream status update: #{inspect(status)}")
 
-      _ ->
+        {:noreply,
+          assign(socket,
+            deck_streams: status["streams"],
+            has_active_streams: status["hasActiveStreams"]
+          )}
+
+      error ->
+        Logger.error("Failed to fetch stream status: #{inspect(error)}")
         {:noreply, socket}
+    end
+  end
+
+  # Update broadcast status handler
+  def handle_info(:update_broadcast_status, socket) do
+    if socket.assigns.channel_id do
+      case HTTPoison.get!("#{@api_base_url}/broadcast/status/#{socket.assigns.channel_id}") do
+        %{status_code: 200, body: body} ->
+          status = Jason.decode!(body)
+          Logger.debug("Broadcast status update: #{inspect(status)}")
+
+          {:noreply,
+            assign(socket,
+              broadcast_status: status["status"],
+              broadcast_uptime: status["uptime"] || 0,
+              stream_url: status["streamUrl"],
+              last_broadcast_check: System.system_time(:second)
+            )}
+
+        error ->
+          Logger.error("Failed to fetch broadcast status: #{inspect(error)}")
+          {:noreply, socket}
+      end
+    else
+      {:noreply, socket}
     end
   end
 
@@ -221,12 +250,15 @@ defmodule DejavideoWeb.DjLive do
   # Add broadcast control event handlers
   def handle_event("start_broadcast", %{"channel_id" => channel_id}, socket) when byte_size(channel_id) > 0 do
     if socket.assigns.has_active_streams do
-      case HTTPoison.post!("#{@api_base_url}/broadcast/start",
-             Jason.encode!(%{channelId: channel_id}),
-             [{"Content-Type", "application/json"}]
-           ) do
+      case HTTPoison.post!(
+        "#{@api_base_url}/broadcast/start",
+        Jason.encode!(%{channelId: channel_id}),
+        [{"Content-Type", "application/json"}]
+      ) do
         %{status_code: 200, body: body} ->
           response = Jason.decode!(body)
+          # Immediately trigger a status update
+          send(self(), :update_broadcast_status)
           {:noreply,
            socket
            |> assign(
@@ -237,14 +269,8 @@ defmodule DejavideoWeb.DjLive do
            )
            |> put_flash(:info, "Broadcast started")}
 
-        %{status_code: 400, body: body} ->
-          error = Jason.decode!(body)["error"]
-          {:noreply,
-           socket
-           |> assign(broadcast_error: error)
-           |> put_flash(:error, error)}
-
-        _ ->
+        error ->
+          Logger.error("Failed to start broadcast: #{inspect(error)}")
           {:noreply,
            socket
            |> assign(broadcast_error: "Failed to start broadcast")
@@ -286,11 +312,9 @@ defmodule DejavideoWeb.DjLive do
     end
   end
 
-  # Update the crossfader event handler to properly send value and channel_id
   def handle_event("update_crossfader", %{"value" => position}, socket) do
     Logger.info("Crossfader event received with position: #{position}")
 
-    # Convert position to float and update state immediately
     position_float = case position do
       pos when is_binary(pos) -> String.to_float(pos)
       pos when is_float(pos) -> pos
@@ -300,7 +324,6 @@ defmodule DejavideoWeb.DjLive do
     # Always update local state first
     socket = assign(socket, :crossfader, position_float)
 
-    # Only make API call if broadcasting
     if socket.assigns.broadcast_status == "active" and socket.assigns.channel_id do
       Logger.info("Sending crossfade request - position: #{position_float}, channel: #{socket.assigns.channel_id}")
 
@@ -314,6 +337,8 @@ defmodule DejavideoWeb.DjLive do
       ) do
         %{status_code: 200} ->
           Logger.info("Crossfade request successful")
+          # Force an immediate broadcast status check
+          send(self(), :update_broadcast_status)
           {:noreply, socket}
 
         error ->
@@ -386,20 +411,58 @@ defmodule DejavideoWeb.DjLive do
     end
   end
 
+  # Update video list handler
   def handle_info(:update_status, socket) do
     case HTTPoison.get!("#{@api_base_url}/videos") do
       %{status_code: 200, body: body} ->
         videos = Jason.decode!(body)["videos"]
         {:noreply, assign(socket, videos: videos)}
-      _ ->
+
+      error ->
+        Logger.error("Failed to fetch videos: #{inspect(error)}")
         {:noreply, socket}
     end
+  end
+
+  # Add error handling for unexpected messages
+  def handle_info(msg, socket) do
+    Logger.warning("Received unexpected message: #{inspect(msg)}")
+    {:noreply, socket}
+  end
+
+  # Add helper function to check broadcast health
+  defp broadcast_healthy?(socket) when is_map(socket) do
+    socket.broadcast_status == "active" and
+      socket.channel_id != nil and
+      socket.last_broadcast_check != nil and
+      System.system_time(:second) - socket.last_broadcast_check < 5
   end
 
   def render(assigns) do
     ~H"""
     <div class="min-h-screen bg-gray-900 text-white p-8">
       <h1 class="text-4xl font-bold mb-8">Video DJ Controller</h1>
+
+      <!-- Broadcast Status Section -->
+      <div class={[
+        "mb-4 p-2 rounded",
+        if(broadcast_healthy?(assigns), do: "bg-green-800/20", else: "bg-red-800/20")
+      ]}>
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="font-bold">Broadcast Status: </span>
+            <span class={if(broadcast_healthy?(assigns), do: "text-green-400", else: "text-red-400")}>
+              <%= @broadcast_status %>
+            </span>
+          </div>
+          <%= if @channel_id do %>
+            <div class="text-sm">Channel: <%= @channel_id %></div>
+          <% end %>
+          <%= if @broadcast_uptime > 0 do %>
+            <div class="text-sm">Uptime: <%= format_duration(@broadcast_uptime/1000) %></div>
+          <% end %>
+        </div>
+      </div>
 
       <!-- Add Broadcast Control Panel -->
         <div class="mb-8 bg-gray-800 p-6 rounded-lg">

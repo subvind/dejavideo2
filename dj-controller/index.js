@@ -21,6 +21,16 @@ const activeStreams = {
 // Keep track of active broadcasts by channel ID
 const activeBroadcasts = new Map();
 
+// Add connection management
+const streamConnections = {
+  deckA: null,
+  deckB: null,
+  broadcast: null
+};
+
+// Add transition lock to prevent overlapping transitions
+let transitionInProgress = false;
+
 // Configurations
 const config = {
   rtmp: {
@@ -423,27 +433,128 @@ app.post('/api/broadcast/start', async (req, res) => {
   }
 });
 
-// Add a helper function to create the FFmpeg command
-// First, update the createBroadcastCommand function to handle crossfading properly
+// Add connection monitoring
+function monitorConnection(channelId) {
+  nms.on('preConnect', (id, args) => {
+    console.log('[RTMP] Client connecting:', id, args);
+  });
+
+  nms.on('postConnect', (id, args) => {
+    console.log('[RTMP] Client connected:', id, args);
+    if (args.app === 'live') {
+      if (args.path === `/live/deckA`) {
+        streamConnections.deckA = id;
+      } else if (args.path === `/live/deckB`) {
+        streamConnections.deckB = id;
+      } else if (args.path === `/live/channel_${channelId}`) {
+        streamConnections.broadcast = id;
+      }
+    }
+  });
+
+  nms.on('doneConnect', (id, args) => {
+    console.log('[RTMP] Client disconnected:', id, args);
+    Object.keys(streamConnections).forEach(key => {
+      if (streamConnections[key] === id) {
+        streamConnections[key] = null;
+      }
+    });
+  });
+}
+
+// Add connection verification
+async function verifyConnections() {
+  return new Promise((resolve) => {
+    const checkConnections = () => {
+      if (streamConnections.deckA && streamConnections.deckB) {
+        resolve(true);
+      } else {
+        setTimeout(checkConnections, 100);
+      }
+    };
+    checkConnections();
+  });
+}
+
+// Update the killFFmpegProcess function
+async function killFFmpegProcess(ffmpeg, channelId) {
+  return new Promise((resolve, reject) => {
+    if (!ffmpeg) {
+      resolve();
+      return;
+    }
+
+    let killed = false;
+    const timeout = setTimeout(() => {
+      if (!killed) {
+        console.log('Force killing FFmpeg process after timeout');
+        ffmpeg.kill('SIGKILL');
+        killed = true;
+        resolve();
+      }
+    }, 2000);
+
+    // Monitor the current connections
+    const currentBroadcast = streamConnections.broadcast;
+
+    ffmpeg.on('end', () => {
+      killed = true;
+      clearTimeout(timeout);
+      console.log('FFmpeg process ended gracefully');
+      resolve();
+    });
+
+    ffmpeg.on('error', (err) => {
+      killed = true;
+      clearTimeout(timeout);
+      console.log('FFmpeg process ended with error:', err);
+      resolve();
+    });
+
+    // First try graceful shutdown
+    console.log('Attempting graceful FFmpeg shutdown');
+    ffmpeg.kill('SIGTERM');
+  });
+}
+
 function createBroadcastCommand(channelId, position) {
-  // Calculate weights - position 0 is full deckA, position 1 is full deckB
   const weight1 = 1 - position;
   const weight2 = position;
 
   console.log(`Creating broadcast command with weights: ${weight1} ${weight2}`);
 
   const ffmpegCommand = ffmpeg()
-    // Input deck A
+    // Input deck A with corrected buffering options
     .input('rtmp://localhost:1935/live/deckA')
-    .inputOptions(['-re'])
+    .inputOptions([
+      '-re',
+      '-thread_queue_size', '4096',
+      '-max_delay', '500000',
+      '-analyzeduration', '10M',
+      '-probesize', '10M',
+      '-fflags', 'nobuffer+genpts',
+      '-flags', 'low_delay',
+      '-rtmp_live', 'live',
+      '-rtmp_buffer', '1000'
+    ])
     
-    // Input deck B
+    // Input deck B with same corrections
     .input('rtmp://localhost:1935/live/deckB')
-    .inputOptions(['-re'])
+    .inputOptions([
+      '-re',
+      '-thread_queue_size', '4096',
+      '-max_delay', '500000',
+      '-analyzeduration', '10M',
+      '-probesize', '10M',
+      '-fflags', 'nobuffer+genpts',
+      '-flags', 'low_delay',
+      '-rtmp_live', 'live',
+      '-rtmp_buffer', '1000'
+    ])
     
-    // Add complex filtergraph with corrected mixing
+    // Optimized filter graph
     .complexFilter([
-      // First normalize video streams to same fps and resolution
+      // Video processing
       {
         filter: 'fps',
         options: { fps: 30 },
@@ -458,31 +569,40 @@ function createBroadcastCommand(channelId, position) {
       },
       {
         filter: 'scale',
-        options: { w: 1280, h: 720 },
+        options: { 
+          w: 1280, 
+          h: 720,
+          flags: 'bicubic'
+        },
         inputs: 'v0_fps',
         outputs: 'v0_scaled'
       },
       {
         filter: 'scale',
-        options: { w: 1280, h: 720 },
+        options: { 
+          w: 1280, 
+          h: 720,
+          flags: 'bicubic'
+        },
         inputs: 'v1_fps',
         outputs: 'v1_scaled'
       },
-      // Add fade transition between videos
+      // Blend transition
       {
         filter: 'blend',
         options: {
           all_mode: 'overlay',
-          all_opacity: weight2
+          c0_opacity: weight1,
+          c1_opacity: weight2
         },
         inputs: ['v0_scaled', 'v1_scaled'],
         outputs: 'v_blended'
       },
-      // Handle audio mixing with proper normalization
+      // Audio processing with corrected options
       {
         filter: 'aresample',
         options: {
-          async: 1000,
+          async: 1,
           first_pts: 0
         },
         inputs: '0:a',
@@ -491,112 +611,134 @@ function createBroadcastCommand(channelId, position) {
       {
         filter: 'aresample',
         options: {
-          async: 1000,
+          async: 1,
           first_pts: 0
         },
         inputs: '1:a',
         outputs: 'a1_resampled'
       },
       {
-        filter: 'volume',
-        options: { volume: weight1 },
-        inputs: 'a0_resampled',
-        outputs: 'a0_vol'
-      },
-      {
-        filter: 'volume',
-        options: { volume: weight2 },
-        inputs: 'a1_resampled',
-        outputs: 'a1_vol'
-      },
-      {
         filter: 'amix',
         options: {
           inputs: 2,
-          duration: 'first'
+          weights: `${weight1} ${weight2}`,
+          normalize: 0,
+          duration: 'longest'
         },
-        inputs: ['a0_vol', 'a1_vol'],
+        inputs: ['a0_resampled', 'a1_resampled'],
         outputs: 'a_mixed'
       }
     ], ['v_blended', 'a_mixed'])
     
-    // Output options optimized for streaming
+    // Updated output options with correct syntax
     .outputOptions([
       '-c:v', 'libx264',
-      '-preset', 'veryfast',
+      '-preset', 'ultrafast',
+      '-tune', 'zerolatency',
       '-maxrate', '2500k',
       '-bufsize', '5000k',
-      '-g', '60',
-      '-keyint_min', '60',
-      '-sc_threshold', '0',
+      '-g', '30',
+      '-keyint_min', '30',
+      '-x264opts', 'no-scenecut',
       '-c:a', 'aac',
       '-b:a', '160k',
       '-ar', '44100',
       '-ac', '2',
-      '-profile:v', 'high',
-      '-level', '4.1',
-      '-f', 'flv'
+      '-profile:v', 'baseline',
+      '-level', '3.1',
+      '-f', 'flv',
+      '-movflags', '+faststart',
+      '-fps_mode', 'cfr',       // Updated from -vsync
+      '-max_interleave_delta', '0'
     ])
     .on('start', (commandLine) => {
       console.log('Started/Updated broadcast for channel:', channelId);
       console.log('FFmpeg command:', commandLine);
     })
+    .on('stderr', (stderrLine) => {
+      if (stderrLine.includes('Error') || 
+          stderrLine.includes('Warning') || 
+          stderrLine.includes('Connection')) {
+        console.log('FFmpeg stderr:', stderrLine);
+      }
+    })
     .on('error', (err, stdout, stderr) => {
       console.error('Broadcasting error:', err);
-      console.error('FFmpeg stderr:', stderr);
+      if (stderr) console.error('FFmpeg stderr:', stderr);
+      transitionInProgress = false;
       activeBroadcasts.delete(channelId);
     });
 
-  // Set output
+  // Set output with retry options
   ffmpegCommand.output(`rtmp://localhost:1935/live/channel_${channelId}`);
 
   return ffmpegCommand;
 }
 
-// Update the crossfade endpoint to validate stream status
 app.post('/api/crossfade', async (req, res) => {
   const { position, channelId } = req.body;
-  console.log('corssfade', position, channelId);
   
+  console.log('Crossfade request received:', { position, channelId });
+
+  if (transitionInProgress) {
+    return res.status(429).json({ error: 'Transition already in progress' });
+  }
+
   if (!channelId || !activeBroadcasts.has(channelId)) {
     return res.status(400).json({ error: 'Invalid channel ID or no active broadcast' });
   }
 
-  // Verify both decks are streaming
-  if (!activeStreams.deckA || !activeStreams.deckB) {
-    return res.status(400).json({ error: 'Both decks must be streaming to use crossfader' });
-  }
+  transitionInProgress = true;
 
   try {
     const broadcast = activeBroadcasts.get(channelId);
     
-    // Kill the existing FFmpeg process
+    // Store the current broadcast state
+    const currentStatus = broadcast.ffmpeg ? 'active' : 'inactive';
+    
+    // Wait for connections to be established
+    await verifyConnections();
+    
+    // Gracefully stop the existing FFmpeg process
     if (broadcast.ffmpeg) {
-      console.log('Stopping existing broadcast for crossfade update');
-      broadcast.ffmpeg.kill();
+      console.log('Gracefully stopping existing broadcast');
+      await killFFmpegProcess(broadcast.ffmpeg, channelId);
     }
 
-    // Create new FFmpeg command with updated position
+    // Small delay to ensure clean transition
+    await new Promise(resolve => setTimeout(resolve, 200));
+
+    // Create and start new FFmpeg command
     console.log('Creating new broadcast with updated crossfader position:', position);
     const newCommand = createBroadcastCommand(channelId, position);
     
+    // Update the broadcast instance
+    activeBroadcasts.set(channelId, {
+      ...broadcast,
+      ffmpeg: newCommand,
+      crossfaderPosition: position,
+      lastTransition: Date.now(),
+      status: currentStatus  // Preserve the previous status
+    });
+
     // Start the new stream
     newCommand.run();
 
-    // Update the broadcast instance
-    activeBroadcasts.set(channelId, {
-      ffmpeg: newCommand,
-      startTime: broadcast.startTime,
-      crossfaderPosition: position
-    });
+    // Wait for new connections to establish
+    await verifyConnections();
 
+    transitionInProgress = false;
+
+    // Send response with preserved status
     res.json({
       message: 'Crossfader updated',
       position,
-      channelId
+      channelId,
+      status: currentStatus
     });
   } catch (error) {
     console.error('Failed to update crossfader:', error);
+    transitionInProgress = false;
     res.status(500).json({ error: 'Failed to update crossfader' });
   }
 });
@@ -641,11 +783,18 @@ app.get('/api/broadcast/status/:channelId', (req, res) => {
     });
   }
 
+  // Check if we're in a transition
+  const isTransitioning = transitionInProgress;
+  
+  // If transitioning, preserve the previous status
+  const status = isTransitioning ? broadcast.status : 'active';
+
   res.json({
     channelId,
-    status: 'active',
+    status,
     uptime: Date.now() - broadcast.startTime,
-    streamUrl: `rtmp://localhost:1935/live/channel_${channelId}`
+    streamUrl: `rtmp://localhost:1935/live/channel_${channelId}`,
+    crossfaderPosition: broadcast.crossfaderPosition
   });
 });
 
@@ -675,6 +824,9 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`API Server running on port ${PORT}`);
+
+  // Initialize connection monitoring on server start
+  monitorConnection();
 });
 
 // Update stream status when streams start/stop

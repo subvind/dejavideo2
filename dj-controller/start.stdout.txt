@@ -1,9 +1,9 @@
-11/19/2024 20:39:22 1259864 [INFO] Node Media Server v2.7.0
-11/19/2024 20:39:22 1259864 [ERROR] Node Media Trans Server startup failed. ffmpeg:ffmpeg cannot be executed.
+11/19/2024 21:48:19 1371609 [INFO] Node Media Server v2.7.0
+11/19/2024 21:48:19 1371609 [ERROR] Node Media Trans Server startup failed. ffmpeg:ffmpeg cannot be executed.
 API Server running on port 3000
-11/19/2024 20:39:22 1259864 [INFO] Node Media Rtmp Server started on port: 1935
-11/19/2024 20:39:22 1259864 [INFO] Node Media Http Server started on port: 8000
-11/19/2024 20:39:22 1259864 [INFO] Node Media WebSocket Server started on port: 8000
+11/19/2024 21:48:19 1371609 [INFO] Node Media Rtmp Server started on port: 1935
+11/19/2024 21:48:19 1371609 [INFO] Node Media Http Server started on port: 8000
+11/19/2024 21:48:19 1371609 [INFO] Node Media WebSocket Server started on port: 8000
 Load request received for deck: deckA, video: Grimes - Oblivion.mp4
 Checking video path: videos/Grimes - Oblivion.mp4
 Video info: {
@@ -181,16 +181,28 @@ FFmpeg stderr:   Stream #0:1[0x2](eng): Audio: aac (LC) (mp4a / 0x6134706D), 441
 FFmpeg stderr:       Metadata:
 FFmpeg stderr:         handler_name    : ISO Media file produced by Google Inc.
 FFmpeg stderr:         vendor_id       : [0][0][0][0]
-11/19/2024 20:39:30 1259864 [INFO] [rtmp connect] id=F1BW5NB7 ip=::1 app=live args={"app":"live","type":"nonprivate","flashVer":"FMLE/3.0 (compatible; Lavf61.1.100)","tcUrl":"rtmp://localhost:1935/live"}
+[RTMP] Client connecting: 2CB0FGSB {
+  app: 'live',
+  type: 'nonprivate',
+  flashVer: 'FMLE/3.0 (compatible; Lavf61.1.100)',
+  tcUrl: 'rtmp://localhost:1935/live'
+}
+11/19/2024 21:48:26 1371609 [INFO] [rtmp connect] id=2CB0FGSB ip=::1 app=live args={"app":"live","type":"nonprivate","flashVer":"FMLE/3.0 (compatible; Lavf61.1.100)","tcUrl":"rtmp://localhost:1935/live"}
+[RTMP] Client connected: 2CB0FGSB {
+  app: 'live',
+  type: 'nonprivate',
+  flashVer: 'FMLE/3.0 (compatible; Lavf61.1.100)',
+  tcUrl: 'rtmp://localhost:1935/live'
+}
 Stream started: deckA
-11/19/2024 20:39:30 1259864 [INFO] [rtmp publish] New stream. id=F1BW5NB7 streamPath=/live/deckA streamId=1
+11/19/2024 21:48:27 1371609 [INFO] [rtmp publish] New stream. id=2CB0FGSB streamPath=/live/deckA streamId=1
 FFmpeg stderr: Stream mapping:
 FFmpeg stderr:   Stream #0:0 -> #0:0 (vp9 (native) -> h264 (libx264))
 FFmpeg stderr:   Stream #0:1 -> #0:1 (aac (native) -> aac (native))
 FFmpeg stderr: Press [q] to stop, [?] for help
-FFmpeg stderr: [libx264 @ 0x5f482812c200] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
-FFmpeg stderr: [libx264 @ 0x5f482812c200] profile High, level 4.1, 4:2:0, 8-bit
-FFmpeg stderr: [libx264 @ 0x5f482812c200] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=1 ref=1 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=2 psy=1 psy_rd=1.00:0.00 mixed_ref=0 me_range=16 chroma_me=1 trellis=0 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=0 threads=22 lookahead_threads=5 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=1 keyint=50 keyint_min=5 scenecut=40 intra_refresh=0 rc_lookahead=10 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 vbv_maxrate=2000 vbv_bufsize=4000 crf_max=0.0 nal_hrd=none filler=0 ip_ratio=1.40 aq=1:1.00
+FFmpeg stderr: [libx264 @ 0x5f9e17e2e200] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+FFmpeg stderr: [libx264 @ 0x5f9e17e2e200] profile High, level 4.1, 4:2:0, 8-bit
+FFmpeg stderr: [libx264 @ 0x5f9e17e2e200] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=1 ref=1 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=2 psy=1 psy_rd=1.00:0.00 mixed_ref=0 me_range=16 chroma_me=1 trellis=0 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=0 threads=22 lookahead_threads=5 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=1 keyint=50 keyint_min=5 scenecut=40 intra_refresh=0 rc_lookahead=10 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 vbv_maxrate=2000 vbv_bufsize=4000 crf_max=0.0 nal_hrd=none filler=0 ip_ratio=1.40 aq=1:1.00
 FFmpeg stderr: Output #0, flv, to 'rtmp://localhost:1935/live/deckA':
 FFmpeg stderr:   Metadata:
 FFmpeg stderr:     major_brand     : isom
@@ -209,14 +221,103 @@ FFmpeg stderr:       Metadata:
 FFmpeg stderr:         handler_name    : ISO Media file produced by Google Inc.
 FFmpeg stderr:         vendor_id       : [0][0][0][0]
 FFmpeg stderr:         encoder         : Lavc61.3.100 aac
-11/19/2024 20:39:30 1259864 [INFO] [rtmp publish] Handle video. id=F1BW5NB7 streamPath=/live/deckA frame_type=1 codec_id=7 codec_name=H264 1280x720
-11/19/2024 20:39:30 1259864 [INFO] [rtmp publish] Handle audio. id=F1BW5NB7 streamPath=/live/deckA sound_format=10 sound_type=2 sound_size=1 sound_rate=3 codec_name=AAC 44100 2ch
+11/19/2024 21:48:27 1371609 [INFO] [rtmp publish] Handle video. id=2CB0FGSB streamPath=/live/deckA frame_type=1 codec_id=7 codec_name=H264 1280x720
+11/19/2024 21:48:27 1371609 [INFO] [rtmp publish] Handle audio. id=2CB0FGSB streamPath=/live/deckA sound_format=10 sound_type=2 sound_size=1 sound_rate=3 codec_name=AAC 44100 2ch
 FFmpeg stderr: frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
 FFmpeg stderr: frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
 FFmpeg stderr: frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
 FFmpeg stderr: frame=   10 fps=5.0 q=28.0 size=      49KiB time=00:00:00.33 bitrate=1209.0kbits/s speed=0.167x    
+Creating broadcast command with weights: 0.5 0.5
+Started/Updated broadcast for channel: test
+FFmpeg command: ffmpeg -re -thread_queue_size 4096 -max_delay 500000 -analyzeduration 10M -probesize 10M -fflags nobuffer+genpts -flags low_delay -rtmp_live live -rtmp_buffer 1000 -i rtmp://localhost:1935/live/deckA -re -thread_queue_size 4096 -max_delay 500000 -analyzeduration 10M -probesize 10M -fflags nobuffer+genpts -flags low_delay -rtmp_live live -rtmp_buffer 1000 -i rtmp://localhost:1935/live/deckB -filter_complex [0:v]fps=fps=30[v0_fps];[1:v]fps=fps=30[v1_fps];[v0_fps]scale=w=1280:h=720:flags=bicubic[v0_scaled];[v1_fps]scale=w=1280:h=720:flags=bicubic[v1_scaled];[v0_scaled][v1_scaled]blend=all_mode=overlay:c0_opacity=0.5:c1_opacity=0.5[v_blended];[0:a]aresample=async=1:first_pts=0[a0_resampled];[1:a]aresample=async=1:first_pts=0[a1_resampled];[a0_resampled][a1_resampled]amix=inputs=2:weights=0.5 0.5:normalize=0:duration=longest[a_mixed] -map [v_blended] -map [a_mixed] -c:v libx264 -preset ultrafast -tune zerolatency -maxrate 2500k -bufsize 5000k -g 30 -keyint_min 30 -x264opts no-scenecut -c:a aac -b:a 160k -ar 44100 -ac 2 -profile:v baseline -level 3.1 -f flv -movflags +faststart -fps_mode cfr -max_interleave_delta 0 rtmp://localhost:1935/live/channel_test
+[RTMP] Client connecting: IWT573OZ {
+  app: 'live',
+  flashVer: 'LNX 9,0,124,2',
+  tcUrl: 'rtmp://localhost:1935/live',
+  fpad: false,
+  capabilities: 15,
+  audioCodecs: 4071,
+  videoCodecs: 252,
+  videoFunction: 1
+}
+11/19/2024 21:48:29 1371609 [INFO] [rtmp connect] id=IWT573OZ ip=::1 app=live args={"app":"live","flashVer":"LNX 9,0,124,2","tcUrl":"rtmp://localhost:1935/live","fpad":false,"capabilities":15,"audioCodecs":4071,"videoCodecs":252,"videoFunction":1}
+[RTMP] Client connected: IWT573OZ {
+  app: 'live',
+  flashVer: 'LNX 9,0,124,2',
+  tcUrl: 'rtmp://localhost:1935/live',
+  fpad: false,
+  capabilities: 15,
+  audioCodecs: 4071,
+  videoCodecs: 252,
+  videoFunction: 1
+}
+11/19/2024 21:48:29 1371609 [INFO] [rtmp play] Join stream. id=IWT573OZ streamPath=/live/deckA  streamId=1 
+FFmpeg stderr: frame=   22 fps=8.8 q=28.0 size=     148KiB time=00:00:00.83 bitrate=1456.8kbits/s speed=0.333x    
+FFmpeg stderr: frame=   34 fps= 11 q=28.0 size=     211KiB time=00:00:01.33 bitrate=1295.9kbits/s speed=0.445x    
+FFmpeg stderr: frame=   46 fps= 13 q=28.0 size=     287KiB time=00:00:01.83 bitrate=1282.4kbits/s speed=0.524x    
+[RTMP] Client connecting: 4KQR2R2A {
+  app: 'live',
+  flashVer: 'LNX 9,0,124,2',
+  tcUrl: 'rtmp://localhost:1935/live',
+  fpad: false,
+  capabilities: 15,
+  audioCodecs: 4071,
+  videoCodecs: 252,
+  videoFunction: 1
+}
+11/19/2024 21:48:30 1371609 [INFO] [rtmp connect] id=4KQR2R2A ip=::1 app=live args={"app":"live","flashVer":"LNX 9,0,124,2","tcUrl":"rtmp://localhost:1935/live","fpad":false,"capabilities":15,"audioCodecs":4071,"videoCodecs":252,"videoFunction":1}
+[RTMP] Client connected: 4KQR2R2A {
+  app: 'live',
+  flashVer: 'LNX 9,0,124,2',
+  tcUrl: 'rtmp://localhost:1935/live',
+  fpad: false,
+  capabilities: 15,
+  audioCodecs: 4071,
+  videoCodecs: 252,
+  videoFunction: 1
+}
+11/19/2024 21:48:30 1371609 [INFO] [rtmp play] Stream not found. id=4KQR2R2A streamPath=/live/deckB  streamId=1
+FFmpeg stderr: frame=   58 fps= 14 q=28.0 size=     430KiB time=00:00:02.33 bitrate=1507.4kbits/s speed=0.583x    
+FFmpeg stderr: frame=   70 fps= 16 q=28.0 size=     527KiB time=00:00:02.83 bitrate=1521.0kbits/s speed=0.63x    
+FFmpeg stderr: frame=   82 fps= 16 q=28.0 size=     619KiB time=00:00:03.33 bitrate=1519.3kbits/s speed=0.667x    
+FFmpeg stderr: frame=   94 fps= 17 q=28.0 size=     709KiB time=00:00:03.83 bitrate=1514.3kbits/s speed=0.697x    
+FFmpeg stderr: frame=  106 fps= 18 q=28.0 size=     823KiB time=00:00:04.33 bitrate=1553.9kbits/s speed=0.722x    
+FFmpeg stderr: frame=  118 fps= 18 q=28.0 size=     915KiB time=00:00:04.83 bitrate=1550.0kbits/s speed=0.744x    
+FFmpeg stderr: frame=  130 fps= 19 q=28.0 size=     971KiB time=00:00:05.33 bitrate=1489.6kbits/s speed=0.762x    
+FFmpeg stderr: frame=  142 fps= 19 q=28.0 size=    1052KiB time=00:00:05.83 bitrate=1476.2kbits/s speed=0.778x    
+FFmpeg stderr: frame=  154 fps= 19 q=28.0 size=    1164KiB time=00:00:06.33 bitrate=1503.7kbits/s speed=0.792x    
+FFmpeg stderr: frame=  165 fps= 19 q=28.0 size=    1232KiB time=00:00:06.79 bitrate=1484.9kbits/s speed=0.799x    
+FFmpeg stderr: frame=  178 fps= 20 q=28.0 size=    1311KiB time=00:00:07.34 bitrate=1463.1kbits/s speed=0.815x    
+FFmpeg stderr: frame=  190 fps= 20 q=28.0 size=    1363KiB time=00:00:07.84 bitrate=1423.8kbits/s speed=0.825x    
+FFmpeg stderr: frame=  202 fps= 20 q=28.0 size=    1421KiB time=00:00:08.34 bitrate=1395.8kbits/s speed=0.833x    
+FFmpeg stderr: frame=  214 fps= 20 q=28.0 size=    1515KiB time=00:00:08.84 bitrate=1403.3kbits/s speed=0.841x    
+FFmpeg stderr: frame=  226 fps= 21 q=28.0 size=    1594KiB time=00:00:09.34 bitrate=1397.7kbits/s speed=0.848x    
+FFmpeg stderr: frame=  239 fps= 21 q=28.0 size=    1659KiB time=00:00:09.88 bitrate=1375.0kbits/s speed=0.859x    
+FFmpeg stderr: frame=  250 fps= 21 q=28.0 size=    1703KiB time=00:00:10.34 bitrate=1348.6kbits/s speed=0.861x    
+FFmpeg stderr: frame=  262 fps= 21 q=28.0 size=    1748KiB time=00:00:10.84 bitrate=1320.6kbits/s speed=0.867x    
+FFmpeg stderr: frame=  274 fps= 21 q=28.0 size=    1792KiB time=00:00:11.34 bitrate=1294.3kbits/s speed=0.872x    
+FFmpeg stderr: frame=  286 fps= 21 q=28.0 size=    1840KiB time=00:00:11.84 bitrate=1272.5kbits/s speed=0.877x    
+FFmpeg stderr: frame=  298 fps= 21 q=28.0 size=    1875KiB time=00:00:12.34 bitrate=1244.1kbits/s speed=0.881x    
+FFmpeg stderr: frame=  310 fps= 21 q=28.0 size=    1971KiB time=00:00:12.84 bitrate=1257.1kbits/s speed=0.885x    
+FFmpeg stderr: frame=  322 fps= 21 q=28.0 size=    2026KiB time=00:00:13.34 bitrate=1243.3kbits/s speed=0.889x    
+FFmpeg stderr: frame=  334 fps= 22 q=28.0 size=    2087KiB time=00:00:13.84 bitrate=1234.4kbits/s speed=0.892x    
+FFmpeg stderr: frame=  346 fps= 22 q=28.0 size=    2147KiB time=00:00:14.34 bitrate=1225.9kbits/s speed=0.896x    
+FFmpeg stderr: frame=  358 fps= 22 q=28.0 size=    2253KiB time=00:00:14.84 bitrate=1243.1kbits/s speed=0.899x    
+FFmpeg stderr: frame=  370 fps= 22 q=28.0 size=    2306KiB time=00:00:15.34 bitrate=1231.0kbits/s speed=0.902x    
+FFmpeg stderr: frame=  382 fps= 22 q=28.0 size=    2360KiB time=00:00:15.84 bitrate=1219.9kbits/s speed=0.905x    
+FFmpeg stderr: frame=  394 fps= 22 q=28.0 size=    2426KiB time=00:00:16.34 bitrate=1215.7kbits/s speed=0.907x    
+FFmpeg stderr: frame=  406 fps= 22 q=28.0 size=    2521KiB time=00:00:16.85 bitrate=1225.4kbits/s speed=0.91x    
+FFmpeg stderr: frame=  418 fps= 22 q=28.0 size=    2561KiB time=00:00:17.35 bitrate=1209.4kbits/s speed=0.912x    
+FFmpeg stderr: frame=  430 fps= 22 q=28.0 size=    2601KiB time=00:00:17.85 bitrate=1193.4kbits/s speed=0.914x    
+FFmpeg stderr: frame=  442 fps= 22 q=28.0 size=    2640KiB time=00:00:18.35 bitrate=1178.3kbits/s speed=0.917x    
+FFmpeg stderr: frame=  454 fps= 22 q=28.0 size=    2701KiB time=00:00:18.85 bitrate=1173.6kbits/s speed=0.919x    
+FFmpeg stderr: frame=  466 fps= 22 q=28.0 size=    2751KiB time=00:00:19.35 bitrate=1164.3kbits/s speed=0.921x    
+FFmpeg stderr: frame=  478 fps= 22 q=28.0 size=    2791KiB time=00:00:19.85 bitrate=1151.7kbits/s speed=0.922x    
+FFmpeg stderr: frame=  489 fps= 22 q=28.0 size=    2835KiB time=00:00:20.31 bitrate=1143.6kbits/s speed=0.922x    
+FFmpeg stderr: frame=  502 fps= 22 q=28.0 size=    2918KiB time=00:00:20.85 bitrate=1146.2kbits/s speed=0.926x    
 Load request received for deck: deckB, video: Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4
 Checking video path: videos/Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4
+FFmpeg stderr: frame=  515 fps= 22 q=28.0 size=    2963KiB time=00:00:21.39 bitrate=1134.4kbits/s speed=0.929x    
 Video info: {
   "streams": [
     {
@@ -363,10 +464,12 @@ Video info: {
   "chapters": []
 }
 Video successfully loaded in deckB
-FFmpeg stderr: frame=   22 fps=8.8 q=28.0 size=     148KiB time=00:00:00.83 bitrate=1456.8kbits/s speed=0.333x    
+FFmpeg stderr: frame=  526 fps= 22 q=28.0 size=    3015KiB time=00:00:21.85 bitrate=1130.2kbits/s speed=0.929x    
+FFmpeg stderr: frame=  539 fps= 22 q=28.0 size=    3058KiB time=00:00:22.39 bitrate=1118.6kbits/s speed=0.932x    
 Play request received for deck: deckB
 Starting playback for deckB with video: Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4
 FFmpeg start command: ffmpeg -re -stream_loop -1 -i videos/Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4 -filter:v scale=w=1280:h=720 -c:v libx264 -preset veryfast -maxrate 2000k -bufsize 4000k -g 50 -c:a aac -b:a 128k -ar 44100 -pix_fmt yuv420p -profile:v high -level 4.1 -f flv rtmp://localhost:1935/live/deckB
+FFmpeg stderr: frame=  551 fps= 22 q=28.0 size=    3120KiB time=00:00:22.89 bitrate=1116.3kbits/s speed=0.934x    
 FFmpeg stderr: ffmpeg version n7.0.2 Copyright (c) 2000-2024 the FFmpeg developers
 FFmpeg stderr:   built with gcc 14.2.1 (GCC) 20240910
 FFmpeg stderr:   configuration: --prefix=/usr --disable-debug --disable-static --disable-stripping --enable-amf --enable-avisynth --enable-cuda-llvm --enable-lto --enable-fontconfig --enable-frei0r --enable-gmp --enable-gnutls --enable-gpl --enable-ladspa --enable-libaom --enable-libass --enable-libbluray --enable-libbs2b --enable-libdav1d --enable-libdrm --enable-libdvdnav --enable-libdvdread --enable-libfreetype --enable-libfribidi --enable-libgsm --enable-libharfbuzz --enable-libiec61883 --enable-libjack --enable-libjxl --enable-libmodplug --enable-libmp3lame --enable-libopencore_amrnb --enable-libopencore_amrwb --enable-libopenjpeg --enable-libopenmpt --enable-libopus --enable-libplacebo --enable-libpulse --enable-librav1e --enable-librsvg --enable-librubberband --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtheora --enable-libv4l2 --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpl --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxcb --enable-libxml2 --enable-libxvid --enable-libzimg --enable-libzmq --enable-nvdec --enable-nvenc --enable-opencl --enable-opengl --enable-shared --enable-vapoursynth --enable-version3 --enable-vulkan
@@ -393,17 +496,29 @@ FFmpeg stderr:   Stream #0:1[0x2](eng): Audio: aac (LC) (mp4a / 0x6134706D), 441
 FFmpeg stderr:       Metadata:
 FFmpeg stderr:         handler_name    : ISO Media file produced by Google Inc.
 FFmpeg stderr:         vendor_id       : [0][0][0][0]
-11/19/2024 20:39:33 1259864 [INFO] [rtmp connect] id=F69344UK ip=::1 app=live args={"app":"live","type":"nonprivate","flashVer":"FMLE/3.0 (compatible; Lavf61.1.100)","tcUrl":"rtmp://localhost:1935/live"}
+[RTMP] Client connecting: K8IKG1QW {
+  app: 'live',
+  type: 'nonprivate',
+  flashVer: 'FMLE/3.0 (compatible; Lavf61.1.100)',
+  tcUrl: 'rtmp://localhost:1935/live'
+}
+11/19/2024 21:48:51 1371609 [INFO] [rtmp connect] id=K8IKG1QW ip=::1 app=live args={"app":"live","type":"nonprivate","flashVer":"FMLE/3.0 (compatible; Lavf61.1.100)","tcUrl":"rtmp://localhost:1935/live"}
+[RTMP] Client connected: K8IKG1QW {
+  app: 'live',
+  type: 'nonprivate',
+  flashVer: 'FMLE/3.0 (compatible; Lavf61.1.100)',
+  tcUrl: 'rtmp://localhost:1935/live'
+}
 Stream started: deckB
-11/19/2024 20:39:33 1259864 [INFO] [rtmp publish] New stream. id=F69344UK streamPath=/live/deckB streamId=1
+11/19/2024 21:48:51 1371609 [INFO] [rtmp publish] New stream. id=K8IKG1QW streamPath=/live/deckB streamId=1
+11/19/2024 21:48:51 1371609 [INFO] [rtmp play] Join stream. id=4KQR2R2A streamPath=/live/deckB  streamId=1 
 FFmpeg stderr: Stream mapping:
 FFmpeg stderr:   Stream #0:0 -> #0:0 (vp9 (native) -> h264 (libx264))
 FFmpeg stderr:   Stream #0:1 -> #0:1 (aac (native) -> aac (native))
 FFmpeg stderr: Press [q] to stop, [?] for help
-FFmpeg stderr: frame=   34 fps= 11 q=28.0 size=     211KiB time=00:00:01.33 bitrate=1295.9kbits/s speed=0.445x    
-FFmpeg stderr: [libx264 @ 0x5e0c3b96bf40] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
-FFmpeg stderr: [libx264 @ 0x5e0c3b96bf40] profile High, level 4.1, 4:2:0, 8-bit
-FFmpeg stderr: [libx264 @ 0x5e0c3b96bf40] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=1 ref=1 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=2 psy=1 psy_rd=1.00:0.00 mixed_ref=0 me_range=16 chroma_me=1 trellis=0 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=0 threads=22 lookahead_threads=5 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=1 keyint=50 keyint_min=5 scenecut=40 intra_refresh=0 rc_lookahead=10 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 vbv_maxrate=2000 vbv_bufsize=4000 crf_max=0.0 nal_hrd=none filler=0 ip_ratio=1.40 aq=1:1.00
+FFmpeg stderr: [libx264 @ 0x5a96683b6f40] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+FFmpeg stderr: [libx264 @ 0x5a96683b6f40] profile High, level 4.1, 4:2:0, 8-bit
+FFmpeg stderr: [libx264 @ 0x5a96683b6f40] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=1 ref=1 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=2 psy=1 psy_rd=1.00:0.00 mixed_ref=0 me_range=16 chroma_me=1 trellis=0 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=0 threads=22 lookahead_threads=5 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=1 keyint=50 keyint_min=5 scenecut=40 intra_refresh=0 rc_lookahead=10 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 vbv_maxrate=2000 vbv_bufsize=4000 crf_max=0.0 nal_hrd=none filler=0 ip_ratio=1.40 aq=1:1.00
 FFmpeg stderr: Output #0, flv, to 'rtmp://localhost:1935/live/deckB':
 FFmpeg stderr:   Metadata:
 FFmpeg stderr:     major_brand     : isom
@@ -422,1126 +537,419 @@ FFmpeg stderr:       Metadata:
 FFmpeg stderr:         handler_name    : ISO Media file produced by Google Inc.
 FFmpeg stderr:         vendor_id       : [0][0][0][0]
 FFmpeg stderr:         encoder         : Lavc61.3.100 aac
-11/19/2024 20:39:33 1259864 [INFO] [rtmp publish] Handle video. id=F69344UK streamPath=/live/deckB frame_type=1 codec_id=7 codec_name=H264 1280x720
-11/19/2024 20:39:33 1259864 [INFO] [rtmp publish] Handle audio. id=F69344UK streamPath=/live/deckB sound_format=10 sound_type=2 sound_size=1 sound_rate=3 codec_name=AAC 44100 2ch
+11/19/2024 21:48:51 1371609 [INFO] [rtmp publish] Handle video. id=K8IKG1QW streamPath=/live/deckB frame_type=1 codec_id=7 codec_name=H264 1280x720
+11/19/2024 21:48:51 1371609 [INFO] [rtmp publish] Handle audio. id=K8IKG1QW streamPath=/live/deckB sound_format=10 sound_type=2 sound_size=1 sound_rate=3 codec_name=AAC 44100 2ch
+FFmpeg stderr: frame=  562 fps= 22 q=28.0 size=    3178KiB time=00:00:23.35 bitrate=1114.8kbits/s speed=0.933x    
 FFmpeg stderr: frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
-FFmpeg stderr: frame=   46 fps= 13 q=28.0 size=     287KiB time=00:00:01.83 bitrate=1282.4kbits/s speed=0.524x    
+FFmpeg stderr: frame=  574 fps= 22 q=28.0 size=    3237KiB time=00:00:23.85 bitrate=1111.4kbits/s speed=0.935x    
 FFmpeg stderr: frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
-FFmpeg stderr: frame=   58 fps= 14 q=28.0 size=     430KiB time=00:00:02.33 bitrate=1507.4kbits/s speed=0.583x    
-FFmpeg stderr: frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
-FFmpeg stderr: frame=   70 fps= 16 q=28.0 size=     527KiB time=00:00:02.83 bitrate=1521.0kbits/s speed=0.63x    
-FFmpeg stderr: frame=   13 fps=6.5 q=28.0 size=       3KiB time=00:00:00.44 bitrate=  47.9kbits/s speed=0.22x    
-FFmpeg stderr: frame=   82 fps= 16 q=28.0 size=     619KiB time=00:00:03.33 bitrate=1519.3kbits/s speed=0.667x    
-Creating broadcast command with weights: 0.5 0.5
-Started/Updated broadcast for channel: test
-FFmpeg command: ffmpeg -re -i rtmp://localhost:1935/live/deckA -re -i rtmp://localhost:1935/live/deckB -filter_complex [0:v]fps=fps=30[v0_fps];[1:v]fps=fps=30[v1_fps];[v0_fps]scale=w=1280:h=720[v0_scaled];[v1_fps]scale=w=1280:h=720[v1_scaled];[v0_scaled][v1_scaled]blend=all_mode=overlay:all_opacity=0.5[v_blended];[0:a]aresample=async=1000:first_pts=0[a0_resampled];[1:a]aresample=async=1000:first_pts=0[a1_resampled];[a0_resampled]volume=volume=0.5[a0_vol];[a1_resampled]volume=volume=0.5[a1_vol];[a0_vol][a1_vol]amix=inputs=2:duration=first[a_mixed] -map [v_blended] -map [a_mixed] -c:v libx264 -preset veryfast -maxrate 2500k -bufsize 5000k -g 60 -keyint_min 60 -sc_threshold 0 -c:a aac -b:a 160k -ar 44100 -ac 2 -profile:v high -level 4.1 -f flv rtmp://localhost:1935/live/channel_test
-FFmpeg stderr: frame=   25 fps= 10 q=28.0 size=       4KiB time=00:00:00.92 bitrate=  33.0kbits/s speed=0.368x    
-FFmpeg stderr: frame=   94 fps= 17 q=28.0 size=     709KiB time=00:00:03.83 bitrate=1514.3kbits/s speed=0.697x    
-11/19/2024 20:39:36 1259864 [INFO] [rtmp connect] id=8BH2IKVJ ip=::1 app=live args={"app":"live","flashVer":"LNX 9,0,124,2","tcUrl":"rtmp://localhost:1935/live","fpad":false,"capabilities":15,"audioCodecs":4071,"videoCodecs":252,"videoFunction":1}
-11/19/2024 20:39:36 1259864 [INFO] [rtmp play] Join stream. id=8BH2IKVJ streamPath=/live/deckA  streamId=1 
-11/19/2024 20:39:36 1259864 [INFO] [rtmp connect] id=7IR71HUG ip=::1 app=live args={"app":"live","flashVer":"LNX 9,0,124,2","tcUrl":"rtmp://localhost:1935/live","fpad":false,"capabilities":15,"audioCodecs":4071,"videoCodecs":252,"videoFunction":1}
-11/19/2024 20:39:36 1259864 [INFO] [rtmp play] Join stream. id=7IR71HUG streamPath=/live/deckB  streamId=1 
-FFmpeg stderr: frame=   39 fps= 13 q=28.0 size=     102KiB time=00:00:01.48 bitrate= 565.7kbits/s speed=0.493x    
-FFmpeg stderr: frame=  106 fps= 18 q=28.0 size=     823KiB time=00:00:04.33 bitrate=1553.9kbits/s speed=0.722x    
-FFmpeg stderr: frame=   51 fps= 15 q=28.0 size=     174KiB time=00:00:01.96 bitrate= 725.7kbits/s speed=0.56x    
-FFmpeg stderr: frame=  118 fps= 18 q=28.0 size=     915KiB time=00:00:04.83 bitrate=1550.0kbits/s speed=0.744x    
-FFmpeg stderr: frame=   63 fps= 16 q=28.0 size=     243KiB time=00:00:02.44 bitrate= 815.7kbits/s speed=0.609x    
-FFmpeg stderr: frame=  130 fps= 19 q=28.0 size=     971KiB time=00:00:05.33 bitrate=1489.6kbits/s speed=0.762x    
-FFmpeg stderr: frame=   76 fps= 17 q=28.0 size=     308KiB time=00:00:02.96 bitrate= 852.0kbits/s speed=0.657x    
-FFmpeg stderr: frame=  142 fps= 19 q=28.0 size=    1052KiB time=00:00:05.83 bitrate=1476.2kbits/s speed=0.778x    
-11/19/2024 20:39:38 1259864 [INFO] [rtmp connect] id=K8IBYTFO ip=::1 app=live args={"app":"live","type":"nonprivate","flashVer":"FMLE/3.0 (compatible; Lavf61.1.100)","tcUrl":"rtmp://localhost:1935/live"}
-corssfade 0.22 test
-Stopping existing broadcast for crossfade update
-Creating new broadcast with updated crossfader position: 0.22
-Creating broadcast command with weights: 0.78 0.22
-Started/Updated broadcast for channel: test
-FFmpeg command: ffmpeg -re -i rtmp://localhost:1935/live/deckA -re -i rtmp://localhost:1935/live/deckB -filter_complex [0:v]fps=fps=30[v0_fps];[1:v]fps=fps=30[v1_fps];[v0_fps]scale=w=1280:h=720[v0_scaled];[v1_fps]scale=w=1280:h=720[v1_scaled];[v0_scaled][v1_scaled]blend=all_mode=overlay:all_opacity=0.22[v_blended];[0:a]aresample=async=1000:first_pts=0[a0_resampled];[1:a]aresample=async=1000:first_pts=0[a1_resampled];[a0_resampled]volume=volume=0.78[a0_vol];[a1_resampled]volume=volume=0.22[a1_vol];[a0_vol][a1_vol]amix=inputs=2:duration=first[a_mixed] -map [v_blended] -map [a_mixed] -c:v libx264 -preset veryfast -maxrate 2500k -bufsize 5000k -g 60 -keyint_min 60 -sc_threshold 0 -c:a aac -b:a 160k -ar 44100 -ac 2 -profile:v high -level 4.1 -f flv rtmp://localhost:1935/live/channel_test
-11/19/2024 20:39:38 1259864 [INFO] [rtmp play] Close stream. id=7IR71HUG streamPath=/live/deckB streamId=1
-11/19/2024 20:39:38 1259864 [INFO] [rtmp disconnect] id=7IR71HUG
-11/19/2024 20:39:38 1259864 [INFO] [rtmp play] Close stream. id=8BH2IKVJ streamPath=/live/deckA streamId=1
-11/19/2024 20:39:38 1259864 [INFO] [rtmp disconnect] id=8BH2IKVJ
-Broadcasting error: Error: ffmpeg was killed with signal SIGKILL
-    at ChildProcess.<anonymous> (/home/travis/Projects/dejavideo2/dj-controller/node_modules/fluent-ffmpeg/lib/processor.js:178:22)
-    at ChildProcess.emit (node:events:519:28)
-    at ChildProcess._handle.onexit (node:internal/child_process:294:12)
-FFmpeg stderr: ffmpeg version n7.0.2 Copyright (c) 2000-2024 the FFmpeg developers
-  built with gcc 14.2.1 (GCC) 20240910
-  configuration: --prefix=/usr --disable-debug --disable-static --disable-stripping --enable-amf --enable-avisynth --enable-cuda-llvm --enable-lto --enable-fontconfig --enable-frei0r --enable-gmp --enable-gnutls --enable-gpl --enable-ladspa --enable-libaom --enable-libass --enable-libbluray --enable-libbs2b --enable-libdav1d --enable-libdrm --enable-libdvdnav --enable-libdvdread --enable-libfreetype --enable-libfribidi --enable-libgsm --enable-libharfbuzz --enable-libiec61883 --enable-libjack --enable-libjxl --enable-libmodplug --enable-libmp3lame --enable-libopencore_amrnb --enable-libopencore_amrwb --enable-libopenjpeg --enable-libopenmpt --enable-libopus --enable-libplacebo --enable-libpulse --enable-librav1e --enable-librsvg --enable-librubberband --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtheora --enable-libv4l2 --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpl --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxcb --enable-libxml2 --enable-libxvid --enable-libzimg --enable-libzmq --enable-nvdec --enable-nvenc --enable-opencl --enable-opengl --enable-shared --enable-vapoursynth --enable-version3 --enable-vulkan
-  libavutil      59.  8.100 / 59.  8.100
-  libavcodec     61.  3.100 / 61.  3.100
-  libavformat    61.  1.100 / 61.  1.100
-  libavdevice    61.  1.100 / 61.  1.100
-  libavfilter    10.  1.100 / 10.  1.100
-  libswscale      8.  1.100 /  8.  1.100
-  libswresample   5.  1.100 /  5.  1.100
-  libpostproc    58.  1.100 / 58.  1.100
-Input #0, flv, from 'rtmp://localhost:1935/live/deckA':
-  Metadata:
-    |RtmpSampleAccess: false
-    major_brand     : isom
-    minor_version   : 512
-    compatible_brands: isomiso2mp41
-    encoder         : Lavf61.1.100
-  Duration: 00:00:00.00, start: 2.382000, bitrate: N/A
-  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 128 kb/s
-  Stream #0:1: Video: h264 (High), yuv420p(tv, bt709, progressive), 1280x720, 23.98 fps, 23.98 tbr, 1k tbn
-Input #1, flv, from 'rtmp://localhost:1935/live/deckB':
-  Metadata:
-    |RtmpSampleAccess: false
-    major_brand     : isom
-    minor_version   : 512
-    compatible_brands: isomiso2mp41
-    encoder         : Lavf61.1.100
-  Duration: 00:00:00.00, start: 1.404000, bitrate: N/A
-  Stream #1:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 128 kb/s
-  Stream #1:1: Video: h264 (High), yuv420p(tv, bt709, progressive), 1280x720, 25 fps, 25 tbr, 1k tbn
-
-11/19/2024 20:39:38 1259864 [INFO] [rtmp disconnect] id=K8IBYTFO
-11/19/2024 20:39:38 1259864 [INFO] [rtmp connect] id=67RAZZQG ip=::1 app=live args={"app":"live","flashVer":"LNX 9,0,124,2","tcUrl":"rtmp://localhost:1935/live","fpad":false,"capabilities":15,"audioCodecs":4071,"videoCodecs":252,"videoFunction":1}
-FFmpeg stderr: frame=   88 fps= 18 q=28.0 size=     382KiB time=00:00:03.44 bitrate= 910.4kbits/s speed=0.687x    
-11/19/2024 20:39:38 1259864 [INFO] [rtmp play] Join stream. id=67RAZZQG streamPath=/live/deckA  streamId=1 
-FFmpeg stderr: frame=  154 fps= 19 q=28.0 size=    1164KiB time=00:00:06.33 bitrate=1503.7kbits/s speed=0.792x    
-11/19/2024 20:39:38 1259864 [INFO] [rtmp connect] id=SKT5NCGJ ip=::1 app=live args={"app":"live","flashVer":"LNX 9,0,124,2","tcUrl":"rtmp://localhost:1935/live","fpad":false,"capabilities":15,"audioCodecs":4071,"videoCodecs":252,"videoFunction":1}
-11/19/2024 20:39:38 1259864 [INFO] [rtmp play] Join stream. id=SKT5NCGJ streamPath=/live/deckB  streamId=1 
-FFmpeg stderr: frame=  100 fps= 18 q=28.0 size=     476KiB time=00:00:03.92 bitrate= 994.6kbits/s speed=0.712x    
-FFmpeg stderr: frame=  165 fps= 19 q=28.0 size=    1232KiB time=00:00:06.79 bitrate=1484.9kbits/s speed=0.799x    
-FFmpeg stderr: frame=  113 fps= 19 q=28.0 size=     585KiB time=00:00:04.44 bitrate=1079.9kbits/s speed=0.739x    
-FFmpeg stderr: frame=  178 fps= 20 q=28.0 size=    1311KiB time=00:00:07.34 bitrate=1463.1kbits/s speed=0.815x    
-FFmpeg stderr: frame=  126 fps= 19 q=28.0 size=     714KiB time=00:00:04.96 bitrate=1178.7kbits/s speed=0.762x    
-FFmpeg stderr: frame=  190 fps= 20 q=28.0 size=    1363KiB time=00:00:07.84 bitrate=1423.8kbits/s speed=0.825x    
-11/19/2024 20:39:40 1259864 [INFO] [rtmp connect] id=YMNWSKHR ip=::1 app=live args={"app":"live","type":"nonprivate","flashVer":"FMLE/3.0 (compatible; Lavf61.1.100)","tcUrl":"rtmp://localhost:1935/live"}
-11/19/2024 20:39:40 1259864 [INFO] [rtmp publish] New stream. id=YMNWSKHR streamPath=/live/channel_test streamId=1
-FFmpeg stderr: frame=  138 fps= 20 q=28.0 size=     852KiB time=00:00:05.44 bitrate=1282.5kbits/s speed=0.776x    
-FFmpeg stderr: frame=  202 fps= 20 q=28.0 size=    1421KiB time=00:00:08.34 bitrate=1395.8kbits/s speed=0.833x    
-11/19/2024 20:39:40 1259864 [INFO] [rtmp publish] Handle video. id=YMNWSKHR streamPath=/live/channel_test frame_type=1 codec_id=7 codec_name=H264 1280x720
-11/19/2024 20:39:40 1259864 [INFO] [rtmp publish] Handle audio. id=YMNWSKHR streamPath=/live/channel_test sound_format=10 sound_type=2 sound_size=1 sound_rate=3 codec_name=AAC 44100 2ch
-FFmpeg stderr: frame=  151 fps= 20 q=28.0 size=     979KiB time=00:00:05.96 bitrate=1345.8kbits/s speed=0.794x    
-FFmpeg stderr: frame=  214 fps= 20 q=28.0 size=    1515KiB time=00:00:08.84 bitrate=1403.3kbits/s speed=0.841x    
-FFmpeg stderr: frame=  163 fps= 20 q=28.0 size=    1052KiB time=00:00:06.44 bitrate=1338.0kbits/s speed=0.804x    
-FFmpeg stderr: frame=  226 fps= 21 q=28.0 size=    1594KiB time=00:00:09.34 bitrate=1397.7kbits/s speed=0.848x    
-FFmpeg stderr: frame=  177 fps= 21 q=28.0 size=    1098KiB time=00:00:07.00 bitrate=1284.8kbits/s speed=0.823x    
-FFmpeg stderr: frame=  239 fps= 21 q=28.0 size=    1659KiB time=00:00:09.88 bitrate=1375.0kbits/s speed=0.859x    
-FFmpeg stderr: frame=  189 fps= 21 q=28.0 size=    1178KiB time=00:00:07.48 bitrate=1290.3kbits/s speed=0.83x    
-FFmpeg stderr: frame=  250 fps= 21 q=28.0 size=    1703KiB time=00:00:10.34 bitrate=1348.6kbits/s speed=0.861x    
-FFmpeg stderr: frame=  201 fps= 21 q=28.0 size=    1293KiB time=00:00:07.96 bitrate=1330.9kbits/s speed=0.837x    
-FFmpeg stderr: frame=  262 fps= 21 q=28.0 size=    1748KiB time=00:00:10.84 bitrate=1320.6kbits/s speed=0.867x    
-FFmpeg stderr: frame=  213 fps= 21 q=28.0 size=    1389KiB time=00:00:08.44 bitrate=1347.9kbits/s speed=0.843x    
-FFmpeg stderr: frame=  274 fps= 21 q=28.0 size=    1792KiB time=00:00:11.34 bitrate=1294.3kbits/s speed=0.872x    
-FFmpeg stderr: frame=  226 fps= 22 q=28.0 size=    1530KiB time=00:00:08.96 bitrate=1398.9kbits/s speed=0.852x    
-FFmpeg stderr: frame=  286 fps= 21 q=28.0 size=    1840KiB time=00:00:11.84 bitrate=1272.5kbits/s speed=0.877x    
-FFmpeg stderr: frame=  238 fps= 22 q=28.0 size=    1661KiB time=00:00:09.44 bitrate=1441.8kbits/s speed=0.857x    
-FFmpeg stderr: frame=  298 fps= 21 q=28.0 size=    1875KiB time=00:00:12.34 bitrate=1244.1kbits/s speed=0.881x    
-FFmpeg stderr: frame=  251 fps= 22 q=28.0 size=    1833KiB time=00:00:09.96 bitrate=1507.2kbits/s speed=0.865x    
-FFmpeg stderr: frame=  310 fps= 21 q=28.0 size=    1971KiB time=00:00:12.84 bitrate=1257.1kbits/s speed=0.885x    
-Creating broadcast command with weights: 0.5 0.5
-Started/Updated broadcast for channel: @RRABBITmusic
-FFmpeg command: ffmpeg -re -i rtmp://localhost:1935/live/deckA -re -i rtmp://localhost:1935/live/deckB -filter_complex [0:v]fps=fps=30[v0_fps];[1:v]fps=fps=30[v1_fps];[v0_fps]scale=w=1280:h=720[v0_scaled];[v1_fps]scale=w=1280:h=720[v1_scaled];[v0_scaled][v1_scaled]blend=all_mode=overlay:all_opacity=0.5[v_blended];[0:a]aresample=async=1000:first_pts=0[a0_resampled];[1:a]aresample=async=1000:first_pts=0[a1_resampled];[a0_resampled]volume=volume=0.5[a0_vol];[a1_resampled]volume=volume=0.5[a1_vol];[a0_vol][a1_vol]amix=inputs=2:duration=first[a_mixed] -map [v_blended] -map [a_mixed] -c:v libx264 -preset veryfast -maxrate 2500k -bufsize 5000k -g 60 -keyint_min 60 -sc_threshold 0 -c:a aac -b:a 160k -ar 44100 -ac 2 -profile:v high -level 4.1 -f flv rtmp://localhost:1935/live/channel_@RRABBITmusic
-11/19/2024 20:39:45 1259864 [INFO] [rtmp connect] id=BJLEVV6L ip=::1 app=live args={"app":"live","flashVer":"LNX 9,0,124,2","tcUrl":"rtmp://localhost:1935/live","fpad":false,"capabilities":15,"audioCodecs":4071,"videoCodecs":252,"videoFunction":1}
-11/19/2024 20:39:45 1259864 [INFO] [rtmp play] Join stream. id=BJLEVV6L streamPath=/live/deckA  streamId=1 
-FFmpeg stderr: frame=  263 fps= 22 q=28.0 size=    1940KiB time=00:00:10.44 bitrate=1522.5kbits/s speed=0.869x    
-FFmpeg stderr: frame=  322 fps= 21 q=28.0 size=    2026KiB time=00:00:13.34 bitrate=1243.3kbits/s speed=0.889x    
-FFmpeg stderr: frame=  276 fps= 22 q=28.0 size=    2053KiB time=00:00:10.96 bitrate=1534.8kbits/s speed=0.876x    
-FFmpeg stderr: frame=  334 fps= 22 q=28.0 size=    2087KiB time=00:00:13.84 bitrate=1234.4kbits/s speed=0.892x    
-11/19/2024 20:39:46 1259864 [INFO] [rtmp connect] id=JAKA5LGD ip=::1 app=live args={"app":"live","flashVer":"LNX 9,0,124,2","tcUrl":"rtmp://localhost:1935/live","fpad":false,"capabilities":15,"audioCodecs":4071,"videoCodecs":252,"videoFunction":1}
-FFmpeg stderr: frame=  288 fps= 22 q=28.0 size=    2145KiB time=00:00:11.44 bitrate=1536.2kbits/s speed=0.879x    
-FFmpeg stderr: frame=  346 fps= 22 q=28.0 size=    2147KiB time=00:00:14.34 bitrate=1225.9kbits/s speed=0.896x    
-11/19/2024 20:39:46 1259864 [INFO] [rtmp play] Join stream. id=JAKA5LGD streamPath=/live/deckB  streamId=1 
-FFmpeg stderr: frame=  301 fps= 22 q=28.0 size=    2273KiB time=00:00:11.96 bitrate=1556.6kbits/s speed=0.885x    
-FFmpeg stderr: frame=  358 fps= 22 q=28.0 size=    2253KiB time=00:00:14.84 bitrate=1243.1kbits/s speed=0.899x    
-FFmpeg stderr: frame=  313 fps= 22 q=28.0 size=    2411KiB time=00:00:12.44 bitrate=1587.4kbits/s speed=0.888x    
-FFmpeg stderr: frame=  370 fps= 22 q=28.0 size=    2306KiB time=00:00:15.34 bitrate=1231.0kbits/s speed=0.902x    
-FFmpeg stderr: frame=  326 fps= 22 q=28.0 size=    2550KiB time=00:00:12.96 bitrate=1612.1kbits/s speed=0.893x    
-FFmpeg stderr: frame=  382 fps= 22 q=28.0 size=    2360KiB time=00:00:15.84 bitrate=1219.9kbits/s speed=0.905x    
-11/19/2024 20:39:48 1259864 [INFO] [rtmp connect] id=Z5FU2L42 ip=::1 app=live args={"app":"live","type":"nonprivate","flashVer":"FMLE/3.0 (compatible; Lavf61.1.100)","tcUrl":"rtmp://localhost:1935/live"}
-11/19/2024 20:39:48 1259864 [INFO] [rtmp publish] New stream. id=Z5FU2L42 streamPath=/live/channel_@RRABBITmusic streamId=1
-FFmpeg stderr: frame=  338 fps= 23 q=25.0 size=    2684KiB time=00:00:13.44 bitrate=1635.8kbits/s speed=0.895x    
-FFmpeg stderr: frame=  394 fps= 22 q=28.0 size=    2426KiB time=00:00:16.34 bitrate=1215.7kbits/s speed=0.907x    
-11/19/2024 20:39:49 1259864 [INFO] [rtmp publish] Handle video. id=Z5FU2L42 streamPath=/live/channel_@RRABBITmusic frame_type=1 codec_id=7 codec_name=H264 1280x720
-11/19/2024 20:39:49 1259864 [INFO] [rtmp publish] Handle audio. id=Z5FU2L42 streamPath=/live/channel_@RRABBITmusic sound_format=10 sound_type=2 sound_size=1 sound_rate=3 codec_name=AAC 44100 2ch
-corssfade 0.7 @RRABBITmusic
-Stopping existing broadcast for crossfade update
-Creating new broadcast with updated crossfader position: 0.7
-Creating broadcast command with weights: 0.30000000000000004 0.7
-Started/Updated broadcast for channel: @RRABBITmusic
-FFmpeg command: ffmpeg -re -i rtmp://localhost:1935/live/deckA -re -i rtmp://localhost:1935/live/deckB -filter_complex [0:v]fps=fps=30[v0_fps];[1:v]fps=fps=30[v1_fps];[v0_fps]scale=w=1280:h=720[v0_scaled];[v1_fps]scale=w=1280:h=720[v1_scaled];[v0_scaled][v1_scaled]blend=all_mode=overlay:all_opacity=0.7[v_blended];[0:a]aresample=async=1000:first_pts=0[a0_resampled];[1:a]aresample=async=1000:first_pts=0[a1_resampled];[a0_resampled]volume=volume=0.30000000000000004[a0_vol];[a1_resampled]volume=volume=0.7[a1_vol];[a0_vol][a1_vol]amix=inputs=2:duration=first[a_mixed] -map [v_blended] -map [a_mixed] -c:v libx264 -preset veryfast -maxrate 2500k -bufsize 5000k -g 60 -keyint_min 60 -sc_threshold 0 -c:a aac -b:a 160k -ar 44100 -ac 2 -profile:v high -level 4.1 -f flv rtmp://localhost:1935/live/channel_@RRABBITmusic
-11/19/2024 20:39:49 1259864 [INFO] [rtmp publish] Close stream. id=Z5FU2L42 streamPath=/live/channel_@RRABBITmusic streamId=1
-11/19/2024 20:39:49 1259864 [INFO] [rtmp disconnect] id=Z5FU2L42
-11/19/2024 20:39:49 1259864 [INFO] [rtmp play] Close stream. id=JAKA5LGD streamPath=/live/deckB streamId=1
-11/19/2024 20:39:49 1259864 [INFO] [rtmp disconnect] id=JAKA5LGD
-11/19/2024 20:39:49 1259864 [INFO] [rtmp play] Close stream. id=BJLEVV6L streamPath=/live/deckA streamId=1
-11/19/2024 20:39:49 1259864 [INFO] [rtmp disconnect] id=BJLEVV6L
-Broadcasting error: Error: ffmpeg was killed with signal SIGKILL
-    at ChildProcess.<anonymous> (/home/travis/Projects/dejavideo2/dj-controller/node_modules/fluent-ffmpeg/lib/processor.js:178:22)
-    at ChildProcess.emit (node:events:519:28)
-    at ChildProcess._handle.onexit (node:internal/child_process:294:12)
-FFmpeg stderr: ffmpeg version n7.0.2 Copyright (c) 2000-2024 the FFmpeg developers
-  built with gcc 14.2.1 (GCC) 20240910
-  configuration: --prefix=/usr --disable-debug --disable-static --disable-stripping --enable-amf --enable-avisynth --enable-cuda-llvm --enable-lto --enable-fontconfig --enable-frei0r --enable-gmp --enable-gnutls --enable-gpl --enable-ladspa --enable-libaom --enable-libass --enable-libbluray --enable-libbs2b --enable-libdav1d --enable-libdrm --enable-libdvdnav --enable-libdvdread --enable-libfreetype --enable-libfribidi --enable-libgsm --enable-libharfbuzz --enable-libiec61883 --enable-libjack --enable-libjxl --enable-libmodplug --enable-libmp3lame --enable-libopencore_amrnb --enable-libopencore_amrwb --enable-libopenjpeg --enable-libopenmpt --enable-libopus --enable-libplacebo --enable-libpulse --enable-librav1e --enable-librsvg --enable-librubberband --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtheora --enable-libv4l2 --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpl --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxcb --enable-libxml2 --enable-libxvid --enable-libzimg --enable-libzmq --enable-nvdec --enable-nvenc --enable-opencl --enable-opengl --enable-shared --enable-vapoursynth --enable-version3 --enable-vulkan
-  libavutil      59.  8.100 / 59.  8.100
-  libavcodec     61.  3.100 / 61.  3.100
-  libavformat    61.  1.100 / 61.  1.100
-  libavdevice    61.  1.100 / 61.  1.100
-  libavfilter    10.  1.100 / 10.  1.100
-  libswscale      8.  1.100 /  8.  1.100
-  libswresample   5.  1.100 /  5.  1.100
-  libpostproc    58.  1.100 / 58.  1.100
-Input #0, flv, from 'rtmp://localhost:1935/live/deckA':
-  Metadata:
-    |RtmpSampleAccess: false
-    major_brand     : isom
-    minor_version   : 512
-    compatible_brands: isomiso2mp41
-    encoder         : Lavf61.1.100
-  Duration: 00:00:00.00, start: 12.482000, bitrate: N/A
-  Stream #0:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 128 kb/s
-  Stream #0:1: Video: h264 (High), yuv420p(tv, bt709, progressive), 1280x720, 23.98 fps, 23.98 tbr, 1k tbn
-Input #1, flv, from 'rtmp://localhost:1935/live/deckB':
-  Metadata:
-    |RtmpSampleAccess: false
-    major_brand     : isom
-    minor_version   : 512
-    compatible_brands: isomiso2mp41
-    encoder         : Lavf61.1.100
-  Duration: 00:00:00.00, start: 11.527000, bitrate: N/A
-  Stream #1:0: Audio: aac (LC), 44100 Hz, stereo, fltp, 128 kb/s
-  Stream #1:1: Video: h264 (High), yuv420p(tv, bt709, progressive), 1280x720, 25 fps, 25 tbr, 1k tbn
-Stream mapping:
-  Stream #0:0 (aac) -> aresample:default
-  Stream #0:1 (h264) -> fps:default
-  Stream #1:0 (aac) -> aresample:default
-  Stream #1:1 (h264) -> fps:default
-  blend:default -> Stream #0:0 (libx264)
-  amix:default -> Stream #0:1 (aac)
-Press [q] to stop, [?] for help
-[libx264 @ 0x644a61298580] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
-[libx264 @ 0x644a61298580] profile High, level 4.1, 4:2:0, 8-bit
-[libx264 @ 0x644a61298580] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=1 ref=1 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=2 psy=1 psy_rd=1.00:0.00 mixed_ref=0 me_range=16 chroma_me=1 trellis=0 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=0 threads=22 lookahead_threads=5 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=1 keyint=60 keyint_min=31 scenecut=0 intra_refresh=0 rc_lookahead=10 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 vbv_maxrate=2500 vbv_bufsize=5000 crf_max=0.0 nal_hrd=none filler=0 ip_ratio=1.40 aq=1:1.00
-Output #0, flv, to 'rtmp://localhost:1935/live/channel_@RRABBITmusic':
-  Metadata:
-    |RtmpSampleAccess: false
-    major_brand     : isom
-    minor_version   : 512
-    compatible_brands: isomiso2mp41
-    encoder         : Lavf61.1.100
-  Stream #0:0: Video: h264 ([7][0][0][0] / 0x0007), yuv420p(tv, bt709, progressive), 1280x720, q=2-31, 30 fps, 1k tbn
-      Metadata:
-        encoder         : Lavc61.3.100 libx264
-      Side data:
-        cpb: bitrate max/min/avg: 2500000/0/0 buffer size: 5000000 vbv_delay: N/A
-  Stream #0:1: Audio: aac (LC) ([10][0][0][0] / 0x000A), 44100 Hz, stereo, fltp, 160 kb/s
-      Metadata:
-        encoder         : Lavc61.3.100 aac
-
-11/19/2024 20:39:49 1259864 [INFO] [rtmp connect] id=6BA4KVOM ip=::1 app=live args={"app":"live","flashVer":"LNX 9,0,124,2","tcUrl":"rtmp://localhost:1935/live","fpad":false,"capabilities":15,"audioCodecs":4071,"videoCodecs":252,"videoFunction":1}
-FFmpeg stderr: frame=  351 fps= 23 q=28.0 size=    2802KiB time=00:00:13.96 bitrate=1644.4kbits/s speed= 0.9x    
-FFmpeg stderr: frame=  406 fps= 22 q=28.0 size=    2521KiB time=00:00:16.85 bitrate=1225.4kbits/s speed=0.91x    
-11/19/2024 20:39:49 1259864 [INFO] [rtmp play] Join stream. id=6BA4KVOM streamPath=/live/deckA  streamId=1 
-FFmpeg stderr: frame=  363 fps= 23 q=28.0 size=    2905KiB time=00:00:14.44 bitrate=1648.1kbits/s speed=0.902x    
-FFmpeg stderr: frame=  419 fps= 22 q=28.0 size=    2561KiB time=00:00:17.39 bitrate=1206.5kbits/s speed=0.914x    
-FFmpeg stderr: frame=  376 fps= 23 q=28.0 size=    2954KiB time=00:00:14.96 bitrate=1617.5kbits/s speed=0.906x    
-FFmpeg stderr: frame=  431 fps= 22 q=28.0 size=    2601KiB time=00:00:17.89 bitrate=1190.6kbits/s speed=0.917x    
-FFmpeg stderr: frame=  388 fps= 23 q=25.0 size=    3004KiB time=00:00:15.44 bitrate=1593.7kbits/s speed=0.907x    
-FFmpeg stderr: frame=  443 fps= 22 q=28.0 size=    2640KiB time=00:00:18.39 bitrate=1175.6kbits/s speed=0.919x    
-11/19/2024 20:39:50 1259864 [INFO] [rtmp connect] id=VUW8NKNT ip=::1 app=live args={"app":"live","flashVer":"LNX 9,0,124,2","tcUrl":"rtmp://localhost:1935/live","fpad":false,"capabilities":15,"audioCodecs":4071,"videoCodecs":252,"videoFunction":1}
-11/19/2024 20:39:51 1259864 [INFO] [rtmp play] Join stream. id=VUW8NKNT streamPath=/live/deckB  streamId=1 
-FFmpeg stderr: frame=  401 fps= 23 q=28.0 size=    3053KiB time=00:00:15.96 bitrate=1567.0kbits/s speed=0.911x    
-FFmpeg stderr: frame=  455 fps= 22 q=28.0 size=    2701KiB time=00:00:18.89 bitrate=1171.0kbits/s speed=0.921x    
-11/19/2024 20:39:51 1259864 [INFO] [rtmp connect] id=TZK1OFQV ip=::1 app=live args={"app":"live","type":"nonprivate","flashVer":"FMLE/3.0 (compatible; Lavf61.1.100)","tcUrl":"rtmp://localhost:1935/live"}
-11/19/2024 20:39:51 1259864 [INFO] [rtmp publish] New stream. id=TZK1OFQV streamPath=/live/channel_@RRABBITmusic streamId=1
-FFmpeg stderr: frame=  413 fps= 23 q=28.0 size=    3129KiB time=00:00:16.44 bitrate=1559.1kbits/s speed=0.912x    
-FFmpeg stderr: frame=  467 fps= 22 q=28.0 size=    2751KiB time=00:00:19.39 bitrate=1161.8kbits/s speed=0.923x    
-11/19/2024 20:39:51 1259864 [INFO] [rtmp publish] Handle video. id=TZK1OFQV streamPath=/live/channel_@RRABBITmusic frame_type=1 codec_id=7 codec_name=H264 1280x720
-11/19/2024 20:39:51 1259864 [INFO] [rtmp publish] Handle audio. id=TZK1OFQV streamPath=/live/channel_@RRABBITmusic sound_format=10 sound_type=2 sound_size=1 sound_rate=3 codec_name=AAC 44100 2ch
-FFmpeg stderr: frame=  426 fps= 23 q=28.0 size=    3189KiB time=00:00:16.96 bitrate=1540.2kbits/s speed=0.916x    
-FFmpeg stderr: frame=  478 fps= 22 q=28.0 size=    2791KiB time=00:00:19.85 bitrate=1151.7kbits/s speed=0.922x    
-FFmpeg stderr: frame=  438 fps= 23 q=28.0 size=    3251KiB time=00:00:17.44 bitrate=1527.1kbits/s speed=0.917x    
-FFmpeg stderr: frame=  490 fps= 22 q=28.0 size=    2837KiB time=00:00:20.35 bitrate=1142.0kbits/s speed=0.924x    
-FFmpeg stderr: frame=  450 fps= 23 q=28.0 size=    3374KiB time=00:00:17.92 bitrate=1542.5kbits/s speed=0.918x    
-FFmpeg stderr: frame=  503 fps= 22 q=28.0 size=    2918KiB time=00:00:20.89 bitrate=1143.9kbits/s speed=0.928x    
-FFmpeg stderr: frame=  463 fps= 23 q=28.0 size=    3471KiB time=00:00:18.44 bitrate=1542.1kbits/s speed=0.921x    
-FFmpeg stderr: frame=  515 fps= 22 q=28.0 size=    2963KiB time=00:00:21.39 bitrate=1134.4kbits/s speed=0.929x    
-FFmpeg stderr: frame=  476 fps= 23 q=28.0 size=    3568KiB time=00:00:18.96 bitrate=1541.8kbits/s speed=0.924x    
-FFmpeg stderr: frame=  526 fps= 22 q=28.0 size=    3015KiB time=00:00:21.85 bitrate=1130.2kbits/s speed=0.929x    
-FFmpeg stderr: frame=  489 fps= 23 q=28.0 size=    3660KiB time=00:00:19.48 bitrate=1539.2kbits/s speed=0.927x    
-FFmpeg stderr: frame=  539 fps= 22 q=28.0 size=    3058KiB time=00:00:22.39 bitrate=1118.6kbits/s speed=0.932x    
-FFmpeg stderr: frame=  501 fps= 23 q=28.0 size=    3779KiB time=00:00:19.96 bitrate=1551.2kbits/s speed=0.927x    
-FFmpeg stderr: frame=  551 fps= 22 q=28.0 size=    3120KiB time=00:00:22.89 bitrate=1116.3kbits/s speed=0.934x    
-FFmpeg stderr: frame=  514 fps= 23 q=28.0 size=    3896KiB time=00:00:20.48 bitrate=1558.5kbits/s speed=0.93x    
-FFmpeg stderr: frame=  563 fps= 22 q=28.0 size=    3178KiB time=00:00:23.39 bitrate=1112.8kbits/s speed=0.935x    
-FFmpeg stderr: frame=  526 fps= 23 q=28.0 size=    4001KiB time=00:00:20.96 bitrate=1563.6kbits/s speed=0.931x    
-FFmpeg stderr: frame=  575 fps= 23 q=28.0 size=    3237KiB time=00:00:23.89 bitrate=1109.4kbits/s speed=0.936x    
-FFmpeg stderr: frame=  539 fps= 23 q=28.0 size=    4111KiB time=00:00:21.48 bitrate=1567.9kbits/s speed=0.933x    
 FFmpeg stderr: frame=  587 fps= 23 q=28.0 size=    3299KiB time=00:00:24.39 bitrate=1107.5kbits/s speed=0.937x    
-FFmpeg stderr: frame=  551 fps= 23 q=28.0 size=    4217KiB time=00:00:21.96 bitrate=1573.3kbits/s speed=0.933x    
+FFmpeg stderr: frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
 FFmpeg stderr: frame=  599 fps= 23 q=28.0 size=    3374KiB time=00:00:24.89 bitrate=1110.0kbits/s speed=0.939x    
-FFmpeg stderr: frame=  564 fps= 23 q=28.0 size=    4291KiB time=00:00:22.48 bitrate=1563.6kbits/s speed=0.936x    
+FFmpeg stderr: frame=   13 fps=6.5 q=28.0 size=       3KiB time=00:00:00.44 bitrate=  47.9kbits/s speed=0.22x    
 FFmpeg stderr: frame=  611 fps= 23 q=28.0 size=    3447KiB time=00:00:25.40 bitrate=1111.7kbits/s speed=0.94x    
-FFmpeg stderr: frame=  576 fps= 23 q=28.0 size=    4352KiB time=00:00:22.96 bitrate=1552.7kbits/s speed=0.936x    
-FFmpeg stderr: frame=  623 fps= 23 q=28.0 size=    3503KiB time=00:00:25.90 bitrate=1108.0kbits/s speed=0.941x    
-FFmpeg stderr: frame=  589 fps= 24 q=28.0 size=    4431KiB time=00:00:23.48 bitrate=1546.0kbits/s speed=0.938x    
+FFmpeg stderr: frame=   25 fps= 10 q=28.0 size=       4KiB time=00:00:00.92 bitrate=  33.0kbits/s speed=0.368x    
+FFmpeg stderr: frame=  622 fps= 23 q=28.0 size=    3503KiB time=00:00:25.85 bitrate=1109.8kbits/s speed=0.939x    
+FFmpeg stderr: frame=   39 fps= 13 q=28.0 size=     102KiB time=00:00:01.48 bitrate= 565.7kbits/s speed=0.493x    
+[RTMP] Client connecting: JYU21MDL {
+  app: 'live',
+  type: 'nonprivate',
+  flashVer: 'FMLE/3.0 (compatible; Lavf61.1.100)',
+  tcUrl: 'rtmp://localhost:1935/live'
+}
+11/19/2024 21:48:54 1371609 [INFO] [rtmp connect] id=JYU21MDL ip=::1 app=live args={"app":"live","type":"nonprivate","flashVer":"FMLE/3.0 (compatible; Lavf61.1.100)","tcUrl":"rtmp://localhost:1935/live"}
+[RTMP] Client connected: JYU21MDL {
+  app: 'live',
+  type: 'nonprivate',
+  flashVer: 'FMLE/3.0 (compatible; Lavf61.1.100)',
+  tcUrl: 'rtmp://localhost:1935/live'
+}
 FFmpeg stderr: frame=  635 fps= 23 q=28.0 size=    3566KiB time=00:00:26.40 bitrate=1106.4kbits/s speed=0.942x    
-FFmpeg stderr: frame=  601 fps= 24 q=28.0 size=    4605KiB time=00:00:23.96 bitrate=1574.4kbits/s speed=0.939x    
-FFmpeg stderr: frame=  647 fps= 23 q=28.0 size=    3635KiB time=00:00:26.90 bitrate=1106.9kbits/s speed=0.943x    
-FFmpeg stderr: frame=  614 fps= 24 q=28.0 size=    4730KiB time=00:00:24.48 bitrate=1582.7kbits/s speed=0.94x    
+11/19/2024 21:48:55 1371609 [INFO] [rtmp publish] New stream. id=JYU21MDL streamPath=/live/channel_test streamId=1
+FFmpeg stderr: frame=   51 fps= 15 q=28.0 size=     174KiB time=00:00:01.96 bitrate= 725.7kbits/s speed=0.56x    
+FFmpeg stderr: frame=  646 fps= 23 q=28.0 size=    3635KiB time=00:00:26.86 bitrate=1108.6kbits/s speed=0.941x    
+FFmpeg stderr: frame=   63 fps= 16 q=28.0 size=     243KiB time=00:00:02.44 bitrate= 815.7kbits/s speed=0.61x    
 FFmpeg stderr: frame=  659 fps= 23 q=28.0 size=    3695KiB time=00:00:27.40 bitrate=1104.5kbits/s speed=0.944x    
-FFmpeg stderr: frame=  626 fps= 24 q=28.0 size=    4861KiB time=00:00:24.96 bitrate=1595.5kbits/s speed=0.941x    
+FFmpeg stderr: frame=   76 fps= 17 q=28.0 size=     308KiB time=00:00:02.96 bitrate= 852.0kbits/s speed=0.657x    
 FFmpeg stderr: frame=  671 fps= 23 q=28.0 size=    3745KiB time=00:00:27.90 bitrate=1099.5kbits/s speed=0.945x    
-FFmpeg stderr: frame=  639 fps= 24 q=28.0 size=    4961KiB time=00:00:25.48 bitrate=1594.9kbits/s speed=0.943x    
+FFmpeg stderr: frame=   88 fps= 18 q=28.0 size=     382KiB time=00:00:03.44 bitrate= 910.4kbits/s speed=0.687x    
 FFmpeg stderr: frame=  683 fps= 23 q=28.0 size=    3798KiB time=00:00:28.40 bitrate=1095.5kbits/s speed=0.946x    
-FFmpeg stderr: frame=  651 fps= 24 q=28.0 size=    5112KiB time=00:00:25.96 bitrate=1613.1kbits/s speed=0.943x    
+11/19/2024 21:48:57 1371609 [INFO] [rtmp publish] Handle video. id=JYU21MDL streamPath=/live/channel_test frame_type=1 codec_id=7 codec_name=H264 1280x720
+11/19/2024 21:48:57 1371609 [INFO] [rtmp publish] Handle audio. id=JYU21MDL streamPath=/live/channel_test sound_format=10 sound_type=2 sound_size=1 sound_rate=3 codec_name=AAC 44100 2ch
+FFmpeg stderr: frame=  100 fps= 18 q=28.0 size=     476KiB time=00:00:03.92 bitrate= 994.6kbits/s speed=0.712x    
 FFmpeg stderr: frame=  695 fps= 23 q=28.0 size=    3890KiB time=00:00:28.90 bitrate=1102.6kbits/s speed=0.947x    
-FFmpeg stderr: frame=  664 fps= 24 q=28.0 size=    5301KiB time=00:00:26.48 bitrate=1640.1kbits/s speed=0.945x    
-FFmpeg stderr: frame=  707 fps= 23 q=28.0 size=    3927KiB time=00:00:29.40 bitrate=1094.1kbits/s speed=0.947x    
-FFmpeg stderr: frame=  676 fps= 24 q=28.0 size=    5429KiB time=00:00:26.96 bitrate=1649.5kbits/s speed=0.945x    
+FFmpeg stderr: frame=  113 fps= 19 q=28.0 size=     585KiB time=00:00:04.44 bitrate=1079.9kbits/s speed=0.739x    
+FFmpeg stderr: frame=  707 fps= 23 q=28.0 size=    3927KiB time=00:00:29.40 bitrate=1094.1kbits/s speed=0.948x    
+FFmpeg stderr: frame=  126 fps= 19 q=28.0 size=     714KiB time=00:00:04.96 bitrate=1178.7kbits/s speed=0.762x    
 FFmpeg stderr: frame=  719 fps= 23 q=28.0 size=    3977KiB time=00:00:29.90 bitrate=1089.4kbits/s speed=0.948x    
-FFmpeg stderr: frame=  689 fps= 24 q=28.0 size=    5612KiB time=00:00:27.48 bitrate=1673.1kbits/s speed=0.947x    
+FFmpeg stderr: frame=  138 fps= 20 q=28.0 size=     852KiB time=00:00:05.44 bitrate=1282.5kbits/s speed=0.776x    
 FFmpeg stderr: frame=  731 fps= 23 q=28.0 size=    4020KiB time=00:00:30.40 bitrate=1083.1kbits/s speed=0.949x    
-FFmpeg stderr: frame=  701 fps= 24 q=28.0 size=    5760KiB time=00:00:27.96 bitrate=1687.8kbits/s speed=0.947x    
+FFmpeg stderr: frame=  151 fps= 20 q=28.0 size=     979KiB time=00:00:05.96 bitrate=1345.8kbits/s speed=0.794x    
 FFmpeg stderr: frame=  743 fps= 23 q=28.0 size=    4067KiB time=00:00:30.90 bitrate=1078.0kbits/s speed=0.95x    
-FFmpeg stderr: frame=  714 fps= 24 q=28.0 size=    5923KiB time=00:00:28.48 bitrate=1703.6kbits/s speed=0.948x    
+FFmpeg stderr: frame=  163 fps= 20 q=28.0 size=    1052KiB time=00:00:06.44 bitrate=1338.0kbits/s speed=0.804x    
 FFmpeg stderr: frame=  755 fps= 23 q=28.0 size=    4137KiB time=00:00:31.40 bitrate=1079.1kbits/s speed=0.951x    
-FFmpeg stderr: frame=  726 fps= 24 q=28.0 size=    6051KiB time=00:00:28.96 bitrate=1711.8kbits/s speed=0.948x    
+FFmpeg stderr: frame=  177 fps= 21 q=28.0 size=    1098KiB time=00:00:07.00 bitrate=1284.8kbits/s speed=0.823x    
 FFmpeg stderr: frame=  767 fps= 23 q=28.0 size=    4184KiB time=00:00:31.90 bitrate=1074.3kbits/s speed=0.951x    
-FFmpeg stderr: frame=  739 fps= 24 q=28.0 size=    6195KiB time=00:00:29.48 bitrate=1721.5kbits/s speed=0.95x    
+FFmpeg stderr: frame=  189 fps= 21 q=28.0 size=    1178KiB time=00:00:07.48 bitrate=1290.3kbits/s speed=0.83x    
 FFmpeg stderr: frame=  779 fps= 23 q=28.0 size=    4233KiB time=00:00:32.40 bitrate=1070.1kbits/s speed=0.952x    
-FFmpeg stderr: frame=  751 fps= 24 q=28.0 size=    6295KiB time=00:00:29.96 bitrate=1721.1kbits/s speed=0.95x    
+FFmpeg stderr: frame=  201 fps= 21 q=28.0 size=    1293KiB time=00:00:07.96 bitrate=1330.9kbits/s speed=0.837x    
 FFmpeg stderr: frame=  791 fps= 23 q=28.0 size=    4278KiB time=00:00:32.90 bitrate=1064.9kbits/s speed=0.953x    
-FFmpeg stderr: frame=  764 fps= 24 q=28.0 size=    6450KiB time=00:00:30.48 bitrate=1733.5kbits/s speed=0.951x    
-FFmpeg stderr: frame=  803 fps= 23 q=28.0 size=    4381KiB time=00:00:33.40 bitrate=1074.3kbits/s speed=0.953x    
-FFmpeg stderr: frame=  776 fps= 24 q=30.0 size=    6551KiB time=00:00:30.96 bitrate=1733.4kbits/s speed=0.952x    
+FFmpeg stderr: frame=  213 fps= 21 q=28.0 size=    1389KiB time=00:00:08.44 bitrate=1347.9kbits/s speed=0.843x    
+FFmpeg stderr: frame=  803 fps= 23 q=28.0 size=    4381KiB time=00:00:33.40 bitrate=1074.3kbits/s speed=0.954x    
+FFmpeg stderr: frame=  226 fps= 22 q=28.0 size=    1530KiB time=00:00:08.96 bitrate=1398.9kbits/s speed=0.852x    
 FFmpeg stderr: frame=  815 fps= 23 q=28.0 size=    4441KiB time=00:00:33.90 bitrate=1072.8kbits/s speed=0.954x    
-FFmpeg stderr: frame=  789 fps= 24 q=28.0 size=    6668KiB time=00:00:31.48 bitrate=1735.1kbits/s speed=0.953x    
+FFmpeg stderr: frame=  238 fps= 22 q=28.0 size=    1661KiB time=00:00:09.44 bitrate=1441.8kbits/s speed=0.857x    
 FFmpeg stderr: frame=  827 fps= 23 q=28.0 size=    4503KiB time=00:00:34.40 bitrate=1072.0kbits/s speed=0.955x    
-FFmpeg stderr: frame=  801 fps= 24 q=28.0 size=    6842KiB time=00:00:31.96 bitrate=1753.8kbits/s speed=0.953x    
+FFmpeg stderr: frame=  251 fps= 22 q=28.0 size=    1833KiB time=00:00:09.96 bitrate=1507.2kbits/s speed=0.865x    
 FFmpeg stderr: frame=  839 fps= 23 q=28.0 size=    4574KiB time=00:00:34.90 bitrate=1073.4kbits/s speed=0.955x    
-FFmpeg stderr: frame=  814 fps= 24 q=28.0 size=    6947KiB time=00:00:32.48 bitrate=1752.2kbits/s speed=0.954x    
+FFmpeg stderr: frame=  263 fps= 22 q=28.0 size=    1940KiB time=00:00:10.44 bitrate=1522.5kbits/s speed=0.869x    
 FFmpeg stderr: frame=  851 fps= 23 q=28.0 size=    4648KiB time=00:00:35.41 bitrate=1075.2kbits/s speed=0.956x    
-FFmpeg stderr: frame=  826 fps= 24 q=28.0 size=    7052KiB time=00:00:32.96 bitrate=1752.6kbits/s speed=0.954x    
-FFmpeg stderr: frame=  863 fps= 23 q=28.0 size=    4762KiB time=00:00:35.91 bitrate=1086.3kbits/s speed=0.957x    
-FFmpeg stderr: frame=  839 fps= 24 q=28.0 size=    7100KiB time=00:00:33.48 bitrate=1737.2kbits/s speed=0.955x    
+Crossfade request received: { position: 0.83, channelId: 'test' }
+FFmpeg stderr: frame=  276 fps= 22 q=28.0 size=    2053KiB time=00:00:10.96 bitrate=1534.8kbits/s speed=0.876x    
+FFmpeg stderr: frame=  862 fps= 23 q=28.0 size=    4762KiB time=00:00:35.86 bitrate=1087.5kbits/s speed=0.956x    
+FFmpeg stderr: frame=  288 fps= 22 q=28.0 size=    2145KiB time=00:00:11.44 bitrate=1536.2kbits/s speed=0.879x    
 FFmpeg stderr: frame=  875 fps= 23 q=28.0 size=    4853KiB time=00:00:36.41 bitrate=1091.8kbits/s speed=0.957x    
-FFmpeg stderr: frame=  851 fps= 24 q=28.0 size=    7233KiB time=00:00:33.96 bitrate=1744.8kbits/s speed=0.956x    
-FFmpeg stderr: frame=  887 fps= 23 q=28.0 size=    4967KiB time=00:00:36.91 bitrate=1102.3kbits/s speed=0.958x    
-FFmpeg stderr: frame=  864 fps= 24 q=28.0 size=    7362KiB time=00:00:34.48 bitrate=1749.2kbits/s speed=0.957x    
+FFmpeg stderr: frame=  301 fps= 22 q=28.0 size=    2273KiB time=00:00:11.96 bitrate=1556.6kbits/s speed=0.885x    
+FFmpeg stderr: frame=  886 fps= 23 q=28.0 size=    4967KiB time=00:00:36.87 bitrate=1103.6kbits/s speed=0.957x    
+FFmpeg stderr: frame=  313 fps= 22 q=28.0 size=    2411KiB time=00:00:12.44 bitrate=1587.4kbits/s speed=0.888x    
 FFmpeg stderr: frame=  899 fps= 23 q=28.0 size=    5051KiB time=00:00:37.41 bitrate=1106.0kbits/s speed=0.958x    
-FFmpeg stderr: frame=  877 fps= 24 q=28.0 size=    7492KiB time=00:00:35.00 bitrate=1753.5kbits/s speed=0.958x    
-FFmpeg stderr: frame=  911 fps= 23 q=28.0 size=    5070KiB time=00:00:37.91 bitrate=1095.5kbits/s speed=0.959x    
-FFmpeg stderr: frame=  889 fps= 24 q=28.0 size=    7592KiB time=00:00:35.48 bitrate=1752.9kbits/s speed=0.958x    
-FFmpeg stderr: frame=  923 fps= 23 q=28.0 size=    5093KiB time=00:00:38.41 bitrate=1086.2kbits/s speed=0.959x    
-FFmpeg stderr: frame=  902 fps= 24 q=28.0 size=    7678KiB time=00:00:36.00 bitrate=1747.1kbits/s speed=0.959x    
+FFmpeg stderr: frame=  326 fps= 22 q=28.0 size=    2550KiB time=00:00:12.96 bitrate=1612.1kbits/s speed=0.893x    
+FFmpeg stderr: frame=  910 fps= 23 q=28.0 size=    5070KiB time=00:00:37.87 bitrate=1096.7kbits/s speed=0.958x    
+FFmpeg stderr: frame=  338 fps= 23 q=25.0 size=    2684KiB time=00:00:13.44 bitrate=1635.8kbits/s speed=0.895x    
+FFmpeg stderr: frame=  923 fps= 23 q=28.0 size=    5092KiB time=00:00:38.41 bitrate=1086.0kbits/s speed=0.959x    
+FFmpeg stderr: frame=  351 fps= 23 q=28.0 size=    2802KiB time=00:00:13.96 bitrate=1644.4kbits/s speed= 0.9x    
 FFmpeg stderr: frame=  934 fps= 23 q=28.0 size=    5113KiB time=00:00:38.87 bitrate=1077.4kbits/s speed=0.959x    
-FFmpeg stderr: frame=  914 fps= 24 q=28.0 size=    7827KiB time=00:00:36.48 bitrate=1757.6kbits/s speed=0.959x    
-FFmpeg stderr: frame=  947 fps= 23 q=28.0 size=    5130KiB time=00:00:39.41 bitrate=1066.3kbits/s speed=0.96x    
-11/19/2024 20:40:11 1259864 [INFO] [rtmp disconnect] id=ZS3RKKUL
-FFmpeg stderr: frame=  927 fps= 24 q=28.0 size=    7945KiB time=00:00:37.00 bitrate=1759.1kbits/s speed=0.96x    
+FFmpeg stderr: frame=  363 fps= 23 q=28.0 size=    2905KiB time=00:00:14.44 bitrate=1648.1kbits/s speed=0.902x    
+FFmpeg stderr: frame=  947 fps= 23 q=28.0 size=    5129KiB time=00:00:39.41 bitrate=1066.1kbits/s speed=0.96x    
+FFmpeg stderr: frame=  376 fps= 23 q=28.0 size=    2954KiB time=00:00:14.96 bitrate=1617.5kbits/s speed=0.906x    
 FFmpeg stderr: frame=  959 fps= 23 q=28.0 size=    5172KiB time=00:00:39.91 bitrate=1061.4kbits/s speed=0.961x    
-FFmpeg stderr: frame=  939 fps= 24 q=28.0 size=    8069KiB time=00:00:37.48 bitrate=1763.5kbits/s speed=0.96x    
+FFmpeg stderr: frame=  388 fps= 23 q=25.0 size=    3004KiB time=00:00:15.44 bitrate=1593.7kbits/s speed=0.907x    
 FFmpeg stderr: frame=  971 fps= 23 q=28.0 size=    5188KiB time=00:00:40.41 bitrate=1051.6kbits/s speed=0.961x    
-FFmpeg stderr: frame=  952 fps= 24 q=28.0 size=    8192KiB time=00:00:38.00 bitrate=1766.0kbits/s speed=0.961x    
+FFmpeg stderr: frame=  401 fps= 23 q=28.0 size=    3053KiB time=00:00:15.96 bitrate=1567.0kbits/s speed=0.911x    
 FFmpeg stderr: frame=  982 fps= 23 q=28.0 size=    5206KiB time=00:00:40.87 bitrate=1043.5kbits/s speed=0.961x    
-FFmpeg stderr: frame=  964 fps= 24 q=28.0 size=    8365KiB time=00:00:38.48 bitrate=1780.9kbits/s speed=0.961x    
-FFmpeg stderr: frame=  995 fps= 23 q=28.0 size=    5297KiB time=00:00:41.41 bitrate=1047.8kbits/s speed=0.962x    
-FFmpeg stderr: frame=  977 fps= 24 q=28.0 size=    8494KiB time=00:00:39.00 bitrate=1784.1kbits/s speed=0.962x    
-FFmpeg stderr: frame= 1007 fps= 23 q=28.0 size=    5348KiB time=00:00:41.91 bitrate=1045.2kbits/s speed=0.963x    
-FFmpeg stderr: frame=  989 fps= 24 q=28.0 size=    8615KiB time=00:00:39.48 bitrate=1787.5kbits/s speed=0.962x    
+FFmpeg stderr: frame=  413 fps= 23 q=28.0 size=    3129KiB time=00:00:16.44 bitrate=1559.1kbits/s speed=0.912x    
+FFmpeg stderr: frame=  994 fps= 23 q=28.0 size=    5297KiB time=00:00:41.37 bitrate=1048.8kbits/s speed=0.961x    
+FFmpeg stderr: frame=  426 fps= 23 q=28.0 size=    3189KiB time=00:00:16.96 bitrate=1540.2kbits/s speed=0.916x    
+FFmpeg stderr: frame= 1006 fps= 23 q=28.0 size=    5348KiB time=00:00:41.87 bitrate=1046.3kbits/s speed=0.962x    
+FFmpeg stderr: frame=  438 fps= 23 q=28.0 size=    3251KiB time=00:00:17.44 bitrate=1527.1kbits/s speed=0.917x    
 FFmpeg stderr: frame= 1019 fps= 23 q=28.0 size=    5410KiB time=00:00:42.41 bitrate=1044.9kbits/s speed=0.963x    
-FFmpeg stderr: frame= 1001 fps= 24 q=28.0 size=    8735KiB time=00:00:39.96 bitrate=1790.8kbits/s speed=0.962x    
-FFmpeg stderr: frame= 1031 fps= 23 q=28.0 size=    5439KiB time=00:00:42.91 bitrate=1038.2kbits/s speed=0.963x    
-FFmpeg stderr: frame= 1014 fps= 24 q=28.0 size=    8894KiB time=00:00:40.48 bitrate=1799.9kbits/s speed=0.963x    
-FFmpeg stderr: frame= 1043 fps= 23 q=28.0 size=    5523KiB time=00:00:43.41 bitrate=1042.0kbits/s speed=0.964x    
-FFmpeg stderr: frame= 1027 fps= 24 q=28.0 size=    9043KiB time=00:00:41.00 bitrate=1806.8kbits/s speed=0.964x    
+FFmpeg stderr: frame=  450 fps= 23 q=28.0 size=    3374KiB time=00:00:17.92 bitrate=1542.5kbits/s speed=0.918x    
+FFmpeg stderr: frame= 1030 fps= 23 q=28.0 size=    5436KiB time=00:00:42.87 bitrate=1038.6kbits/s speed=0.962x    
+FFmpeg stderr: frame=  463 fps= 23 q=28.0 size=    3471KiB time=00:00:18.44 bitrate=1542.1kbits/s speed=0.921x    
+FFmpeg stderr: frame= 1042 fps= 23 q=28.0 size=    5523KiB time=00:00:43.37 bitrate=1043.0kbits/s speed=0.963x    
+FFmpeg stderr: frame=  476 fps= 23 q=28.0 size=    3568KiB time=00:00:18.96 bitrate=1541.8kbits/s speed=0.924x    
 FFmpeg stderr: frame= 1055 fps= 23 q=28.0 size=    5603KiB time=00:00:43.91 bitrate=1045.2kbits/s speed=0.964x    
-FFmpeg stderr: frame= 1039 fps= 24 q=28.0 size=    9222KiB time=00:00:41.48 bitrate=1821.2kbits/s speed=0.963x    
-FFmpeg stderr: frame= 1067 fps= 23 q=28.0 size=    5700KiB time=00:00:44.41 bitrate=1051.1kbits/s speed=0.965x    
-FFmpeg stderr: frame= 1052 fps= 24 q=28.0 size=    9309KiB time=00:00:42.00 bitrate=1815.6kbits/s speed=0.964x    
+FFmpeg stderr: frame=  489 fps= 23 q=28.0 size=    3660KiB time=00:00:19.48 bitrate=1539.2kbits/s speed=0.927x    
+FFmpeg stderr: frame= 1066 fps= 23 q=28.0 size=    5700KiB time=00:00:44.41 bitrate=1051.1kbits/s speed=0.965x    
+FFmpeg stderr: frame=  501 fps= 23 q=28.0 size=    3779KiB time=00:00:19.96 bitrate=1551.2kbits/s speed=0.927x    
 FFmpeg stderr: frame= 1079 fps= 23 q=28.0 size=    5797KiB time=00:00:44.91 bitrate=1057.3kbits/s speed=0.965x    
-FFmpeg stderr: frame= 1064 fps= 24 q=28.0 size=    9449KiB time=00:00:42.48 bitrate=1822.1kbits/s speed=0.964x    
+FFmpeg stderr: frame=  514 fps= 23 q=28.0 size=    3892KiB time=00:00:20.48 bitrate=1556.8kbits/s speed=0.93x    
 FFmpeg stderr: frame= 1091 fps= 23 q=28.0 size=    5901KiB time=00:00:45.42 bitrate=1064.2kbits/s speed=0.965x    
-FFmpeg stderr: frame= 1077 fps= 24 q=28.0 size=    9627KiB time=00:00:43.00 bitrate=1834.1kbits/s speed=0.965x    
+FFmpeg stderr: frame=  526 fps= 23 q=28.0 size=    4001KiB time=00:00:20.96 bitrate=1563.6kbits/s speed=0.931x    
 FFmpeg stderr: frame= 1103 fps= 23 q=28.0 size=    5996KiB time=00:00:45.92 bitrate=1069.6kbits/s speed=0.966x    
-FFmpeg stderr: frame= 1089 fps= 24 q=28.0 size=    9742KiB time=00:00:43.48 bitrate=1835.4kbits/s speed=0.965x    
-FFmpeg stderr: frame= 1115 fps= 23 q=28.0 size=    6087KiB time=00:00:46.42 bitrate=1074.2kbits/s speed=0.966x    
-FFmpeg stderr: frame= 1102 fps= 24 q=28.0 size=    9870KiB time=00:00:44.00 bitrate=1837.6kbits/s speed=0.966x    
+FFmpeg stderr: frame=  539 fps= 23 q=28.0 size=    4111KiB time=00:00:21.48 bitrate=1567.9kbits/s speed=0.933x    
+FFmpeg stderr: frame= 1114 fps= 23 q=28.0 size=    6087KiB time=00:00:46.37 bitrate=1075.1kbits/s speed=0.965x    
+FFmpeg stderr: frame=  551 fps= 23 q=28.0 size=    4217KiB time=00:00:21.96 bitrate=1573.3kbits/s speed=0.933x    
 FFmpeg stderr: frame= 1127 fps= 23 q=28.0 size=    6206KiB time=00:00:46.92 bitrate=1083.4kbits/s speed=0.966x    
-FFmpeg stderr: frame= 1114 fps= 24 q=28.0 size=    9980KiB time=00:00:44.48 bitrate=1838.0kbits/s speed=0.966x    
+FFmpeg stderr: frame=  564 fps= 23 q=28.0 size=    4291KiB time=00:00:22.48 bitrate=1563.6kbits/s speed=0.936x    
 FFmpeg stderr: frame= 1139 fps= 23 q=28.0 size=    6312KiB time=00:00:47.42 bitrate=1090.4kbits/s speed=0.967x    
-FFmpeg stderr: frame= 1127 fps= 24 q=28.0 size=   10127KiB time=00:00:45.00 bitrate=1843.6kbits/s speed=0.967x    
+FFmpeg stderr: frame=  576 fps= 23 q=28.0 size=    4352KiB time=00:00:22.96 bitrate=1552.7kbits/s speed=0.936x    
 FFmpeg stderr: frame= 1151 fps= 23 q=28.0 size=    6429KiB time=00:00:47.92 bitrate=1099.0kbits/s speed=0.967x    
-FFmpeg stderr: frame= 1139 fps= 24 q=28.0 size=   10306KiB time=00:00:45.48 bitrate=1856.4kbits/s speed=0.967x    
+FFmpeg stderr: frame=  589 fps= 24 q=28.0 size=    4431KiB time=00:00:23.48 bitrate=1546.0kbits/s speed=0.938x    
 FFmpeg stderr: frame= 1163 fps= 23 q=25.0 size=    6525KiB time=00:00:48.42 bitrate=1103.9kbits/s speed=0.967x    
-FFmpeg stderr: frame= 1152 fps= 24 q=27.0 size=   10475KiB time=00:00:46.00 bitrate=1865.5kbits/s speed=0.967x    
+FFmpeg stderr: frame=  601 fps= 24 q=28.0 size=    4605KiB time=00:00:23.96 bitrate=1574.4kbits/s speed=0.939x    
 FFmpeg stderr: frame= 1175 fps= 23 q=28.0 size=    6628KiB time=00:00:48.92 bitrate=1109.8kbits/s speed=0.968x    
-FFmpeg stderr: frame= 1164 fps= 24 q=29.0 size=   10573KiB time=00:00:46.48 bitrate=1863.4kbits/s speed=0.967x    
+FFmpeg stderr: frame=  614 fps= 24 q=28.0 size=    4730KiB time=00:00:24.48 bitrate=1582.7kbits/s speed=0.941x    
 FFmpeg stderr: frame= 1187 fps= 23 q=28.0 size=    6770KiB time=00:00:49.42 bitrate=1122.2kbits/s speed=0.968x    
-FFmpeg stderr: frame= 1177 fps= 24 q=28.0 size=   10708KiB time=00:00:47.00 bitrate=1866.3kbits/s speed=0.968x    
+FFmpeg stderr: frame=  626 fps= 24 q=28.0 size=    4861KiB time=00:00:24.96 bitrate=1595.5kbits/s speed=0.941x    
 FFmpeg stderr: frame= 1199 fps= 23 q=28.0 size=    6850KiB time=00:00:49.92 bitrate=1124.1kbits/s speed=0.968x    
-FFmpeg stderr: frame= 1189 fps= 24 q=28.0 size=   10853KiB time=00:00:47.48 bitrate=1872.5kbits/s speed=0.968x    
+FFmpeg stderr: frame=  639 fps= 24 q=28.0 size=    4961KiB time=00:00:25.48 bitrate=1594.9kbits/s speed=0.943x    
 FFmpeg stderr: frame= 1211 fps= 23 q=28.0 size=    6899KiB time=00:00:50.42 bitrate=1120.8kbits/s speed=0.969x    
-FFmpeg stderr: frame= 1202 fps= 24 q=28.0 size=   10915KiB time=00:00:48.00 bitrate=1862.8kbits/s speed=0.969x    
+FFmpeg stderr: frame=  651 fps= 24 q=28.0 size=    5112KiB time=00:00:25.96 bitrate=1613.1kbits/s speed=0.943x    
 FFmpeg stderr: frame= 1223 fps= 23 q=28.0 size=    6954KiB time=00:00:50.92 bitrate=1118.6kbits/s speed=0.969x    
-FFmpeg stderr: frame= 1214 fps= 24 q=28.0 size=   11056KiB time=00:00:48.48 bitrate=1868.2kbits/s speed=0.968x    
+FFmpeg stderr: frame=  664 fps= 24 q=28.0 size=    5301KiB time=00:00:26.48 bitrate=1640.1kbits/s speed=0.945x    
 FFmpeg stderr: frame= 1235 fps= 23 q=28.0 size=    7028KiB time=00:00:51.42 bitrate=1119.5kbits/s speed=0.969x    
-FFmpeg stderr: frame= 1227 fps= 24 q=28.0 size=   11179KiB time=00:00:49.00 bitrate=1869.0kbits/s speed=0.969x    
-FFmpeg stderr: frame= 1247 fps= 23 q=28.0 size=    7074KiB time=00:00:51.92 bitrate=1116.1kbits/s speed=0.97x    
-FFmpeg stderr: frame= 1238 fps= 24 q=28.0 size=   11295KiB time=00:00:49.44 bitrate=1871.6kbits/s speed=0.968x    
+FFmpeg stderr: frame=  676 fps= 24 q=28.0 size=    5429KiB time=00:00:26.96 bitrate=1649.5kbits/s speed=0.945x    
+FFmpeg stderr: frame= 1247 fps= 23 q=28.0 size=    7068KiB time=00:00:51.92 bitrate=1115.0kbits/s speed=0.97x    
+FFmpeg stderr: frame=  689 fps= 24 q=28.0 size=    5612KiB time=00:00:27.48 bitrate=1673.1kbits/s speed=0.947x    
 FFmpeg stderr: frame= 1259 fps= 23 q=28.0 size=    7108KiB time=00:00:52.42 bitrate=1110.6kbits/s speed=0.97x    
-FFmpeg stderr: frame= 1252 fps= 24 q=28.0 size=   11425KiB time=00:00:50.00 bitrate=1871.8kbits/s speed=0.97x    
+FFmpeg stderr: frame=  701 fps= 24 q=28.0 size=    5760KiB time=00:00:27.96 bitrate=1687.8kbits/s speed=0.947x    
 FFmpeg stderr: frame= 1270 fps= 23 q=28.0 size=    7150KiB time=00:00:52.88 bitrate=1107.5kbits/s speed=0.969x    
-FFmpeg stderr: frame= 1264 fps= 24 q=28.0 size=   11555KiB time=00:00:50.48 bitrate=1875.2kbits/s speed=0.97x    
+FFmpeg stderr: frame=  714 fps= 24 q=28.0 size=    5923KiB time=00:00:28.48 bitrate=1703.6kbits/s speed=0.948x    
 FFmpeg stderr: frame= 1283 fps= 23 q=28.0 size=    7193KiB time=00:00:53.42 bitrate=1102.8kbits/s speed=0.97x    
-FFmpeg stderr: frame= 1277 fps= 24 q=28.0 size=   11700KiB time=00:00:51.00 bitrate=1879.3kbits/s speed=0.97x    
+FFmpeg stderr: frame=  726 fps= 24 q=28.0 size=    6051KiB time=00:00:28.96 bitrate=1711.8kbits/s speed=0.948x    
 FFmpeg stderr: frame= 1295 fps= 23 q=28.0 size=    7300KiB time=00:00:53.92 bitrate=1108.8kbits/s speed=0.971x    
-FFmpeg stderr: frame= 1290 fps= 24 q=28.0 size=   11871KiB time=00:00:51.52 bitrate=1887.6kbits/s speed=0.971x    
+FFmpeg stderr: frame=  739 fps= 24 q=28.0 size=    6195KiB time=00:00:29.48 bitrate=1721.5kbits/s speed=0.95x    
 FFmpeg stderr: frame= 1307 fps= 23 q=28.0 size=    7364KiB time=00:00:54.42 bitrate=1108.3kbits/s speed=0.971x    
-FFmpeg stderr: frame= 1302 fps= 24 q=28.0 size=   11965KiB time=00:00:52.00 bitrate=1885.0kbits/s speed=0.971x    
+FFmpeg stderr: frame=  751 fps= 24 q=28.0 size=    6295KiB time=00:00:29.96 bitrate=1721.1kbits/s speed=0.95x    
 FFmpeg stderr: frame= 1319 fps= 23 q=28.0 size=    7410KiB time=00:00:54.92 bitrate=1105.1kbits/s speed=0.971x    
-FFmpeg stderr: frame= 1315 fps= 24 q=28.0 size=   12145KiB time=00:00:52.52 bitrate=1894.4kbits/s speed=0.971x    
+FFmpeg stderr: frame=  764 fps= 24 q=28.0 size=    6450KiB time=00:00:30.48 bitrate=1733.5kbits/s speed=0.951x    
 FFmpeg stderr: frame= 1331 fps= 23 q=28.0 size=    7470KiB time=00:00:55.43 bitrate=1104.0kbits/s speed=0.971x    
-FFmpeg stderr: frame= 1327 fps= 24 q=28.0 size=   12311KiB time=00:00:53.00 bitrate=1902.8kbits/s speed=0.971x    
+FFmpeg stderr: frame=  776 fps= 24 q=30.0 size=    6551KiB time=00:00:30.96 bitrate=1733.4kbits/s speed=0.952x    
 FFmpeg stderr: frame= 1343 fps= 23 q=28.0 size=    7544KiB time=00:00:55.93 bitrate=1105.0kbits/s speed=0.972x    
-FFmpeg stderr: frame= 1340 fps= 24 q=28.0 size=   12449KiB time=00:00:53.52 bitrate=1905.5kbits/s speed=0.972x    
+FFmpeg stderr: frame=  789 fps= 24 q=28.0 size=    6668KiB time=00:00:31.48 bitrate=1735.1kbits/s speed=0.953x    
 FFmpeg stderr: frame= 1355 fps= 23 q=28.0 size=    7594KiB time=00:00:56.43 bitrate=1102.4kbits/s speed=0.972x    
-FFmpeg stderr: frame= 1352 fps= 24 q=28.0 size=   12567KiB time=00:00:54.00 bitrate=1906.5kbits/s speed=0.972x    
+FFmpeg stderr: frame=  801 fps= 24 q=28.0 size=    6842KiB time=00:00:31.96 bitrate=1753.8kbits/s speed=0.953x    
 FFmpeg stderr: frame= 1367 fps= 23 q=28.0 size=    7638KiB time=00:00:56.93 bitrate=1099.0kbits/s speed=0.972x    
-FFmpeg stderr: frame= 1364 fps= 24 q=28.0 size=   12701KiB time=00:00:54.48 bitrate=1909.8kbits/s speed=0.972x    
+FFmpeg stderr: frame=  814 fps= 24 q=28.0 size=    6947KiB time=00:00:32.48 bitrate=1752.2kbits/s speed=0.954x    
 FFmpeg stderr: frame= 1378 fps= 23 q=28.0 size=    7682KiB time=00:00:57.39 bitrate=1096.5kbits/s speed=0.972x    
-FFmpeg stderr: frame= 1377 fps= 24 q=28.0 size=   12812KiB time=00:00:55.00 bitrate=1908.2kbits/s speed=0.972x    
+FFmpeg stderr: frame=  826 fps= 24 q=28.0 size=    7052KiB time=00:00:32.96 bitrate=1752.6kbits/s speed=0.954x    
 FFmpeg stderr: frame= 1391 fps= 23 q=28.0 size=    7761KiB time=00:00:57.93 bitrate=1097.4kbits/s speed=0.973x    
-FFmpeg stderr: frame= 1390 fps= 24 q=33.0 size=   12966KiB time=00:00:55.52 bitrate=1913.2kbits/s speed=0.973x    
+FFmpeg stderr: frame=  839 fps= 24 q=28.0 size=    7100KiB time=00:00:33.48 bitrate=1737.2kbits/s speed=0.955x    
 FFmpeg stderr: frame= 1403 fps= 23 q=28.0 size=    7795KiB time=00:00:58.43 bitrate=1092.8kbits/s speed=0.973x    
-FFmpeg stderr: frame= 1403 fps= 24 q=29.0 size=   13113KiB time=00:00:56.04 bitrate=1916.8kbits/s speed=0.973x    
+FFmpeg stderr: frame=  851 fps= 24 q=28.0 size=    7233KiB time=00:00:33.96 bitrate=1744.8kbits/s speed=0.956x    
 FFmpeg stderr: frame= 1415 fps= 23 q=28.0 size=    7834KiB time=00:00:58.93 bitrate=1089.0kbits/s speed=0.973x    
-FFmpeg stderr: frame= 1415 fps= 24 q=31.0 size=   13267KiB time=00:00:56.52 bitrate=1922.9kbits/s speed=0.973x    
+FFmpeg stderr: frame=  864 fps= 24 q=28.0 size=    7362KiB time=00:00:34.48 bitrate=1749.2kbits/s speed=0.957x    
 FFmpeg stderr: frame= 1428 fps= 23 q=28.0 size=    7869KiB time=00:00:59.47 bitrate=1083.9kbits/s speed=0.974x    
-FFmpeg stderr: frame= 1427 fps= 24 q=33.0 size=   13363KiB time=00:00:57.00 bitrate=1920.6kbits/s speed=0.973x    
+FFmpeg stderr: frame=  877 fps= 24 q=28.0 size=    7492KiB time=00:00:35.00 bitrate=1753.5kbits/s speed=0.958x    
 FFmpeg stderr: frame= 1440 fps= 23 q=28.0 size=    7952KiB time=00:00:59.97 bitrate=1086.1kbits/s speed=0.974x    
-FFmpeg stderr: frame= 1440 fps= 24 q=29.0 size=   13453KiB time=00:00:57.52 bitrate=1916.0kbits/s speed=0.974x    
+FFmpeg stderr: frame=  889 fps= 24 q=28.0 size=    7592KiB time=00:00:35.48 bitrate=1752.9kbits/s speed=0.958x    
 FFmpeg stderr: frame= 1452 fps= 23 q=28.0 size=    8004KiB time=00:01:00.47 bitrate=1084.2kbits/s speed=0.974x    
-FFmpeg stderr: frame= 1452 fps= 24 q=32.0 size=   13642KiB time=00:00:58.00 bitrate=1926.8kbits/s speed=0.974x    
+FFmpeg stderr: frame=  902 fps= 24 q=28.0 size=    7678KiB time=00:00:36.00 bitrate=1747.1kbits/s speed=0.959x    
 FFmpeg stderr: frame= 1464 fps= 23 q=28.0 size=    8083KiB time=00:01:00.97 bitrate=1085.9kbits/s speed=0.975x    
-FFmpeg stderr: frame= 1465 fps= 24 q=32.0 size=   13724KiB time=00:00:58.52 bitrate=1921.2kbits/s speed=0.974x    
+FFmpeg stderr: frame=  914 fps= 24 q=28.0 size=    7827KiB time=00:00:36.48 bitrate=1757.6kbits/s speed=0.959x    
 FFmpeg stderr: frame= 1475 fps= 23 q=28.0 size=    8150KiB time=00:01:01.43 bitrate=1086.7kbits/s speed=0.974x    
-FFmpeg stderr: frame= 1477 fps= 24 q=33.0 size=   13809KiB time=00:00:59.00 bitrate=1917.3kbits/s speed=0.974x    
+FFmpeg stderr: frame=  927 fps= 24 q=28.0 size=    7945KiB time=00:00:37.00 bitrate=1759.1kbits/s speed=0.96x    
 FFmpeg stderr: frame= 1487 fps= 23 q=28.0 size=    8239KiB time=00:01:01.93 bitrate=1089.7kbits/s speed=0.974x    
-FFmpeg stderr: frame= 1490 fps= 24 q=33.0 size=   13965KiB time=00:00:59.52 bitrate=1922.1kbits/s speed=0.975x    
+FFmpeg stderr: frame=  939 fps= 24 q=28.0 size=    8069KiB time=00:00:37.48 bitrate=1763.5kbits/s speed=0.96x    
 FFmpeg stderr: frame= 1499 fps= 23 q=28.0 size=    8315KiB time=00:01:02.43 bitrate=1090.9kbits/s speed=0.975x    
-FFmpeg stderr: frame= 1502 fps= 24 q=29.0 size=   14143KiB time=00:01:00.00 bitrate=1931.0kbits/s speed=0.974x    
+FFmpeg stderr: frame=  952 fps= 24 q=28.0 size=    8192KiB time=00:00:38.00 bitrate=1766.0kbits/s speed=0.961x    
 FFmpeg stderr: frame= 1511 fps= 23 q=28.0 size=    8367KiB time=00:01:02.93 bitrate=1089.1kbits/s speed=0.975x    
-FFmpeg stderr: frame= 1515 fps= 24 q=30.0 size=   14282KiB time=00:01:00.52 bitrate=1933.2kbits/s speed=0.975x    
+FFmpeg stderr: frame=  964 fps= 24 q=28.0 size=    8365KiB time=00:00:38.48 bitrate=1780.9kbits/s speed=0.961x    
 FFmpeg stderr: frame= 1523 fps= 23 q=28.0 size=    8434KiB time=00:01:03.43 bitrate=1089.1kbits/s speed=0.975x    
-FFmpeg stderr: frame= 1527 fps= 24 q=32.0 size=   14418KiB time=00:01:01.00 bitrate=1936.2kbits/s speed=0.975x    
+FFmpeg stderr: frame=  977 fps= 24 q=28.0 size=    8494KiB time=00:00:39.00 bitrate=1784.1kbits/s speed=0.962x    
 FFmpeg stderr: frame= 1535 fps= 23 q=28.0 size=    8536KiB time=00:01:03.93 bitrate=1093.6kbits/s speed=0.975x    
-FFmpeg stderr: frame= 1540 fps= 24 q=32.0 size=   14538KiB time=00:01:01.52 bitrate=1935.8kbits/s speed=0.975x    
-FFmpeg stderr: frame= 1547 fps= 23 q=28.0 size=    8635KiB time=00:01:04.43 bitrate=1097.8kbits/s speed=0.975x    
+FFmpeg stderr: frame=  989 fps= 24 q=28.0 size=    8615KiB time=00:00:39.48 bitrate=1787.5kbits/s speed=0.962x    
+FFmpeg stderr: frame= 1547 fps= 23 q=28.0 size=    8625KiB time=00:01:04.43 bitrate=1096.5kbits/s speed=0.975x    
+FFmpeg stderr: frame= 1001 fps= 24 q=28.0 size=    8735KiB time=00:00:39.96 bitrate=1790.8kbits/s speed=0.962x    
 FFmpeg stderr: frame= 1559 fps= 23 q=28.0 size=    8734KiB time=00:01:04.93 bitrate=1101.7kbits/s speed=0.975x    
-FFmpeg stderr: frame= 1551 fps= 24 q=33.0 size=   14655KiB time=00:01:01.96 bitrate=1937.6kbits/s speed=0.975x    
+FFmpeg stderr: frame= 1014 fps= 24 q=28.0 size=    8894KiB time=00:00:40.48 bitrate=1799.9kbits/s speed=0.963x    
 FFmpeg stderr: frame= 1571 fps= 23 q=28.0 size=    8872KiB time=00:01:05.44 bitrate=1110.7kbits/s speed=0.976x    
-FFmpeg stderr: frame= 1565 fps= 24 q=34.0 size=   14796KiB time=00:01:02.52 bitrate=1938.7kbits/s speed=0.976x    
+FFmpeg stderr: frame= 1027 fps= 24 q=28.0 size=    9031KiB time=00:00:41.00 bitrate=1804.4kbits/s speed=0.964x    
 FFmpeg stderr: frame= 1583 fps= 23 q=28.0 size=    8981KiB time=00:01:05.94 bitrate=1115.8kbits/s speed=0.976x    
-FFmpeg stderr: frame= 1577 fps= 24 q=34.0 size=   14921KiB time=00:01:03.00 bitrate=1940.3kbits/s speed=0.976x    
+FFmpeg stderr: frame= 1039 fps= 24 q=28.0 size=    9222KiB time=00:00:41.48 bitrate=1821.2kbits/s speed=0.964x    
 FFmpeg stderr: frame= 1595 fps= 23 q=28.0 size=    9084KiB time=00:01:06.44 bitrate=1120.0kbits/s speed=0.976x    
-FFmpeg stderr: frame= 1590 fps= 24 q=29.0 size=   15074KiB time=00:01:03.52 bitrate=1944.1kbits/s speed=0.976x    
+FFmpeg stderr: frame= 1052 fps= 24 q=28.0 size=    9309KiB time=00:00:42.00 bitrate=1815.6kbits/s speed=0.964x    
 FFmpeg stderr: frame= 1607 fps= 23 q=28.0 size=    9188KiB time=00:01:06.94 bitrate=1124.4kbits/s speed=0.976x    
-FFmpeg stderr: frame= 1602 fps= 24 q=28.0 size=   15181KiB time=00:01:04.00 bitrate=1943.1kbits/s speed=0.976x    
-FFmpeg stderr: frame= 1615 fps= 24 q=28.0 size=   15312KiB time=00:01:04.52 bitrate=1944.1kbits/s speed=0.976x    
+FFmpeg stderr: frame= 1064 fps= 24 q=28.0 size=    9449KiB time=00:00:42.48 bitrate=1822.1kbits/s speed=0.964x    
 FFmpeg stderr: frame= 1619 fps= 23 q=28.0 size=    9306KiB time=00:01:07.44 bitrate=1130.4kbits/s speed=0.976x    
-FFmpeg stderr: frame= 1627 fps= 24 q=28.0 size=   15412KiB time=00:01:05.00 bitrate=1942.4kbits/s speed=0.976x    
+FFmpeg stderr: frame= 1077 fps= 24 q=28.0 size=    9627KiB time=00:00:43.00 bitrate=1834.1kbits/s speed=0.965x    
 FFmpeg stderr: frame= 1631 fps= 23 q=28.0 size=    9457KiB time=00:01:07.94 bitrate=1140.3kbits/s speed=0.977x    
-FFmpeg stderr: frame= 1640 fps= 24 q=28.0 size=   15517KiB time=00:01:05.52 bitrate=1940.1kbits/s speed=0.977x    
+FFmpeg stderr: frame= 1089 fps= 24 q=28.0 size=    9742KiB time=00:00:43.48 bitrate=1835.4kbits/s speed=0.965x    
 FFmpeg stderr: frame= 1643 fps= 23 q=28.0 size=    9498KiB time=00:01:08.44 bitrate=1136.8kbits/s speed=0.977x    
-FFmpeg stderr: frame= 1652 fps= 24 q=29.0 size=   15658KiB time=00:01:06.00 bitrate=1943.5kbits/s speed=0.977x    
+FFmpeg stderr: frame= 1102 fps= 24 q=28.0 size=    9870KiB time=00:00:44.00 bitrate=1837.6kbits/s speed=0.966x    
 FFmpeg stderr: frame= 1655 fps= 23 q=28.0 size=    9547KiB time=00:01:08.94 bitrate=1134.4kbits/s speed=0.977x    
-FFmpeg stderr: frame= 1665 fps= 24 q=31.0 size=   15825KiB time=00:01:06.52 bitrate=1948.9kbits/s speed=0.977x    
+FFmpeg stderr: frame= 1114 fps= 24 q=28.0 size=    9980KiB time=00:00:44.48 bitrate=1838.0kbits/s speed=0.966x    
 FFmpeg stderr: frame= 1667 fps= 23 q=28.0 size=    9586KiB time=00:01:09.44 bitrate=1130.8kbits/s speed=0.977x    
+FFmpeg stderr: frame= 1127 fps= 24 q=28.0 size=   10127KiB time=00:00:45.00 bitrate=1843.6kbits/s speed=0.967x    
 FFmpeg stderr: frame= 1679 fps= 23 q=28.0 size=    9626KiB time=00:01:09.94 bitrate=1127.4kbits/s speed=0.977x    
-FFmpeg stderr: frame= 1678 fps= 24 q=29.0 size=   15978KiB time=00:01:07.04 bitrate=1952.4kbits/s speed=0.978x    
+FFmpeg stderr: frame= 1139 fps= 24 q=28.0 size=   10306KiB time=00:00:45.48 bitrate=1856.4kbits/s speed=0.967x    
 FFmpeg stderr: frame= 1691 fps= 23 q=28.0 size=    9708KiB time=00:01:10.44 bitrate=1128.9kbits/s speed=0.977x    
-FFmpeg stderr: frame= 1690 fps= 24 q=31.0 size=   16119KiB time=00:01:07.52 bitrate=1955.6kbits/s speed=0.977x    
-FFmpeg stderr: frame= 1703 fps= 23 q=28.0 size=    9742KiB time=00:01:10.94 bitrate=1124.9kbits/s speed=0.977x    
-FFmpeg stderr: frame= 1703 fps= 24 q=31.0 size=   16218KiB time=00:01:08.04 bitrate=1952.6kbits/s speed=0.978x    
+FFmpeg stderr: frame= 1152 fps= 24 q=27.0 size=   10475KiB time=00:00:46.00 bitrate=1865.5kbits/s speed=0.967x    
+FFmpeg stderr: frame= 1703 fps= 23 q=28.0 size=    9742KiB time=00:01:10.94 bitrate=1124.9kbits/s speed=0.978x    
+FFmpeg stderr: frame= 1164 fps= 24 q=29.0 size=   10573KiB time=00:00:46.48 bitrate=1863.4kbits/s speed=0.967x    
 FFmpeg stderr: frame= 1715 fps= 23 q=28.0 size=    9775KiB time=00:01:11.44 bitrate=1120.8kbits/s speed=0.978x    
-FFmpeg stderr: frame= 1715 fps= 24 q=29.0 size=   16363KiB time=00:01:08.52 bitrate=1956.3kbits/s speed=0.978x    
+FFmpeg stderr: frame= 1177 fps= 24 q=28.0 size=   10708KiB time=00:00:47.00 bitrate=1866.3kbits/s speed=0.968x    
 FFmpeg stderr: frame= 1727 fps= 23 q=28.0 size=    9807KiB time=00:01:11.94 bitrate=1116.6kbits/s speed=0.978x    
-FFmpeg stderr: frame= 1728 fps= 24 q=28.0 size=   16483KiB time=00:01:09.04 bitrate=1955.9kbits/s speed=0.978x    
+FFmpeg stderr: frame= 1189 fps= 24 q=28.0 size=   10852KiB time=00:00:47.48 bitrate=1872.4kbits/s speed=0.968x    
 FFmpeg stderr: frame= 1739 fps= 23 q=28.0 size=    9911KiB time=00:01:12.44 bitrate=1120.6kbits/s speed=0.978x    
-FFmpeg stderr: frame= 1741 fps= 24 q=28.0 size=   16644KiB time=00:01:09.56 bitrate=1960.1kbits/s speed=0.979x    
+FFmpeg stderr: frame= 1202 fps= 24 q=28.0 size=   10914KiB time=00:00:48.00 bitrate=1862.7kbits/s speed=0.969x    
 FFmpeg stderr: frame= 1751 fps= 23 q=28.0 size=    9983KiB time=00:01:12.94 bitrate=1121.1kbits/s speed=0.978x    
-FFmpeg stderr: frame= 1753 fps= 24 q=28.0 size=   16741KiB time=00:01:10.04 bitrate=1958.1kbits/s speed=0.978x    
+FFmpeg stderr: frame= 1214 fps= 24 q=28.0 size=   11056KiB time=00:00:48.48 bitrate=1868.1kbits/s speed=0.968x    
 FFmpeg stderr: frame= 1763 fps= 23 q=25.0 size=   10058KiB time=00:01:13.44 bitrate=1121.8kbits/s speed=0.978x    
-FFmpeg stderr: frame= 1765 fps= 24 q=28.0 size=   16854KiB time=00:01:10.52 bitrate=1957.9kbits/s speed=0.978x    
+FFmpeg stderr: frame= 1227 fps= 24 q=28.0 size=   11179KiB time=00:00:49.00 bitrate=1868.9kbits/s speed=0.969x    
 FFmpeg stderr: frame= 1775 fps= 23 q=28.0 size=   10125KiB time=00:01:13.94 bitrate=1121.7kbits/s speed=0.978x    
-FFmpeg stderr: frame= 1778 fps= 24 q=28.0 size=   16941KiB time=00:01:11.04 bitrate=1953.5kbits/s speed=0.979x    
+FFmpeg stderr: frame= 1238 fps= 24 q=28.0 size=   11295KiB time=00:00:49.44 bitrate=1871.5kbits/s speed=0.968x    
 FFmpeg stderr: frame= 1787 fps= 23 q=28.0 size=   10218KiB time=00:01:14.44 bitrate=1124.3kbits/s speed=0.979x    
-FFmpeg stderr: frame= 1790 fps= 24 q=28.0 size=   17074KiB time=00:01:11.52 bitrate=1955.7kbits/s speed=0.979x    
+FFmpeg stderr: frame= 1252 fps= 24 q=28.0 size=   11415KiB time=00:00:50.00 bitrate=1870.2kbits/s speed=0.97x    
 FFmpeg stderr: frame= 1799 fps= 23 q=28.0 size=   10264KiB time=00:01:14.94 bitrate=1121.9kbits/s speed=0.979x    
-FFmpeg stderr: frame= 1804 fps= 25 q=28.0 size=   17155KiB time=00:01:12.08 bitrate=1949.7kbits/s speed=0.98x    
+FFmpeg stderr: frame= 1264 fps= 24 q=28.0 size=   11555KiB time=00:00:50.48 bitrate=1875.1kbits/s speed=0.97x    
 FFmpeg stderr: frame= 1811 fps= 23 q=28.0 size=   10312KiB time=00:01:15.45 bitrate=1119.6kbits/s speed=0.979x    
-FFmpeg stderr: frame= 1816 fps= 25 q=28.0 size=   17244KiB time=00:01:12.56 bitrate=1946.8kbits/s speed=0.979x    
+FFmpeg stderr: frame= 1277 fps= 24 q=28.0 size=   11699KiB time=00:00:51.00 bitrate=1879.2kbits/s speed=0.97x    
 FFmpeg stderr: frame= 1823 fps= 23 q=28.0 size=   10362KiB time=00:01:15.95 bitrate=1117.7kbits/s speed=0.979x    
-FFmpeg stderr: frame= 1828 fps= 25 q=28.0 size=   17302KiB time=00:01:13.04 bitrate=1940.6kbits/s speed=0.979x    
+FFmpeg stderr: frame= 1290 fps= 24 q=28.0 size=   11871KiB time=00:00:51.52 bitrate=1887.5kbits/s speed=0.971x    
 FFmpeg stderr: frame= 1835 fps= 24 q=28.0 size=   10421KiB time=00:01:16.45 bitrate=1116.6kbits/s speed=0.979x    
-FFmpeg stderr: frame= 1840 fps= 25 q=28.0 size=   17381KiB time=00:01:13.52 bitrate=1936.7kbits/s speed=0.979x    
+FFmpeg stderr: frame= 1302 fps= 24 q=28.0 size=   11965KiB time=00:00:52.00 bitrate=1884.9kbits/s speed=0.971x    
 FFmpeg stderr: frame= 1847 fps= 24 q=28.0 size=   10462KiB time=00:01:16.95 bitrate=1113.7kbits/s speed=0.979x    
-FFmpeg stderr: frame= 1853 fps= 25 q=28.0 size=   17433KiB time=00:01:14.04 bitrate=1928.8kbits/s speed=0.98x    
+FFmpeg stderr: frame= 1315 fps= 24 q=28.0 size=   12145KiB time=00:00:52.52 bitrate=1894.3kbits/s speed=0.971x    
 FFmpeg stderr: frame= 1859 fps= 24 q=28.0 size=   10498KiB time=00:01:17.45 bitrate=1110.4kbits/s speed=0.979x    
-FFmpeg stderr: frame= 1865 fps= 25 q=28.0 size=   17501KiB time=00:01:14.52 bitrate=1923.9kbits/s speed=0.979x    
+FFmpeg stderr: frame= 1327 fps= 24 q=28.0 size=   12310KiB time=00:00:53.00 bitrate=1902.7kbits/s speed=0.971x    
 FFmpeg stderr: frame= 1870 fps= 23 q=28.0 size=   10533KiB time=00:01:17.91 bitrate=1107.5kbits/s speed=0.979x    
-FFmpeg stderr: frame= 1878 fps= 25 q=28.0 size=   17583KiB time=00:01:15.04 bitrate=1919.5kbits/s speed=0.98x    
+FFmpeg stderr: frame= 1340 fps= 24 q=28.0 size=   12442KiB time=00:00:53.52 bitrate=1904.4kbits/s speed=0.972x    
 FFmpeg stderr: frame= 1883 fps= 24 q=28.0 size=   10589KiB time=00:01:18.45 bitrate=1105.7kbits/s speed=0.98x    
-FFmpeg stderr: frame= 1890 fps= 25 q=28.0 size=   17706KiB time=00:01:15.52 bitrate=1920.7kbits/s speed=0.98x    
+FFmpeg stderr: frame= 1352 fps= 24 q=28.0 size=   12567KiB time=00:00:54.00 bitrate=1906.4kbits/s speed=0.972x    
 FFmpeg stderr: frame= 1895 fps= 24 q=28.0 size=   10628KiB time=00:01:18.95 bitrate=1102.7kbits/s speed=0.98x    
-FFmpeg stderr: frame= 1903 fps= 25 q=28.0 size=   17803KiB time=00:01:16.04 bitrate=1918.0kbits/s speed=0.98x    
+FFmpeg stderr: frame= 1364 fps= 24 q=28.0 size=   12701KiB time=00:00:54.48 bitrate=1909.8kbits/s speed=0.972x    
 FFmpeg stderr: frame= 1907 fps= 24 q=28.0 size=   10660KiB time=00:01:19.45 bitrate=1099.1kbits/s speed=0.98x    
-FFmpeg stderr: frame= 1915 fps= 25 q=28.0 size=   17889KiB time=00:01:16.52 bitrate=1915.1kbits/s speed=0.98x    
-FFmpeg stderr: frame= 1928 fps= 25 q=28.0 size=   17982KiB time=00:01:17.04 bitrate=1912.1kbits/s speed=0.98x    
+FFmpeg stderr: frame= 1377 fps= 24 q=28.0 size=   12813KiB time=00:00:55.00 bitrate=1908.4kbits/s speed=0.972x    
 FFmpeg stderr: frame= 1919 fps= 24 q=28.0 size=   10693KiB time=00:01:19.95 bitrate=1095.5kbits/s speed=0.98x    
+FFmpeg stderr: frame= 1390 fps= 24 q=33.0 size=   12967KiB time=00:00:55.52 bitrate=1913.3kbits/s speed=0.973x    
 FFmpeg stderr: frame= 1931 fps= 24 q=28.0 size=   10802KiB time=00:01:20.45 bitrate=1099.9kbits/s speed=0.98x    
-FFmpeg stderr: frame= 1940 fps= 25 q=28.0 size=   18115KiB time=00:01:17.52 bitrate=1914.3kbits/s speed=0.98x    
-FFmpeg stderr: frame= 1953 fps= 25 q=28.0 size=   18197KiB time=00:01:18.04 bitrate=1910.2kbits/s speed=0.98x    
+FFmpeg stderr: frame= 1403 fps= 24 q=29.0 size=   13111KiB time=00:00:56.04 bitrate=1916.6kbits/s speed=0.973x    
 FFmpeg stderr: frame= 1943 fps= 24 q=28.0 size=   10937KiB time=00:01:20.95 bitrate=1106.7kbits/s speed=0.98x    
-FFmpeg stderr: frame= 1965 fps= 25 q=28.0 size=   18294KiB time=00:01:18.52 bitrate=1908.6kbits/s speed=0.98x    
+FFmpeg stderr: frame= 1415 fps= 24 q=31.0 size=   13266KiB time=00:00:56.52 bitrate=1922.8kbits/s speed=0.973x    
 FFmpeg stderr: frame= 1955 fps= 24 q=28.0 size=   11051KiB time=00:01:21.45 bitrate=1111.4kbits/s speed=0.98x    
-FFmpeg stderr: frame= 1978 fps= 25 q=28.0 size=   18369KiB time=00:01:19.04 bitrate=1903.8kbits/s speed=0.981x    
+FFmpeg stderr: frame= 1427 fps= 24 q=33.0 size=   13362KiB time=00:00:57.00 bitrate=1920.4kbits/s speed=0.973x    
 FFmpeg stderr: frame= 1967 fps= 24 q=28.0 size=   11146KiB time=00:01:21.95 bitrate=1114.1kbits/s speed=0.98x    
-FFmpeg stderr: frame= 1990 fps= 25 q=28.0 size=   18466KiB time=00:01:19.52 bitrate=1902.3kbits/s speed=0.981x    
+FFmpeg stderr: frame= 1440 fps= 24 q=29.0 size=   13452KiB time=00:00:57.52 bitrate=1915.9kbits/s speed=0.974x    
 FFmpeg stderr: frame= 1979 fps= 24 q=28.0 size=   11303KiB time=00:01:22.45 bitrate=1123.0kbits/s speed=0.981x    
-FFmpeg stderr: frame= 2003 fps= 25 q=28.0 size=   18565KiB time=00:01:20.04 bitrate=1900.1kbits/s speed=0.981x    
+FFmpeg stderr: frame= 1452 fps= 24 q=32.0 size=   13641KiB time=00:00:58.00 bitrate=1926.7kbits/s speed=0.974x    
 FFmpeg stderr: frame= 1991 fps= 24 q=28.0 size=   11444KiB time=00:01:22.95 bitrate=1130.1kbits/s speed=0.981x    
-FFmpeg stderr: frame= 2015 fps= 25 q=28.0 size=   18662KiB time=00:01:20.52 bitrate=1898.6kbits/s speed=0.981x    
+FFmpeg stderr: frame= 1465 fps= 24 q=32.0 size=   13724KiB time=00:00:58.52 bitrate=1921.1kbits/s speed=0.974x    
 FFmpeg stderr: frame= 2003 fps= 24 q=28.0 size=   11545KiB time=00:01:23.45 bitrate=1133.3kbits/s speed=0.981x    
+FFmpeg stderr: frame= 1477 fps= 24 q=33.0 size=   13810KiB time=00:00:59.00 bitrate=1917.5kbits/s speed=0.974x    
 FFmpeg stderr: frame= 2015 fps= 24 q=28.0 size=   11679KiB time=00:01:23.95 bitrate=1139.5kbits/s speed=0.981x    
-FFmpeg stderr: frame= 2028 fps= 25 q=28.0 size=   18738KiB time=00:01:21.04 bitrate=1894.1kbits/s speed=0.981x    
-FFmpeg stderr: frame= 2040 fps= 25 q=28.0 size=   18842KiB time=00:01:21.52 bitrate=1893.4kbits/s speed=0.981x    
-FFmpeg stderr: frame= 2027 fps= 24 q=28.0 size=   11799KiB time=00:01:24.45 bitrate=1144.4kbits/s speed=0.981x    
-FFmpeg stderr: frame= 2053 fps= 25 q=28.0 size=   18905KiB time=00:01:22.04 bitrate=1887.7kbits/s speed=0.981x    
+FFmpeg stderr: frame= 1490 fps= 24 q=33.0 size=   13967KiB time=00:00:59.52 bitrate=1922.3kbits/s speed=0.975x    
+FFmpeg stderr: frame= 2027 fps= 24 q=28.0 size=   11824KiB time=00:01:24.45 bitrate=1146.8kbits/s speed=0.981x    
+FFmpeg stderr: frame= 1502 fps= 24 q=29.0 size=   14143KiB time=00:01:00.00 bitrate=1931.1kbits/s speed=0.974x    
 FFmpeg stderr: frame= 2039 fps= 24 q=28.0 size=   11912KiB time=00:01:24.95 bitrate=1148.6kbits/s speed=0.981x    
-FFmpeg stderr: frame= 2065 fps= 25 q=28.0 size=   18976KiB time=00:01:22.52 bitrate=1883.9kbits/s speed=0.981x    
+FFmpeg stderr: frame= 1515 fps= 24 q=30.0 size=   14282KiB time=00:01:00.52 bitrate=1933.3kbits/s speed=0.975x    
 FFmpeg stderr: frame= 2051 fps= 24 q=28.0 size=   12002KiB time=00:01:25.46 bitrate=1150.5kbits/s speed=0.981x    
-FFmpeg stderr: frame= 2078 fps= 25 q=28.0 size=   19049KiB time=00:01:23.04 bitrate=1879.2kbits/s speed=0.982x    
+FFmpeg stderr: frame= 1527 fps= 24 q=32.0 size=   14417KiB time=00:01:01.00 bitrate=1936.1kbits/s speed=0.975x    
 FFmpeg stderr: frame= 2063 fps= 24 q=28.0 size=   12086KiB time=00:01:25.96 bitrate=1151.8kbits/s speed=0.981x    
-FFmpeg stderr: frame= 2090 fps= 25 q=28.0 size=   19159KiB time=00:01:23.52 bitrate=1879.2kbits/s speed=0.981x    
+FFmpeg stderr: frame= 1540 fps= 24 q=32.0 size=   14537KiB time=00:01:01.52 bitrate=1935.7kbits/s speed=0.975x    
 FFmpeg stderr: frame= 2075 fps= 24 q=28.0 size=   12162KiB time=00:01:26.46 bitrate=1152.3kbits/s speed=0.981x    
-FFmpeg stderr: frame= 2103 fps= 25 q=25.0 size=   19268KiB time=00:01:24.04 bitrate=1878.2kbits/s speed=0.982x    
+FFmpeg stderr: frame= 1551 fps= 24 q=33.0 size=   14653KiB time=00:01:01.96 bitrate=1937.4kbits/s speed=0.975x    
 FFmpeg stderr: frame= 2086 fps= 24 q=28.0 size=   12269KiB time=00:01:26.92 bitrate=1156.3kbits/s speed=0.981x    
-FFmpeg stderr: frame= 2115 fps= 25 q=28.0 size=   19422KiB time=00:01:24.52 bitrate=1882.5kbits/s speed=0.982x    
+FFmpeg stderr: frame= 1565 fps= 24 q=34.0 size=   14795KiB time=00:01:02.52 bitrate=1938.6kbits/s speed=0.976x    
 FFmpeg stderr: frame= 2099 fps= 24 q=28.0 size=   12304KiB time=00:01:27.46 bitrate=1152.4kbits/s speed=0.982x    
-FFmpeg stderr: frame= 2128 fps= 25 q=28.0 size=   19544KiB time=00:01:25.04 bitrate=1882.7kbits/s speed=0.982x    
+FFmpeg stderr: frame= 1577 fps= 24 q=34.0 size=   14922KiB time=00:01:03.00 bitrate=1940.3kbits/s speed=0.976x    
 FFmpeg stderr: frame= 2111 fps= 24 q=28.0 size=   12336KiB time=00:01:27.96 bitrate=1148.8kbits/s speed=0.982x    
-FFmpeg stderr: frame= 2140 fps= 25 q=28.0 size=   19680KiB time=00:01:25.52 bitrate=1885.1kbits/s speed=0.982x    
+FFmpeg stderr: frame= 1590 fps= 24 q=29.0 size=   15075KiB time=00:01:03.52 bitrate=1944.1kbits/s speed=0.976x    
 FFmpeg stderr: frame= 2123 fps= 24 q=28.0 size=   12364KiB time=00:01:28.46 bitrate=1145.0kbits/s speed=0.982x    
+FFmpeg stderr: frame= 1602 fps= 24 q=28.0 size=   15181KiB time=00:01:04.00 bitrate=1943.2kbits/s speed=0.976x    
 FFmpeg stderr: frame= 2135 fps= 24 q=28.0 size=   12420KiB time=00:01:28.96 bitrate=1143.6kbits/s speed=0.982x    
-FFmpeg stderr: frame= 2153 fps= 25 q=28.0 size=   19814KiB time=00:01:26.04 bitrate=1886.6kbits/s speed=0.982x    
-FFmpeg stderr: frame= 2165 fps= 25 q=28.0 size=   19945KiB time=00:01:26.52 bitrate=1888.4kbits/s speed=0.982x    
+FFmpeg stderr: frame= 1615 fps= 24 q=28.0 size=   15312KiB time=00:01:04.52 bitrate=1944.2kbits/s speed=0.976x    
 FFmpeg stderr: frame= 2147 fps= 24 q=28.0 size=   12475KiB time=00:01:29.46 bitrate=1142.3kbits/s speed=0.982x    
-FFmpeg stderr: frame= 2178 fps= 25 q=28.0 size=   20088KiB time=00:01:27.04 bitrate=1890.7kbits/s speed=0.982x    
+FFmpeg stderr: frame= 1627 fps= 24 q=28.0 size=   15412KiB time=00:01:05.00 bitrate=1942.3kbits/s speed=0.976x    
 FFmpeg stderr: frame= 2159 fps= 24 q=28.0 size=   12513KiB time=00:01:29.96 bitrate=1139.4kbits/s speed=0.982x    
-FFmpeg stderr: frame= 2189 fps= 25 q=28.0 size=   20205KiB time=00:01:27.48 bitrate=1892.1kbits/s speed=0.982x    
+FFmpeg stderr: frame= 1640 fps= 24 q=28.0 size=   15516KiB time=00:01:05.52 bitrate=1940.0kbits/s speed=0.977x    
 FFmpeg stderr: frame= 2171 fps= 24 q=28.0 size=   12557KiB time=00:01:30.46 bitrate=1137.1kbits/s speed=0.982x    
-FFmpeg stderr: frame= 2203 fps= 25 q=28.0 size=   20359KiB time=00:01:28.04 bitrate=1894.4kbits/s speed=0.983x    
+FFmpeg stderr: frame= 1652 fps= 24 q=29.0 size=   15657KiB time=00:01:06.00 bitrate=1943.4kbits/s speed=0.977x    
 FFmpeg stderr: frame= 2183 fps= 24 q=28.0 size=   12605KiB time=00:01:30.96 bitrate=1135.2kbits/s speed=0.982x    
-FFmpeg stderr: frame= 2216 fps= 25 q=28.0 size=   20487KiB time=00:01:28.56 bitrate=1895.1kbits/s speed=0.983x    
+FFmpeg stderr: frame= 1665 fps= 24 q=31.0 size=   15824KiB time=00:01:06.52 bitrate=1948.7kbits/s speed=0.977x    
 FFmpeg stderr: frame= 2195 fps= 24 q=28.0 size=   12668KiB time=00:01:31.46 bitrate=1134.5kbits/s speed=0.982x    
+FFmpeg stderr: frame= 1677 fps= 24 q=29.0 size=   15971KiB time=00:01:07.00 bitrate=1952.8kbits/s speed=0.977x    
 FFmpeg stderr: frame= 2207 fps= 24 q=28.0 size=   12711KiB time=00:01:31.96 bitrate=1132.3kbits/s speed=0.983x    
-FFmpeg stderr: frame= 2228 fps= 25 q=28.0 size=   20632KiB time=00:01:29.04 bitrate=1898.2kbits/s speed=0.983x    
-FFmpeg stderr: frame= 2242 fps= 25 q=28.0 size=   20772KiB time=00:01:29.60 bitrate=1899.2kbits/s speed=0.983x    
+FFmpeg stderr: frame= 1690 fps= 24 q=30.0 size=   16112KiB time=00:01:07.52 bitrate=1954.8kbits/s speed=0.977x    
 FFmpeg stderr: frame= 2219 fps= 24 q=28.0 size=   12756KiB time=00:01:32.46 bitrate=1130.1kbits/s speed=0.983x    
-FFmpeg stderr: frame= 2254 fps= 25 q=28.0 size=   20927KiB time=00:01:30.08 bitrate=1903.1kbits/s speed=0.983x    
+FFmpeg stderr: frame= 1703 fps= 24 q=31.0 size=   16210KiB time=00:01:08.04 bitrate=1951.7kbits/s speed=0.978x    
 FFmpeg stderr: frame= 2231 fps= 24 q=28.0 size=   12798KiB time=00:01:32.96 bitrate=1127.7kbits/s speed=0.983x    
-FFmpeg stderr: frame= 2266 fps= 25 q=28.0 size=   21053KiB time=00:01:30.56 bitrate=1904.5kbits/s speed=0.983x    
+FFmpeg stderr: frame= 1715 fps= 24 q=29.0 size=   16357KiB time=00:01:08.52 bitrate=1955.5kbits/s speed=0.978x    
 FFmpeg stderr: frame= 2243 fps= 24 q=28.0 size=   12857KiB time=00:01:33.46 bitrate=1126.8kbits/s speed=0.983x    
+FFmpeg stderr: frame= 1728 fps= 24 q=28.0 size=   16478KiB time=00:01:09.04 bitrate=1955.2kbits/s speed=0.978x    
 FFmpeg stderr: frame= 2255 fps= 24 q=28.0 size=   12897KiB time=00:01:33.96 bitrate=1124.4kbits/s speed=0.983x    
-FFmpeg stderr: frame= 2278 fps= 25 q=28.0 size=   21169KiB time=00:01:31.04 bitrate=1904.8kbits/s speed=0.983x    
+FFmpeg stderr: frame= 1741 fps= 24 q=28.0 size=   16637KiB time=00:01:09.56 bitrate=1959.4kbits/s speed=0.979x    
 FFmpeg stderr: frame= 2267 fps= 24 q=28.0 size=   12935KiB time=00:01:34.46 bitrate=1121.7kbits/s speed=0.983x    
-FFmpeg stderr: frame= 2290 fps= 25 q=28.0 size=   21326KiB time=00:01:31.52 bitrate=1908.9kbits/s speed=0.983x    
+FFmpeg stderr: frame= 1753 fps= 24 q=28.0 size=   16741KiB time=00:01:10.04 bitrate=1958.0kbits/s speed=0.978x    
 FFmpeg stderr: frame= 2279 fps= 24 q=28.0 size=   12971KiB time=00:01:34.96 bitrate=1118.9kbits/s speed=0.983x    
-FFmpeg stderr: frame= 2303 fps= 25 q=28.0 size=   21486KiB time=00:01:32.04 bitrate=1912.4kbits/s speed=0.983x    
+FFmpeg stderr: frame= 1765 fps= 24 q=28.0 size=   16854KiB time=00:01:10.52 bitrate=1957.8kbits/s speed=0.978x    
 FFmpeg stderr: frame= 2291 fps= 24 q=28.0 size=   13023KiB time=00:01:35.47 bitrate=1117.4kbits/s speed=0.983x    
-FFmpeg stderr: frame= 2316 fps= 25 q=28.0 size=   21598KiB time=00:01:32.56 bitrate=1911.5kbits/s speed=0.984x    
-FFmpeg stderr: frame= 2303 fps= 24 q=28.0 size=   13047KiB time=00:01:35.97 bitrate=1113.7kbits/s speed=0.983x    
-FFmpeg stderr: frame= 2328 fps= 25 q=28.0 size=   21765KiB time=00:01:33.04 bitrate=1916.3kbits/s speed=0.983x    
+FFmpeg stderr: frame= 1778 fps= 24 q=28.0 size=   16941KiB time=00:01:11.04 bitrate=1953.5kbits/s speed=0.979x    
+FFmpeg stderr: frame= 2303 fps= 24 q=28.0 size=   13052KiB time=00:01:35.97 bitrate=1114.1kbits/s speed=0.983x    
+FFmpeg stderr: frame= 1790 fps= 24 q=28.0 size=   17074KiB time=00:01:11.52 bitrate=1955.7kbits/s speed=0.979x    
 FFmpeg stderr: frame= 2315 fps= 24 q=25.0 size=   13070KiB time=00:01:36.47 bitrate=1109.9kbits/s speed=0.983x    
-FFmpeg stderr: frame= 2341 fps= 25 q=28.0 size=   21874KiB time=00:01:33.56 bitrate=1915.3kbits/s speed=0.984x    
+FFmpeg stderr: frame= 1804 fps= 25 q=28.0 size=   17154KiB time=00:01:12.08 bitrate=1949.6kbits/s speed=0.98x    
 FFmpeg stderr: frame= 2327 fps= 24 q=28.0 size=   13101KiB time=00:01:36.97 bitrate=1106.8kbits/s speed=0.983x    
-FFmpeg stderr: frame= 2353 fps= 25 q=28.0 size=   22000KiB time=00:01:34.04 bitrate=1916.5kbits/s speed=0.984x    
+FFmpeg stderr: frame= 1816 fps= 25 q=28.0 size=   17244KiB time=00:01:12.56 bitrate=1946.8kbits/s speed=0.979x    
 FFmpeg stderr: frame= 2339 fps= 24 q=28.0 size=   13152KiB time=00:01:37.47 bitrate=1105.4kbits/s speed=0.984x    
-FFmpeg stderr: frame= 2366 fps= 25 q=28.0 size=   22116KiB time=00:01:34.56 bitrate=1915.9kbits/s speed=0.984x    
-FFmpeg stderr: frame= 2351 fps= 24 q=28.0 size=   13175KiB time=00:01:37.97 bitrate=1101.7kbits/s speed=0.984x    
-FFmpeg stderr: frame= 2378 fps= 25 q=28.0 size=   22237KiB time=00:01:35.04 bitrate=1916.7kbits/s speed=0.984x    
+FFmpeg stderr: frame= 1828 fps= 25 q=28.0 size=   17302KiB time=00:01:13.04 bitrate=1940.5kbits/s speed=0.979x    
+FFmpeg stderr: frame= 2351 fps= 24 q=28.0 size=   13177KiB time=00:01:37.97 bitrate=1101.8kbits/s speed=0.984x    
+FFmpeg stderr: frame= 1840 fps= 25 q=28.0 size=   17381KiB time=00:01:13.52 bitrate=1936.7kbits/s speed=0.979x    
 FFmpeg stderr: frame= 2362 fps= 24 q=28.0 size=   13201KiB time=00:01:38.43 bitrate=1098.7kbits/s speed=0.983x    
-FFmpeg stderr: frame= 2391 fps= 25 q=28.0 size=   22337KiB time=00:01:35.56 bitrate=1914.9kbits/s speed=0.984x    
+FFmpeg stderr: frame= 1853 fps= 25 q=28.0 size=   17433KiB time=00:01:14.04 bitrate=1928.8kbits/s speed=0.98x    
 FFmpeg stderr: frame= 2375 fps= 24 q=28.0 size=   13253KiB time=00:01:38.97 bitrate=1096.9kbits/s speed=0.984x    
-FFmpeg stderr: frame= 2403 fps= 25 q=28.0 size=   22482KiB time=00:01:36.04 bitrate=1917.7kbits/s speed=0.984x    
+FFmpeg stderr: frame= 1865 fps= 25 q=28.0 size=   17501KiB time=00:01:14.52 bitrate=1923.9kbits/s speed=0.979x    
 FFmpeg stderr: frame= 2387 fps= 24 q=28.0 size=   13350KiB time=00:01:39.47 bitrate=1099.4kbits/s speed=0.984x    
-FFmpeg stderr: frame= 2416 fps= 25 q=28.0 size=   22595KiB time=00:01:36.56 bitrate=1916.9kbits/s speed=0.984x    
+FFmpeg stderr: frame= 1878 fps= 25 q=28.0 size=   17582KiB time=00:01:15.04 bitrate=1919.4kbits/s speed=0.98x    
 FFmpeg stderr: frame= 2399 fps= 24 q=28.0 size=   13428KiB time=00:01:39.97 bitrate=1100.3kbits/s speed=0.984x    
-FFmpeg stderr: frame= 2428 fps= 25 q=28.0 size=   22733KiB time=00:01:37.04 bitrate=1919.1kbits/s speed=0.984x    
-FFmpeg stderr: frame= 2411 fps= 24 q=28.0 size=   13516KiB time=00:01:40.47 bitrate=1102.0kbits/s speed=0.984x    
-FFmpeg stderr: frame= 2441 fps= 25 q=28.0 size=   22838KiB time=00:01:37.56 bitrate=1917.7kbits/s speed=0.984x    
+FFmpeg stderr: frame= 1890 fps= 25 q=28.0 size=   17705KiB time=00:01:15.52 bitrate=1920.6kbits/s speed=0.98x    
+FFmpeg stderr: frame= 2411 fps= 24 q=28.0 size=   13522KiB time=00:01:40.47 bitrate=1102.4kbits/s speed=0.984x    
+FFmpeg stderr: frame= 1903 fps= 25 q=28.0 size=   17802KiB time=00:01:16.04 bitrate=1917.9kbits/s speed=0.98x    
 FFmpeg stderr: frame= 2423 fps= 24 q=28.0 size=   13620KiB time=00:01:40.97 bitrate=1105.0kbits/s speed=0.984x    
-FFmpeg stderr: frame= 2453 fps= 25 q=28.0 size=   22983KiB time=00:01:38.04 bitrate=1920.4kbits/s speed=0.984x    
-FFmpeg stderr: frame= 2435 fps= 24 q=28.0 size=   13708KiB time=00:01:41.47 bitrate=1106.6kbits/s speed=0.984x    
-FFmpeg stderr: frame= 2466 fps= 25 q=28.0 size=   23108KiB time=00:01:38.56 bitrate=1920.7kbits/s speed=0.984x    
+FFmpeg stderr: frame= 1915 fps= 25 q=28.0 size=   17888KiB time=00:01:16.52 bitrate=1915.0kbits/s speed=0.98x    
+FFmpeg stderr: frame= 2435 fps= 24 q=28.0 size=   13721KiB time=00:01:41.47 bitrate=1107.6kbits/s speed=0.984x    
+FFmpeg stderr: frame= 1928 fps= 25 q=28.0 size=   17981KiB time=00:01:17.04 bitrate=1912.0kbits/s speed=0.98x    
 FFmpeg stderr: frame= 2447 fps= 24 q=28.0 size=   13823KiB time=00:01:41.97 bitrate=1110.4kbits/s speed=0.984x    
-FFmpeg stderr: frame= 2478 fps= 25 q=28.0 size=   23223KiB time=00:01:39.04 bitrate=1920.9kbits/s speed=0.984x    
+FFmpeg stderr: frame= 1940 fps= 25 q=28.0 size=   18114KiB time=00:01:17.52 bitrate=1914.2kbits/s speed=0.98x    
 FFmpeg stderr: frame= 2459 fps= 24 q=28.0 size=   13927KiB time=00:01:42.47 bitrate=1113.3kbits/s speed=0.984x    
-FFmpeg stderr: frame= 2492 fps= 25 q=28.0 size=   23367KiB time=00:01:39.60 bitrate=1921.9kbits/s speed=0.985x    
+FFmpeg stderr: frame= 1953 fps= 25 q=28.0 size=   18196KiB time=00:01:18.04 bitrate=1910.1kbits/s speed=0.98x    
 FFmpeg stderr: frame= 2471 fps= 24 q=28.0 size=   14024KiB time=00:01:42.97 bitrate=1115.6kbits/s speed=0.984x    
-FFmpeg stderr: frame= 2503 fps= 25 q=28.0 size=   23462KiB time=00:01:40.04 bitrate=1921.3kbits/s speed=0.985x    
+FFmpeg stderr: frame= 1965 fps= 25 q=28.0 size=   18293KiB time=00:01:18.52 bitrate=1908.5kbits/s speed=0.98x    
 FFmpeg stderr: frame= 2483 fps= 24 q=28.0 size=   14119KiB time=00:01:43.47 bitrate=1117.7kbits/s speed=0.984x    
-FFmpeg stderr: frame= 2516 fps= 25 q=28.0 size=   23610KiB time=00:01:40.56 bitrate=1923.4kbits/s speed=0.985x    
+FFmpeg stderr: frame= 1978 fps= 25 q=28.0 size=   18368KiB time=00:01:19.04 bitrate=1903.7kbits/s speed=0.981x    
 FFmpeg stderr: frame= 2495 fps= 24 q=28.0 size=   14212KiB time=00:01:43.97 bitrate=1119.7kbits/s speed=0.985x    
-FFmpeg stderr: frame= 2528 fps= 25 q=28.0 size=   23725KiB time=00:01:41.04 bitrate=1923.5kbits/s speed=0.985x    
+FFmpeg stderr: frame= 1990 fps= 25 q=28.0 size=   18465KiB time=00:01:19.52 bitrate=1902.2kbits/s speed=0.981x    
 FFmpeg stderr: frame= 2507 fps= 24 q=28.0 size=   14307KiB time=00:01:44.47 bitrate=1121.8kbits/s speed=0.985x    
-FFmpeg stderr: frame= 2541 fps= 25 q=28.0 size=   23876KiB time=00:01:41.56 bitrate=1925.9kbits/s speed=0.985x    
-FFmpeg stderr: frame= 2519 fps= 24 q=28.0 size=   14374KiB time=00:01:44.97 bitrate=1121.7kbits/s speed=0.985x    
-FFmpeg stderr: frame= 2552 fps= 25 q=28.0 size=   23989KiB time=00:01:42.00 bitrate=1926.6kbits/s speed=0.984x    
+FFmpeg stderr: frame= 2003 fps= 25 q=28.0 size=   18564KiB time=00:01:20.04 bitrate=1900.0kbits/s speed=0.981x    
+FFmpeg stderr: frame= 2519 fps= 24 q=28.0 size=   14380KiB time=00:01:44.97 bitrate=1122.1kbits/s speed=0.985x    
+FFmpeg stderr: frame= 2015 fps= 25 q=28.0 size=   18661KiB time=00:01:20.52 bitrate=1898.5kbits/s speed=0.981x    
 FFmpeg stderr: frame= 2531 fps= 24 q=28.0 size=   14401KiB time=00:01:45.48 bitrate=1118.4kbits/s speed=0.985x    
-FFmpeg stderr: frame= 2566 fps= 25 q=25.0 size=   24093KiB time=00:01:42.56 bitrate=1924.4kbits/s speed=0.985x    
-FFmpeg stderr: frame= 2543 fps= 24 q=28.0 size=   14428KiB time=00:01:45.98 bitrate=1115.2kbits/s speed=0.985x    
-FFmpeg stderr: frame= 2578 fps= 25 q=28.0 size=   24181KiB time=00:01:43.04 bitrate=1922.4kbits/s speed=0.985x    
+FFmpeg stderr: frame= 2028 fps= 25 q=28.0 size=   18737KiB time=00:01:21.04 bitrate=1894.0kbits/s speed=0.981x    
+FFmpeg stderr: frame= 2543 fps= 24 q=28.0 size=   14432KiB time=00:01:45.98 bitrate=1115.6kbits/s speed=0.985x    
+FFmpeg stderr: frame= 2040 fps= 25 q=28.0 size=   18841KiB time=00:01:21.52 bitrate=1893.3kbits/s speed=0.981x    
 FFmpeg stderr: frame= 2555 fps= 24 q=28.0 size=   14455KiB time=00:01:46.48 bitrate=1112.0kbits/s speed=0.985x    
-FFmpeg stderr: frame= 2591 fps= 25 q=25.0 size=   24287KiB time=00:01:43.56 bitrate=1921.2kbits/s speed=0.985x    
+FFmpeg stderr: frame= 2053 fps= 25 q=28.0 size=   18904KiB time=00:01:22.04 bitrate=1887.6kbits/s speed=0.981x    
 FFmpeg stderr: frame= 2567 fps= 24 q=28.0 size=   14538KiB time=00:01:46.98 bitrate=1113.2kbits/s speed=0.985x    
-FFmpeg stderr: frame= 2603 fps= 25 q=28.0 size=   24380KiB time=00:01:44.04 bitrate=1919.7kbits/s speed=0.985x    
+FFmpeg stderr: frame= 2065 fps= 25 q=28.0 size=   18976KiB time=00:01:22.52 bitrate=1883.8kbits/s speed=0.981x    
 FFmpeg stderr: frame= 2579 fps= 24 q=28.0 size=   14641KiB time=00:01:47.48 bitrate=1115.9kbits/s speed=0.985x    
-FFmpeg stderr: frame= 2616 fps= 25 q=28.0 size=   24523KiB time=00:01:44.56 bitrate=1921.3kbits/s speed=0.985x    
+FFmpeg stderr: frame= 2078 fps= 25 q=28.0 size=   19048KiB time=00:01:23.04 bitrate=1879.1kbits/s speed=0.982x    
 FFmpeg stderr: frame= 2591 fps= 24 q=28.0 size=   14719KiB time=00:01:47.98 bitrate=1116.7kbits/s speed=0.985x    
-FFmpeg stderr: frame= 2628 fps= 25 q=28.0 size=   24605KiB time=00:01:45.04 bitrate=1918.9kbits/s speed=0.985x    
+FFmpeg stderr: frame= 2090 fps= 25 q=28.0 size=   19159KiB time=00:01:23.52 bitrate=1879.2kbits/s speed=0.981x    
 FFmpeg stderr: frame= 2603 fps= 24 q=28.0 size=   14787KiB time=00:01:48.48 bitrate=1116.6kbits/s speed=0.985x    
-FFmpeg stderr: frame= 2640 fps= 25 q=28.0 size=   24734KiB time=00:01:45.52 bitrate=1920.2kbits/s speed=0.985x    
+FFmpeg stderr: frame= 2103 fps= 25 q=25.0 size=   19267KiB time=00:01:24.04 bitrate=1878.1kbits/s speed=0.982x    
 FFmpeg stderr: frame= 2615 fps= 24 q=28.0 size=   14858KiB time=00:01:48.98 bitrate=1116.9kbits/s speed=0.985x    
-FFmpeg stderr: frame= 2653 fps= 25 q=28.0 size=   24791KiB time=00:01:46.04 bitrate=1915.2kbits/s speed=0.985x    
-FFmpeg stderr: frame= 2627 fps= 24 q=28.0 size=   14976KiB time=00:01:49.48 bitrate=1120.6kbits/s speed=0.985x    
-FFmpeg stderr: frame= 2666 fps= 25 q=28.0 size=   24848KiB time=00:01:46.56 bitrate=1910.3kbits/s speed=0.986x    
+FFmpeg stderr: frame= 2115 fps= 25 q=28.0 size=   19421KiB time=00:01:24.52 bitrate=1882.4kbits/s speed=0.982x    
+FFmpeg stderr: frame= 2627 fps= 24 q=28.0 size=   14982KiB time=00:01:49.48 bitrate=1121.0kbits/s speed=0.985x    
+FFmpeg stderr: frame= 2128 fps= 25 q=28.0 size=   19555KiB time=00:01:25.04 bitrate=1883.8kbits/s speed=0.982x    
 FFmpeg stderr: frame= 2639 fps= 24 q=28.0 size=   15079KiB time=00:01:49.98 bitrate=1123.1kbits/s speed=0.985x    
-FFmpeg stderr: frame= 2677 fps= 25 q=28.0 size=   24907KiB time=00:01:47.00 bitrate=1906.9kbits/s speed=0.985x    
-FFmpeg stderr: frame= 2651 fps= 24 q=28.0 size=   15174KiB time=00:01:50.48 bitrate=1125.1kbits/s speed=0.985x    
-FFmpeg stderr: frame= 2691 fps= 25 q=28.0 size=   25028KiB time=00:01:47.56 bitrate=1906.2kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2663 fps= 24 q=28.0 size=   15253KiB time=00:01:50.98 bitrate=1125.8kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2703 fps= 25 q=28.0 size=   25182KiB time=00:01:48.04 bitrate=1909.4kbits/s speed=0.986x    
+FFmpeg stderr: frame= 2140 fps= 25 q=28.0 size=   19679KiB time=00:01:25.52 bitrate=1885.0kbits/s speed=0.982x    
+FFmpeg stderr: frame= 2651 fps= 24 q=28.0 size=   15179KiB time=00:01:50.48 bitrate=1125.5kbits/s speed=0.985x    
+FFmpeg stderr: frame= 2153 fps= 25 q=28.0 size=   19813KiB time=00:01:26.04 bitrate=1886.5kbits/s speed=0.982x    
+FFmpeg stderr: frame= 2663 fps= 24 q=28.0 size=   15253KiB time=00:01:50.98 bitrate=1125.8kbits/s speed=0.985x    
+FFmpeg stderr: frame= 2165 fps= 25 q=28.0 size=   19944KiB time=00:01:26.52 bitrate=1888.3kbits/s speed=0.982x    
 FFmpeg stderr: frame= 2675 fps= 24 q=28.0 size=   15339KiB time=00:01:51.48 bitrate=1127.1kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2716 fps= 25 q=34.0 size=   25400KiB time=00:01:48.56 bitrate=1916.7kbits/s speed=0.986x    
+FFmpeg stderr: frame= 2178 fps= 25 q=28.0 size=   20087KiB time=00:01:27.04 bitrate=1890.6kbits/s speed=0.982x    
 FFmpeg stderr: frame= 2687 fps= 24 q=28.0 size=   15394KiB time=00:01:51.98 bitrate=1126.1kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2729 fps= 25 q=31.0 size=   25581KiB time=00:01:49.08 bitrate=1921.1kbits/s speed=0.986x    
+FFmpeg stderr: frame= 2190 fps= 25 q=28.0 size=   20204KiB time=00:01:27.52 bitrate=1891.1kbits/s speed=0.982x    
 FFmpeg stderr: frame= 2699 fps= 24 q=28.0 size=   15449KiB time=00:01:52.48 bitrate=1125.1kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2740 fps= 25 q=36.0 size=   25765KiB time=00:01:49.52 bitrate=1927.2kbits/s speed=0.986x    
+FFmpeg stderr: frame= 2203 fps= 25 q=28.0 size=   20358KiB time=00:01:28.04 bitrate=1894.3kbits/s speed=0.983x    
 FFmpeg stderr: frame= 2711 fps= 24 q=28.0 size=   15499KiB time=00:01:52.98 bitrate=1123.7kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2754 fps= 25 q=30.0 size=   25857KiB time=00:01:50.08 bitrate=1924.2kbits/s speed=0.986x    
+FFmpeg stderr: frame= 2216 fps= 25 q=28.0 size=   20486KiB time=00:01:28.56 bitrate=1895.0kbits/s speed=0.983x    
 FFmpeg stderr: frame= 2723 fps= 24 q=28.0 size=   15563KiB time=00:01:53.48 bitrate=1123.4kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2766 fps= 25 q=31.0 size=   25976KiB time=00:01:50.56 bitrate=1924.7kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2735 fps= 24 q=28.0 size=   15619KiB time=00:01:53.98 bitrate=1122.5kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2778 fps= 25 q=31.0 size=   26093KiB time=00:01:51.04 bitrate=1925.0kbits/s speed=0.986x    
+FFmpeg stderr: frame= 2228 fps= 25 q=28.0 size=   20631KiB time=00:01:29.04 bitrate=1898.1kbits/s speed=0.983x    
+FFmpeg stderr: frame= 2735 fps= 24 q=28.0 size=   15626KiB time=00:01:53.98 bitrate=1123.0kbits/s speed=0.986x    
+FFmpeg stderr: frame= 2242 fps= 25 q=28.0 size=   20780KiB time=00:01:29.60 bitrate=1899.9kbits/s speed=0.983x    
 FFmpeg stderr: frame= 2747 fps= 24 q=28.0 size=   15679KiB time=00:01:54.48 bitrate=1121.9kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2791 fps= 25 q=30.0 size=   26211KiB time=00:01:51.56 bitrate=1924.7kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2759 fps= 24 q=28.0 size=   15777KiB time=00:01:54.98 bitrate=1124.0kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2804 fps= 25 q=32.0 size=   26371KiB time=00:01:52.08 bitrate=1927.4kbits/s speed=0.986x    
+FFmpeg stderr: frame= 2254 fps= 25 q=28.0 size=   20926KiB time=00:01:30.08 bitrate=1903.0kbits/s speed=0.983x    
+FFmpeg stderr: frame= 2759 fps= 24 q=28.0 size=   15787KiB time=00:01:54.98 bitrate=1124.7kbits/s speed=0.986x    
+FFmpeg stderr: frame= 2266 fps= 25 q=28.0 size=   21052KiB time=00:01:30.56 bitrate=1904.4kbits/s speed=0.983x    
 FFmpeg stderr: frame= 2772 fps= 24 q=28.0 size=   15884KiB time=00:01:55.53 bitrate=1126.3kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2816 fps= 25 q=33.0 size=   26535KiB time=00:01:52.56 bitrate=1931.2kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2783 fps= 24 q=25.0 size=   15969KiB time=00:01:55.99 bitrate=1127.8kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2829 fps= 25 q=29.0 size=   26666KiB time=00:01:53.08 bitrate=1931.8kbits/s speed=0.986x    
+FFmpeg stderr: frame= 2278 fps= 25 q=28.0 size=   21168KiB time=00:01:31.04 bitrate=1904.7kbits/s speed=0.983x    
+FFmpeg stderr: frame= 2784 fps= 24 q=28.0 size=   15969KiB time=00:01:56.03 bitrate=1127.4kbits/s speed=0.986x    
+FFmpeg stderr: frame= 2290 fps= 25 q=28.0 size=   21325KiB time=00:01:31.52 bitrate=1908.8kbits/s speed=0.983x    
 FFmpeg stderr: frame= 2796 fps= 24 q=28.0 size=   16052KiB time=00:01:56.53 bitrate=1128.4kbits/s speed=0.987x    
-FFmpeg stderr: frame= 2841 fps= 25 q=29.0 size=   26789KiB time=00:01:53.56 bitrate=1932.5kbits/s speed=0.986x    
+FFmpeg stderr: frame= 2303 fps= 25 q=28.0 size=   21486KiB time=00:01:32.04 bitrate=1912.3kbits/s speed=0.983x    
 FFmpeg stderr: frame= 2808 fps= 24 q=28.0 size=   16173KiB time=00:01:57.03 bitrate=1132.1kbits/s speed=0.987x    
-FFmpeg stderr: frame= 2854 fps= 25 q=30.0 size=   26893KiB time=00:01:54.08 bitrate=1931.2kbits/s speed=0.987x    
+FFmpeg stderr: frame= 2316 fps= 25 q=28.0 size=   21597KiB time=00:01:32.56 bitrate=1911.4kbits/s speed=0.984x    
 FFmpeg stderr: frame= 2819 fps= 24 q=28.0 size=   16220KiB time=00:01:57.49 bitrate=1130.9kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2866 fps= 25 q=30.0 size=   26999KiB time=00:01:54.56 bitrate=1930.7kbits/s speed=0.986x    
+FFmpeg stderr: frame= 2328 fps= 25 q=28.0 size=   21764KiB time=00:01:33.04 bitrate=1916.3kbits/s speed=0.983x    
 FFmpeg stderr: frame= 2831 fps= 24 q=28.0 size=   16279KiB time=00:01:57.99 bitrate=1130.2kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2879 fps= 25 q=31.0 size=   27139KiB time=00:01:55.08 bitrate=1931.9kbits/s speed=0.987x    
-FFmpeg stderr: frame= 2843 fps= 24 q=28.0 size=   16345KiB time=00:01:58.49 bitrate=1130.0kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2890 fps= 25 q=28.0 size=   27289KiB time=00:01:55.52 bitrate=1935.2kbits/s speed=0.986x    
+FFmpeg stderr: frame= 2341 fps= 25 q=28.0 size=   21873KiB time=00:01:33.56 bitrate=1915.2kbits/s speed=0.984x    
+FFmpeg stderr: frame= 2843 fps= 24 q=28.0 size=   16348KiB time=00:01:58.49 bitrate=1130.2kbits/s speed=0.986x    
+FFmpeg stderr: frame= 2353 fps= 25 q=28.0 size=   21999KiB time=00:01:34.04 bitrate=1916.4kbits/s speed=0.984x    
 FFmpeg stderr: frame= 2855 fps= 24 q=25.0 size=   16434KiB time=00:01:58.99 bitrate=1131.4kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2903 fps= 25 q=30.0 size=   27421KiB time=00:01:56.04 bitrate=1935.8kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2866 fps= 24 q=28.0 size=   16497KiB time=00:01:59.45 bitrate=1131.3kbits/s speed=0.986x    
-FFmpeg stderr: frame= 2916 fps= 25 q=30.0 size=   27542KiB time=00:01:56.56 bitrate=1935.7kbits/s speed=0.987x    
+FFmpeg stderr: frame= 2366 fps= 25 q=28.0 size=   22115KiB time=00:01:34.56 bitrate=1915.9kbits/s speed=0.984x    
+FFmpeg stderr: frame= 2866 fps= 24 q=28.0 size=   16499KiB time=00:01:59.45 bitrate=1131.5kbits/s speed=0.986x    
+FFmpeg stderr: frame= 2378 fps= 25 q=28.0 size=   22236KiB time=00:01:35.04 bitrate=1916.6kbits/s speed=0.984x    
 FFmpeg stderr: frame= 2879 fps= 24 q=28.0 size=   16595KiB time=00:01:59.99 bitrate=1132.9kbits/s speed=0.987x    
-FFmpeg stderr: frame= 2930 fps= 25 q=31.0 size=   27663KiB time=00:01:57.12 bitrate=1934.9kbits/s speed=0.987x    
+FFmpeg stderr: frame= 2391 fps= 25 q=28.0 size=   22336KiB time=00:01:35.56 bitrate=1914.8kbits/s speed=0.984x    
 FFmpeg stderr: frame= 2891 fps= 24 q=28.0 size=   16675KiB time=00:02:00.49 bitrate=1133.7kbits/s speed=0.987x    
-FFmpeg stderr: frame= 2941 fps= 25 q=30.0 size=   27808KiB time=00:01:57.56 bitrate=1937.7kbits/s speed=0.987x    
+FFmpeg stderr: frame= 2403 fps= 25 q=28.0 size=   22480KiB time=00:01:36.04 bitrate=1917.5kbits/s speed=0.984x    
 FFmpeg stderr: frame= 2903 fps= 24 q=28.0 size=   16746KiB time=00:02:00.99 bitrate=1133.8kbits/s speed=0.987x    
-FFmpeg stderr: frame= 2954 fps= 25 q=31.0 size=   27956KiB time=00:01:58.08 bitrate=1939.5kbits/s speed=0.987x    
+FFmpeg stderr: frame= 2416 fps= 25 q=28.0 size=   22593KiB time=00:01:36.56 bitrate=1916.8kbits/s speed=0.984x    
 FFmpeg stderr: frame= 2915 fps= 24 q=28.0 size=   16816KiB time=00:02:01.49 bitrate=1133.8kbits/s speed=0.987x    
-FFmpeg stderr: frame= 2966 fps= 25 q=33.0 size=   28114KiB time=00:01:58.56 bitrate=1942.5kbits/s speed=0.987x    
+FFmpeg stderr: frame= 2428 fps= 25 q=28.0 size=   22731KiB time=00:01:37.04 bitrate=1919.0kbits/s speed=0.984x    
 FFmpeg stderr: frame= 2927 fps= 24 q=28.0 size=   16932KiB time=00:02:01.99 bitrate=1137.0kbits/s speed=0.987x    
-FFmpeg stderr: frame= 2979 fps= 25 q=29.0 size=   28231KiB time=00:01:59.08 bitrate=1942.1kbits/s speed=0.987x    
+FFmpeg stderr: frame= 2441 fps= 25 q=28.0 size=   22836KiB time=00:01:37.56 bitrate=1917.5kbits/s speed=0.984x    
 FFmpeg stderr: frame= 2939 fps= 24 q=28.0 size=   17020KiB time=00:02:02.49 bitrate=1138.2kbits/s speed=0.987x    
-FFmpeg stderr: frame= 2990 fps= 25 q=28.0 size=   28373KiB time=00:01:59.52 bitrate=1944.7kbits/s speed=0.987x    
-FFmpeg stderr: frame= 2951 fps= 24 q=28.0 size=   17112KiB time=00:02:02.99 bitrate=1139.7kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3004 fps= 25 q=32.0 size=   28487KiB time=00:02:00.08 bitrate=1943.4kbits/s speed=0.987x    
-FFmpeg stderr: frame= 2963 fps= 24 q=28.0 size=   17198KiB time=00:02:03.49 bitrate=1140.8kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3016 fps= 25 q=32.0 size=   28585KiB time=00:02:00.56 bitrate=1942.4kbits/s speed=0.987x    
-FFmpeg stderr: frame= 2975 fps= 24 q=28.0 size=   17265KiB time=00:02:03.99 bitrate=1140.6kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3029 fps= 25 q=33.0 size=   28729KiB time=00:02:01.08 bitrate=1943.8kbits/s speed=0.987x    
-FFmpeg stderr: frame= 2987 fps= 24 q=28.0 size=   17330KiB time=00:02:04.49 bitrate=1140.3kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3041 fps= 25 q=33.0 size=   28869KiB time=00:02:01.56 bitrate=1945.5kbits/s speed=0.987x    
-FFmpeg stderr: frame= 2999 fps= 24 q=28.0 size=   17406KiB time=00:02:04.99 bitrate=1140.7kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3054 fps= 25 q=33.0 size=   29014KiB time=00:02:02.08 bitrate=1946.9kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3011 fps= 24 q=28.0 size=   17479KiB time=00:02:05.50 bitrate=1140.9kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3066 fps= 25 q=33.0 size=   29149KiB time=00:02:02.56 bitrate=1948.3kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3023 fps= 24 q=28.0 size=   17562KiB time=00:02:06.00 bitrate=1141.8kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3078 fps= 25 q=34.0 size=   29278KiB time=00:02:03.04 bitrate=1949.3kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3035 fps= 24 q=28.0 size=   17656KiB time=00:02:06.50 bitrate=1143.4kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3091 fps= 25 q=33.0 size=   29425KiB time=00:02:03.56 bitrate=1950.9kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3047 fps= 24 q=28.0 size=   17734KiB time=00:02:07.00 bitrate=1143.9kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3103 fps= 25 q=33.0 size=   29533KiB time=00:02:04.04 bitrate=1950.5kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3059 fps= 24 q=28.0 size=   17807KiB time=00:02:07.50 bitrate=1144.1kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3116 fps= 25 q=32.0 size=   29640KiB time=00:02:04.56 bitrate=1949.3kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3071 fps= 24 q=28.0 size=   17945KiB time=00:02:08.00 bitrate=1148.4kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3129 fps= 25 q=32.0 size=   29777KiB time=00:02:05.08 bitrate=1950.2kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3083 fps= 24 q=28.0 size=   18044KiB time=00:02:08.50 bitrate=1150.3kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3141 fps= 25 q=29.0 size=   29926KiB time=00:02:05.56 bitrate=1952.5kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3095 fps= 24 q=28.0 size=   18131KiB time=00:02:09.00 bitrate=1151.3kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3154 fps= 25 q=28.0 size=   30032KiB time=00:02:06.08 bitrate=1951.3kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3107 fps= 24 q=28.0 size=   18201KiB time=00:02:09.50 bitrate=1151.4kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3167 fps= 25 q=30.0 size=   30143KiB time=00:02:06.60 bitrate=1950.5kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3119 fps= 24 q=28.0 size=   18278KiB time=00:02:10.00 bitrate=1151.8kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3179 fps= 25 q=29.0 size=   30257KiB time=00:02:07.08 bitrate=1950.5kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3131 fps= 24 q=28.0 size=   18355KiB time=00:02:10.50 bitrate=1152.2kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3192 fps= 25 q=29.0 size=   30400KiB time=00:02:07.60 bitrate=1951.7kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3143 fps= 24 q=28.0 size=   18406KiB time=00:02:11.00 bitrate=1151.0kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3204 fps= 25 q=30.0 size=   30602KiB time=00:02:08.08 bitrate=1957.3kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3155 fps= 24 q=28.0 size=   18474KiB time=00:02:11.50 bitrate=1150.8kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3217 fps= 25 q=31.0 size=   30722KiB time=00:02:08.60 bitrate=1957.0kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3166 fps= 24 q=28.0 size=   18546KiB time=00:02:11.96 bitrate=1151.3kbits/s speed=0.987x    
-FFmpeg stderr: frame= 3229 fps= 25 q=31.0 size=   30838KiB time=00:02:09.08 bitrate=1957.1kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3179 fps= 24 q=28.0 size=   18618KiB time=00:02:12.50 bitrate=1151.0kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3242 fps= 25 q=32.0 size=   30972KiB time=00:02:09.60 bitrate=1957.8kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3191 fps= 24 q=28.0 size=   18685KiB time=00:02:13.00 bitrate=1150.8kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3254 fps= 25 q=32.0 size=   31115KiB time=00:02:10.08 bitrate=1959.5kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3203 fps= 24 q=28.0 size=   18748KiB time=00:02:13.50 bitrate=1150.4kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3267 fps= 25 q=31.0 size=   31250KiB time=00:02:10.60 bitrate=1960.2kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3215 fps= 24 q=28.0 size=   18825KiB time=00:02:14.00 bitrate=1150.8kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3279 fps= 25 q=29.0 size=   31344KiB time=00:02:11.08 bitrate=1958.9kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3227 fps= 24 q=28.0 size=   18929KiB time=00:02:14.50 bitrate=1152.8kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3291 fps= 25 q=30.0 size=   31453KiB time=00:02:11.56 bitrate=1958.5kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3239 fps= 24 q=28.0 size=   19009KiB time=00:02:15.00 bitrate=1153.4kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3304 fps= 25 q=32.0 size=   31613KiB time=00:02:12.08 bitrate=1960.8kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3251 fps= 24 q=28.0 size=   19085KiB time=00:02:15.51 bitrate=1153.8kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3317 fps= 25 q=32.0 size=   31741KiB time=00:02:12.60 bitrate=1961.0kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3263 fps= 24 q=28.0 size=   19171KiB time=00:02:16.01 bitrate=1154.7kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3329 fps= 25 q=30.0 size=   31891KiB time=00:02:13.08 bitrate=1963.1kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3275 fps= 24 q=28.0 size=   19204KiB time=00:02:16.51 bitrate=1152.4kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3342 fps= 25 q=32.0 size=   32012KiB time=00:02:13.60 bitrate=1962.9kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3287 fps= 24 q=28.0 size=   19237KiB time=00:02:17.01 bitrate=1150.2kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3354 fps= 25 q=32.0 size=   32161KiB time=00:02:14.08 bitrate=1965.0kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3299 fps= 24 q=28.0 size=   19273KiB time=00:02:17.51 bitrate=1148.1kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3367 fps= 25 q=29.0 size=   32291KiB time=00:02:14.60 bitrate=1965.3kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3311 fps= 24 q=25.0 size=   19349KiB time=00:02:18.01 bitrate=1148.5kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3379 fps= 25 q=28.0 size=   32408KiB time=00:02:15.08 bitrate=1965.4kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3323 fps= 24 q=28.0 size=   19384KiB time=00:02:18.51 bitrate=1146.4kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3391 fps= 25 q=28.0 size=   32528KiB time=00:02:15.56 bitrate=1965.7kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3335 fps= 24 q=28.0 size=   19460KiB time=00:02:19.01 bitrate=1146.8kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3404 fps= 25 q=29.0 size=   32648KiB time=00:02:16.08 bitrate=1965.4kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3346 fps= 24 q=28.0 size=   19516KiB time=00:02:19.47 bitrate=1146.3kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3417 fps= 25 q=31.0 size=   32767KiB time=00:02:16.60 bitrate=1965.1kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3359 fps= 24 q=28.0 size=   19578KiB time=00:02:20.01 bitrate=1145.4kbits/s speed=0.988x    
-FFmpeg stderr: frame= 3429 fps= 25 q=28.0 size=   32925KiB time=00:02:17.08 bitrate=1967.6kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3371 fps= 24 q=28.0 size=   19635KiB time=00:02:20.51 bitrate=1144.7kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3443 fps= 25 q=28.0 size=   33110KiB time=00:02:17.64 bitrate=1970.6kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3383 fps= 24 q=28.0 size=   19727KiB time=00:02:21.01 bitrate=1146.0kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3455 fps= 25 q=28.0 size=   33227KiB time=00:02:18.12 bitrate=1970.7kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3395 fps= 24 q=28.0 size=   19774KiB time=00:02:21.51 bitrate=1144.7kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3467 fps= 25 q=28.0 size=   33310KiB time=00:02:18.60 bitrate=1968.8kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3407 fps= 24 q=28.0 size=   19872KiB time=00:02:22.01 bitrate=1146.3kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3479 fps= 25 q=28.0 size=   33405KiB time=00:02:19.08 bitrate=1967.6kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3419 fps= 24 q=28.0 size=   19925KiB time=00:02:22.51 bitrate=1145.3kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3492 fps= 25 q=28.0 size=   33519KiB time=00:02:19.60 bitrate=1967.0kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3431 fps= 24 q=28.0 size=   19987KiB time=00:02:23.01 bitrate=1144.9kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3504 fps= 25 q=28.0 size=   33629KiB time=00:02:20.08 bitrate=1966.6kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3443 fps= 24 q=28.0 size=   20047KiB time=00:02:23.51 bitrate=1144.3kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3517 fps= 25 q=28.0 size=   33738KiB time=00:02:20.60 bitrate=1965.7kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3455 fps= 24 q=28.0 size=   20147KiB time=00:02:24.01 bitrate=1146.0kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3529 fps= 25 q=28.0 size=   33850KiB time=00:02:21.08 bitrate=1965.5kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3467 fps= 24 q=28.0 size=   20198KiB time=00:02:24.51 bitrate=1144.9kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3542 fps= 25 q=28.0 size=   33940KiB time=00:02:21.60 bitrate=1963.5kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3478 fps= 24 q=28.0 size=   20250KiB time=00:02:24.97 bitrate=1144.2kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3554 fps= 25 q=28.0 size=   34059KiB time=00:02:22.08 bitrate=1963.8kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3491 fps= 24 q=28.0 size=   20300KiB time=00:02:25.52 bitrate=1142.8kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3567 fps= 25 q=28.0 size=   34132KiB time=00:02:22.60 bitrate=1960.8kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3503 fps= 24 q=28.0 size=   20354KiB time=00:02:26.02 bitrate=1141.9kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3579 fps= 25 q=28.0 size=   34218KiB time=00:02:23.08 bitrate=1959.2kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3515 fps= 24 q=28.0 size=   20393KiB time=00:02:26.52 bitrate=1140.2kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3592 fps= 25 q=28.0 size=   34305KiB time=00:02:23.60 bitrate=1957.0kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3526 fps= 24 q=28.0 size=   20430KiB time=00:02:26.98 bitrate=1138.7kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3604 fps= 25 q=28.0 size=   34423KiB time=00:02:24.08 bitrate=1957.2kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3539 fps= 24 q=28.0 size=   20466KiB time=00:02:27.52 bitrate=1136.5kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3617 fps= 25 q=28.0 size=   34504KiB time=00:02:24.60 bitrate=1954.8kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3551 fps= 24 q=28.0 size=   20518KiB time=00:02:28.02 bitrate=1135.5kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3629 fps= 25 q=28.0 size=   34599KiB time=00:02:25.08 bitrate=1953.6kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3562 fps= 24 q=28.0 size=   20605KiB time=00:02:28.48 bitrate=1136.8kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3642 fps= 25 q=28.0 size=   34723KiB time=00:02:25.60 bitrate=1953.6kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3575 fps= 24 q=28.0 size=   20704KiB time=00:02:29.02 bitrate=1138.1kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3654 fps= 25 q=28.0 size=   34836KiB time=00:02:26.08 bitrate=1953.6kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3587 fps= 24 q=28.0 size=   20775KiB time=00:02:29.52 bitrate=1138.2kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3667 fps= 25 q=28.0 size=   34928KiB time=00:02:26.60 bitrate=1951.8kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3599 fps= 24 q=28.0 size=   20873KiB time=00:02:30.02 bitrate=1139.7kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3680 fps= 25 q=28.0 size=   35023KiB time=00:02:27.12 bitrate=1950.2kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3611 fps= 24 q=28.0 size=   20959KiB time=00:02:30.52 bitrate=1140.7kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3693 fps= 25 q=28.0 size=   35122KiB time=00:02:27.64 bitrate=1948.8kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3623 fps= 24 q=28.0 size=   21048KiB time=00:02:31.02 bitrate=1141.7kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3705 fps= 25 q=28.0 size=   35183KiB time=00:02:28.12 bitrate=1945.8kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3635 fps= 24 q=28.0 size=   21152KiB time=00:02:31.52 bitrate=1143.6kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3717 fps= 25 q=28.0 size=   35271KiB time=00:02:28.60 bitrate=1944.4kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3647 fps= 24 q=28.0 size=   21246KiB time=00:02:32.02 bitrate=1144.8kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3730 fps= 25 q=28.0 size=   35363KiB time=00:02:29.12 bitrate=1942.7kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3659 fps= 24 q=28.0 size=   21361KiB time=00:02:32.52 bitrate=1147.3kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3742 fps= 25 q=28.0 size=   35442KiB time=00:02:29.60 bitrate=1940.8kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3671 fps= 24 q=28.0 size=   21426KiB time=00:02:33.02 bitrate=1147.0kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3755 fps= 25 q=28.0 size=   35531KiB time=00:02:30.12 bitrate=1938.9kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3683 fps= 24 q=28.0 size=   21498KiB time=00:02:33.52 bitrate=1147.1kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3766 fps= 25 q=28.0 size=   35599KiB time=00:02:30.56 bitrate=1937.0kbits/s speed=0.989x    
-FFmpeg stderr: frame= 3695 fps= 24 q=28.0 size=   21614KiB time=00:02:34.02 bitrate=1149.5kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3780 fps= 25 q=28.0 size=   35658KiB time=00:02:31.12 bitrate=1933.0kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3707 fps= 24 q=28.0 size=   21660KiB time=00:02:34.52 bitrate=1148.3kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3792 fps= 25 q=28.0 size=   35769KiB time=00:02:31.60 bitrate=1932.8kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3719 fps= 24 q=28.0 size=   21711KiB time=00:02:35.02 bitrate=1147.2kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3805 fps= 25 q=28.0 size=   35891KiB time=00:02:32.12 bitrate=1932.8kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3731 fps= 24 q=28.0 size=   21770KiB time=00:02:35.53 bitrate=1146.7kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3817 fps= 25 q=28.0 size=   36011KiB time=00:02:32.60 bitrate=1933.2kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3743 fps= 24 q=28.0 size=   21830KiB time=00:02:36.03 bitrate=1146.1kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3830 fps= 25 q=28.0 size=   36173KiB time=00:02:33.12 bitrate=1935.3kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3755 fps= 24 q=28.0 size=   21937KiB time=00:02:36.53 bitrate=1148.0kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3842 fps= 25 q=28.0 size=   36351KiB time=00:02:33.60 bitrate=1938.7kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3767 fps= 24 q=28.0 size=   21997KiB time=00:02:37.03 bitrate=1147.5kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3856 fps= 25 q=28.0 size=   36501KiB time=00:02:34.16 bitrate=1939.7kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3780 fps= 24 q=25.0 size=   22056KiB time=00:02:37.57 bitrate=1146.6kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3868 fps= 25 q=28.0 size=   36622KiB time=00:02:34.64 bitrate=1940.1kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3791 fps= 24 q=28.0 size=   22113KiB time=00:02:38.03 bitrate=1146.3kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3880 fps= 25 q=28.0 size=   36749KiB time=00:02:35.12 bitrate=1940.7kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3804 fps= 24 q=28.0 size=   22229KiB time=00:02:38.57 bitrate=1148.4kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3892 fps= 25 q=28.0 size=   36854KiB time=00:02:35.60 bitrate=1940.3kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3816 fps= 24 q=28.0 size=   22306KiB time=00:02:39.07 bitrate=1148.7kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3905 fps= 25 q=28.0 size=   36951KiB time=00:02:36.12 bitrate=1938.9kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3827 fps= 24 q=28.0 size=   22346KiB time=00:02:39.53 bitrate=1147.5kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3917 fps= 25 q=28.0 size=   37046KiB time=00:02:36.60 bitrate=1937.9kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3839 fps= 24 q=28.0 size=   22419KiB time=00:02:40.03 bitrate=1147.6kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3930 fps= 25 q=28.0 size=   37166KiB time=00:02:37.12 bitrate=1937.8kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3851 fps= 24 q=28.0 size=   22505KiB time=00:02:40.53 bitrate=1148.4kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3942 fps= 25 q=28.0 size=   37261KiB time=00:02:37.60 bitrate=1936.8kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3863 fps= 24 q=28.0 size=   22584KiB time=00:02:41.03 bitrate=1148.9kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3955 fps= 25 q=28.0 size=   37378KiB time=00:02:38.12 bitrate=1936.5kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3875 fps= 24 q=28.0 size=   22644KiB time=00:02:41.53 bitrate=1148.3kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3967 fps= 25 q=25.0 size=   37491KiB time=00:02:38.60 bitrate=1936.5kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3887 fps= 24 q=28.0 size=   22749KiB time=00:02:42.03 bitrate=1150.1kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3980 fps= 25 q=28.0 size=   37624KiB time=00:02:39.12 bitrate=1937.0kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3899 fps= 24 q=28.0 size=   22839KiB time=00:02:42.53 bitrate=1151.1kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3992 fps= 25 q=28.0 size=   37735KiB time=00:02:39.60 bitrate=1936.9kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3911 fps= 24 q=28.0 size=   22921KiB time=00:02:43.03 bitrate=1151.7kbits/s speed=0.99x    
-FFmpeg stderr: frame= 4005 fps= 25 q=28.0 size=   37827KiB time=00:02:40.12 bitrate=1935.3kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3923 fps= 24 q=28.0 size=   23016KiB time=00:02:43.53 bitrate=1152.9kbits/s speed=0.99x    
-FFmpeg stderr: frame= 4017 fps= 25 q=25.0 size=   37921KiB time=00:02:40.60 bitrate=1934.3kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3935 fps= 24 q=28.0 size=   23087KiB time=00:02:44.03 bitrate=1153.0kbits/s speed=0.99x    
-FFmpeg stderr: frame= 4030 fps= 25 q=28.0 size=   38007KiB time=00:02:41.12 bitrate=1932.4kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3947 fps= 24 q=28.0 size=   23195KiB time=00:02:44.53 bitrate=1154.8kbits/s speed=0.99x    
-FFmpeg stderr: frame= 4042 fps= 25 q=28.0 size=   38114KiB time=00:02:41.60 bitrate=1932.1kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3959 fps= 24 q=28.0 size=   23302KiB time=00:02:45.03 bitrate=1156.6kbits/s speed=0.99x    
-FFmpeg stderr: frame= 4055 fps= 25 q=28.0 size=   38218KiB time=00:02:42.12 bitrate=1931.2kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3971 fps= 24 q=28.0 size=   23413KiB time=00:02:45.54 bitrate=1158.6kbits/s speed=0.99x    
-FFmpeg stderr: frame= 4067 fps= 25 q=25.0 size=   38305KiB time=00:02:42.60 bitrate=1929.9kbits/s speed=0.99x    
-FFmpeg stderr: frame= 3983 fps= 24 q=28.0 size=   23529KiB time=00:02:46.04 bitrate=1160.8kbits/s speed=0.99x    
-FFmpeg stderr: frame= 4080 fps= 25 q=28.0 size=   38414KiB time=00:02:43.12 bitrate=1929.2kbits/s speed=0.991x    
-FFmpeg stderr: frame= 3995 fps= 24 q=28.0 size=   23665KiB time=00:02:46.54 bitrate=1164.1kbits/s speed=0.99x    
-FFmpeg stderr: frame= 4093 fps= 25 q=28.0 size=   38530KiB time=00:02:43.64 bitrate=1928.8kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4007 fps= 24 q=28.0 size=   23690KiB time=00:02:47.04 bitrate=1161.8kbits/s speed=0.99x    
-FFmpeg stderr: frame= 4105 fps= 25 q=28.0 size=   38645KiB time=00:02:44.12 bitrate=1929.0kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4018 fps= 24 q=28.0 size=   23724KiB time=00:02:47.50 bitrate=1160.3kbits/s speed=0.99x    
-FFmpeg stderr: frame= 4118 fps= 25 q=28.0 size=   38732KiB time=00:02:44.64 bitrate=1927.2kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4031 fps= 24 q=28.0 size=   23785KiB time=00:02:48.04 bitrate=1159.5kbits/s speed=0.99x    
-FFmpeg stderr: frame= 4130 fps= 25 q=28.0 size=   38818KiB time=00:02:45.12 bitrate=1925.9kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4043 fps= 24 q=28.0 size=   23845KiB time=00:02:48.54 bitrate=1159.0kbits/s speed=0.99x    
-FFmpeg stderr: frame= 4143 fps= 25 q=28.0 size=   38935KiB time=00:02:45.64 bitrate=1925.6kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4055 fps= 24 q=28.0 size=   23905KiB time=00:02:49.04 bitrate=1158.5kbits/s speed=0.99x    
-FFmpeg stderr: frame= 4155 fps= 25 q=28.0 size=   39018KiB time=00:02:46.12 bitrate=1924.1kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4067 fps= 24 q=28.0 size=   23982KiB time=00:02:49.54 bitrate=1158.8kbits/s speed=0.99x    
-FFmpeg stderr: frame= 4168 fps= 25 q=28.0 size=   39141KiB time=00:02:46.64 bitrate=1924.1kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4079 fps= 24 q=28.0 size=   24071KiB time=00:02:50.04 bitrate=1159.6kbits/s speed=0.99x    
-FFmpeg stderr: frame= 4180 fps= 25 q=28.0 size=   39258KiB time=00:02:47.12 bitrate=1924.4kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4091 fps= 24 q=28.0 size=   24156KiB time=00:02:50.54 bitrate=1160.3kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4193 fps= 25 q=28.0 size=   39390KiB time=00:02:47.64 bitrate=1924.8kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4103 fps= 24 q=28.0 size=   24245KiB time=00:02:51.04 bitrate=1161.2kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4205 fps= 25 q=28.0 size=   39525KiB time=00:02:48.12 bitrate=1925.9kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4115 fps= 24 q=28.0 size=   24321KiB time=00:02:51.54 bitrate=1161.4kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4217 fps= 25 q=25.0 size=   39619KiB time=00:02:48.60 bitrate=1925.0kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4127 fps= 24 q=28.0 size=   24427KiB time=00:02:52.04 bitrate=1163.1kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4230 fps= 25 q=28.0 size=   39764KiB time=00:02:49.12 bitrate=1926.1kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4139 fps= 24 q=28.0 size=   24540KiB time=00:02:52.54 bitrate=1165.1kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4244 fps= 25 q=28.0 size=   39892KiB time=00:02:49.68 bitrate=1925.9kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4151 fps= 24 q=28.0 size=   24649KiB time=00:02:53.04 bitrate=1166.9kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4256 fps= 25 q=28.0 size=   39979KiB time=00:02:50.16 bitrate=1924.7kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4163 fps= 24 q=28.0 size=   24741KiB time=00:02:53.54 bitrate=1167.8kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4268 fps= 25 q=28.0 size=   40073KiB time=00:02:50.64 bitrate=1923.8kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4175 fps= 24 q=25.0 size=   24846KiB time=00:02:54.04 bitrate=1169.5kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4280 fps= 25 q=28.0 size=   40160KiB time=00:02:51.12 bitrate=1922.6kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4187 fps= 24 q=28.0 size=   24970KiB time=00:02:54.54 bitrate=1171.9kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4293 fps= 25 q=28.0 size=   40276KiB time=00:02:51.64 bitrate=1922.3kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4199 fps= 24 q=28.0 size=   25108KiB time=00:02:55.04 bitrate=1175.0kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4305 fps= 25 q=28.0 size=   40353KiB time=00:02:52.12 bitrate=1920.6kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4211 fps= 24 q=28.0 size=   25240KiB time=00:02:55.55 bitrate=1177.8kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4318 fps= 25 q=28.0 size=   40442KiB time=00:02:52.64 bitrate=1919.0kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4223 fps= 24 q=28.0 size=   25324KiB time=00:02:56.05 bitrate=1178.4kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4330 fps= 25 q=28.0 size=   40541KiB time=00:02:53.12 bitrate=1918.4kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4234 fps= 24 q=28.0 size=   25416KiB time=00:02:56.50 bitrate=1179.6kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4343 fps= 25 q=28.0 size=   40682KiB time=00:02:53.64 bitrate=1919.3kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4247 fps= 24 q=28.0 size=   25549KiB time=00:02:57.05 bitrate=1182.1kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4354 fps= 25 q=28.0 size=   40761KiB time=00:02:54.08 bitrate=1918.2kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4259 fps= 24 q=28.0 size=   25629KiB time=00:02:57.55 bitrate=1182.5kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4368 fps= 25 q=28.0 size=   40873KiB time=00:02:54.64 bitrate=1917.3kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4271 fps= 24 q=28.0 size=   25705KiB time=00:02:58.05 bitrate=1182.6kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4379 fps= 25 q=28.0 size=   40983KiB time=00:02:55.08 bitrate=1917.6kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4283 fps= 24 q=28.0 size=   25775KiB time=00:02:58.55 bitrate=1182.5kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4394 fps= 25 q=28.0 size=   41120KiB time=00:02:55.68 bitrate=1917.4kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4295 fps= 24 q=28.0 size=   25862KiB time=00:02:59.05 bitrate=1183.2kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4406 fps= 25 q=28.0 size=   41239KiB time=00:02:56.16 bitrate=1917.7kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4307 fps= 24 q=28.0 size=   25920KiB time=00:02:59.55 bitrate=1182.6kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4418 fps= 25 q=28.0 size=   41376KiB time=00:02:56.64 bitrate=1918.9kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4319 fps= 24 q=28.0 size=   25984KiB time=00:03:00.05 bitrate=1182.2kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4430 fps= 25 q=28.0 size=   41471KiB time=00:02:57.12 bitrate=1918.1kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4331 fps= 24 q=28.0 size=   26049KiB time=00:03:00.55 bitrate=1181.9kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4442 fps= 25 q=28.0 size=   41603KiB time=00:02:57.60 bitrate=1919.0kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4343 fps= 24 q=28.0 size=   26127KiB time=00:03:01.05 bitrate=1182.2kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4455 fps= 25 q=28.0 size=   41761KiB time=00:02:58.12 bitrate=1920.7kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4355 fps= 24 q=28.0 size=   26190KiB time=00:03:01.55 bitrate=1181.7kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4468 fps= 25 q=28.0 size=   41878KiB time=00:02:58.64 bitrate=1920.4kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4367 fps= 24 q=28.0 size=   26250KiB time=00:03:02.05 bitrate=1181.2kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4480 fps= 25 q=28.0 size=   42012KiB time=00:02:59.12 bitrate=1921.4kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4379 fps= 24 q=28.0 size=   26331KiB time=00:03:02.55 bitrate=1181.6kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4493 fps= 25 q=28.0 size=   42146KiB time=00:02:59.64 bitrate=1922.0kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4391 fps= 24 q=28.0 size=   26399KiB time=00:03:03.05 bitrate=1181.4kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4505 fps= 25 q=28.0 size=   42348KiB time=00:03:00.12 bitrate=1926.0kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4403 fps= 24 q=28.0 size=   26475KiB time=00:03:03.55 bitrate=1181.5kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4518 fps= 25 q=29.0 size=   42562KiB time=00:03:00.64 bitrate=1930.2kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4415 fps= 24 q=25.0 size=   26523KiB time=00:03:04.05 bitrate=1180.5kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4530 fps= 25 q=28.0 size=   42643KiB time=00:03:01.12 bitrate=1928.7kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4427 fps= 24 q=28.0 size=   26601KiB time=00:03:04.55 bitrate=1180.7kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4543 fps= 25 q=28.0 size=   42800KiB time=00:03:01.64 bitrate=1930.3kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4439 fps= 24 q=28.0 size=   26674KiB time=00:03:05.05 bitrate=1180.8kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4555 fps= 25 q=28.0 size=   42933KiB time=00:03:02.12 bitrate=1931.2kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4451 fps= 24 q=28.0 size=   26758KiB time=00:03:05.56 bitrate=1181.3kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4568 fps= 25 q=29.0 size=   43102KiB time=00:03:02.64 bitrate=1933.3kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4463 fps= 24 q=28.0 size=   26826KiB time=00:03:06.06 bitrate=1181.1kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4580 fps= 25 q=31.0 size=   43242KiB time=00:03:03.12 bitrate=1934.5kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4475 fps= 24 q=28.0 size=   26903KiB time=00:03:06.56 bitrate=1181.3kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4593 fps= 25 q=32.0 size=   43400KiB time=00:03:03.64 bitrate=1936.0kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4487 fps= 24 q=28.0 size=   26993KiB time=00:03:07.06 bitrate=1182.1kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4606 fps= 25 q=29.0 size=   43520KiB time=00:03:04.16 bitrate=1935.9kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4499 fps= 24 q=28.0 size=   27076KiB time=00:03:07.56 bitrate=1182.6kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4618 fps= 25 q=29.0 size=   43673KiB time=00:03:04.64 bitrate=1937.7kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4511 fps= 24 q=28.0 size=   27151KiB time=00:03:08.06 bitrate=1182.7kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4630 fps= 25 q=29.0 size=   43759KiB time=00:03:05.12 bitrate=1936.4kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4523 fps= 24 q=28.0 size=   27213KiB time=00:03:08.56 bitrate=1182.2kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4643 fps= 25 q=31.0 size=   43893KiB time=00:03:05.64 bitrate=1936.9kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4534 fps= 24 q=28.0 size=   27284KiB time=00:03:09.02 bitrate=1182.5kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4656 fps= 25 q=29.0 size=   44041KiB time=00:03:06.16 bitrate=1938.0kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4547 fps= 24 q=28.0 size=   27372KiB time=00:03:09.56 bitrate=1182.9kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4667 fps= 25 q=32.0 size=   44156KiB time=00:03:06.60 bitrate=1938.5kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4559 fps= 24 q=28.0 size=   27437KiB time=00:03:10.06 bitrate=1182.6kbits/s speed=0.991x    
-FFmpeg stderr: frame= 4681 fps= 25 q=32.0 size=   44264KiB time=00:03:07.16 bitrate=1937.4kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4571 fps= 24 q=28.0 size=   27510KiB time=00:03:10.56 bitrate=1182.6kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4693 fps= 25 q=33.0 size=   44401KiB time=00:03:07.64 bitrate=1938.5kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4583 fps= 24 q=28.0 size=   27579KiB time=00:03:11.06 bitrate=1182.5kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4706 fps= 25 q=33.0 size=   44559KiB time=00:03:08.16 bitrate=1940.0kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4595 fps= 24 q=28.0 size=   27661KiB time=00:03:11.56 bitrate=1182.9kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4719 fps= 25 q=33.0 size=   44711KiB time=00:03:08.68 bitrate=1941.2kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4607 fps= 24 q=28.0 size=   27726KiB time=00:03:12.06 bitrate=1182.6kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4731 fps= 25 q=35.0 size=   44823KiB time=00:03:09.16 bitrate=1941.2kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4619 fps= 24 q=28.0 size=   27787KiB time=00:03:12.56 bitrate=1182.1kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4743 fps= 25 q=35.0 size=   44956KiB time=00:03:09.64 bitrate=1942.0kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4631 fps= 24 q=28.0 size=   27837KiB time=00:03:13.06 bitrate=1181.1kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4756 fps= 25 q=34.0 size=   45091KiB time=00:03:10.16 bitrate=1942.5kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4643 fps= 24 q=28.0 size=   27900KiB time=00:03:13.56 bitrate=1180.7kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4768 fps= 25 q=34.0 size=   45224KiB time=00:03:10.64 bitrate=1943.3kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4655 fps= 24 q=28.0 size=   27953KiB time=00:03:14.06 bitrate=1179.9kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4782 fps= 25 q=29.0 size=   45332KiB time=00:03:11.20 bitrate=1942.2kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4667 fps= 24 q=28.0 size=   28006KiB time=00:03:14.56 bitrate=1179.1kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4794 fps= 25 q=28.0 size=   45476KiB time=00:03:11.68 bitrate=1943.6kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4679 fps= 24 q=28.0 size=   28067KiB time=00:03:15.06 bitrate=1178.7kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4806 fps= 25 q=28.0 size=   45532KiB time=00:03:12.16 bitrate=1941.1kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4691 fps= 24 q=28.0 size=   28132KiB time=00:03:15.57 bitrate=1178.4kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4818 fps= 25 q=28.0 size=   45577KiB time=00:03:12.64 bitrate=1938.2kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4703 fps= 24 q=28.0 size=   28203KiB time=00:03:16.07 bitrate=1178.3kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4831 fps= 25 q=28.0 size=   45693KiB time=00:03:13.16 bitrate=1937.9kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4715 fps= 24 q=28.0 size=   28278KiB time=00:03:16.57 bitrate=1178.5kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4843 fps= 25 q=28.0 size=   45896KiB time=00:03:13.64 bitrate=1941.7kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4727 fps= 24 q=28.0 size=   28371KiB time=00:03:17.07 bitrate=1179.3kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4856 fps= 25 q=33.0 size=   46079KiB time=00:03:14.16 bitrate=1944.2kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4739 fps= 24 q=28.0 size=   28479KiB time=00:03:17.57 bitrate=1180.8kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4867 fps= 25 q=32.0 size=   46225KiB time=00:03:14.60 bitrate=1945.9kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4751 fps= 24 q=28.0 size=   28586KiB time=00:03:18.07 bitrate=1182.3kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4881 fps= 25 q=34.0 size=   46424KiB time=00:03:15.16 bitrate=1948.7kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4763 fps= 24 q=28.0 size=   28679KiB time=00:03:18.57 bitrate=1183.1kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4893 fps= 25 q=35.0 size=   46544KiB time=00:03:15.64 bitrate=1948.9kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4775 fps= 24 q=28.0 size=   28753KiB time=00:03:19.07 bitrate=1183.2kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4906 fps= 25 q=29.0 size=   46612KiB time=00:03:16.16 bitrate=1946.6kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4787 fps= 24 q=28.0 size=   28875KiB time=00:03:19.57 bitrate=1185.2kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4918 fps= 25 q=28.0 size=   46674KiB time=00:03:16.64 bitrate=1944.4kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4799 fps= 24 q=28.0 size=   28981KiB time=00:03:20.07 bitrate=1186.6kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4931 fps= 25 q=30.0 size=   46839KiB time=00:03:17.16 bitrate=1946.2kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4811 fps= 24 q=28.0 size=   29071KiB time=00:03:20.57 bitrate=1187.3kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4943 fps= 25 q=34.0 size=   47003KiB time=00:03:17.64 bitrate=1948.2kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4823 fps= 24 q=28.0 size=   29143KiB time=00:03:21.07 bitrate=1187.3kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4956 fps= 25 q=34.0 size=   47166KiB time=00:03:18.16 bitrate=1949.9kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4835 fps= 24 q=28.0 size=   29237KiB time=00:03:21.57 bitrate=1188.2kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4968 fps= 25 q=33.0 size=   47292KiB time=00:03:18.64 bitrate=1950.4kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4847 fps= 24 q=28.0 size=   29317KiB time=00:03:22.07 bitrate=1188.5kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4982 fps= 25 q=32.0 size=   47474KiB time=00:03:19.20 bitrate=1952.3kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4859 fps= 24 q=28.0 size=   29404KiB time=00:03:22.57 bitrate=1189.1kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4993 fps= 25 q=32.0 size=   47577KiB time=00:03:19.64 bitrate=1952.3kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4871 fps= 24 q=28.0 size=   29452KiB time=00:03:23.07 bitrate=1188.1kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5006 fps= 25 q=31.0 size=   47660KiB time=00:03:20.16 bitrate=1950.6kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4883 fps= 24 q=28.0 size=   29537KiB time=00:03:23.57 bitrate=1188.6kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5018 fps= 25 q=29.0 size=   47765KiB time=00:03:20.64 bitrate=1950.2kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4895 fps= 24 q=28.0 size=   29614KiB time=00:03:24.07 bitrate=1188.7kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5031 fps= 25 q=34.0 size=   47939KiB time=00:03:21.16 bitrate=1952.3kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4907 fps= 24 q=28.0 size=   29688KiB time=00:03:24.57 bitrate=1188.8kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5043 fps= 25 q=35.0 size=   48080KiB time=00:03:21.64 bitrate=1953.4kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4919 fps= 24 q=28.0 size=   29763KiB time=00:03:25.07 bitrate=1188.9kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5056 fps= 25 q=36.0 size=   48248KiB time=00:03:22.16 bitrate=1955.1kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4931 fps= 24 q=28.0 size=   29848KiB time=00:03:25.58 bitrate=1189.4kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5069 fps= 25 q=34.0 size=   48359KiB time=00:03:22.68 bitrate=1954.6kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4943 fps= 24 q=28.0 size=   29969KiB time=00:03:26.08 bitrate=1191.3kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5081 fps= 25 q=35.0 size=   48481KiB time=00:03:23.16 bitrate=1954.9kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4955 fps= 24 q=28.0 size=   30087KiB time=00:03:26.58 bitrate=1193.1kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5094 fps= 25 q=32.0 size=   48587KiB time=00:03:23.68 bitrate=1954.2kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4966 fps= 24 q=28.0 size=   30220KiB time=00:03:27.04 bitrate=1195.7kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5105 fps= 25 q=28.0 size=   48695KiB time=00:03:24.12 bitrate=1954.3kbits/s speed=0.992x    
-FFmpeg stderr: frame= 4979 fps= 24 q=28.0 size=   30343KiB time=00:03:27.58 bitrate=1197.5kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5119 fps= 25 q=29.0 size=   48859KiB time=00:03:24.68 bitrate=1955.5kbits/s speed=0.993x    
-FFmpeg stderr: frame= 4991 fps= 24 q=28.0 size=   30432KiB time=00:03:28.08 bitrate=1198.1kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5131 fps= 25 q=29.0 size=   48973KiB time=00:03:25.16 bitrate=1955.5kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5003 fps= 24 q=28.0 size=   30476KiB time=00:03:28.58 bitrate=1196.9kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5144 fps= 25 q=33.0 size=   49109KiB time=00:03:25.68 bitrate=1956.0kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5015 fps= 24 q=28.0 size=   30512KiB time=00:03:29.08 bitrate=1195.5kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5156 fps= 25 q=34.0 size=   49248KiB time=00:03:26.16 bitrate=1956.9kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5027 fps= 24 q=28.0 size=   30574KiB time=00:03:29.58 bitrate=1195.0kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5169 fps= 25 q=34.0 size=   49439KiB time=00:03:26.68 bitrate=1959.6kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5039 fps= 24 q=28.0 size=   30609KiB time=00:03:30.08 bitrate=1193.6kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5181 fps= 25 q=32.0 size=   49546KiB time=00:03:27.16 bitrate=1959.3kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5051 fps= 24 q=28.0 size=   30670KiB time=00:03:30.58 bitrate=1193.1kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5194 fps= 25 q=30.0 size=   49629KiB time=00:03:27.68 bitrate=1957.6kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5063 fps= 24 q=28.0 size=   30712KiB time=00:03:31.08 bitrate=1191.9kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5205 fps= 25 q=33.0 size=   49751KiB time=00:03:28.12 bitrate=1958.3kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5075 fps= 24 q=28.0 size=   30758KiB time=00:03:31.58 bitrate=1190.9kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5220 fps= 25 q=34.0 size=   49924KiB time=00:03:28.72 bitrate=1959.5kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5087 fps= 24 q=28.0 size=   30796KiB time=00:03:32.08 bitrate=1189.5kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5232 fps= 25 q=34.0 size=   50070KiB time=00:03:29.20 bitrate=1960.7kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5099 fps= 24 q=28.0 size=   30846KiB time=00:03:32.58 bitrate=1188.6kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5244 fps= 25 q=31.0 size=   50208KiB time=00:03:29.68 bitrate=1961.6kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5111 fps= 24 q=28.0 size=   30915KiB time=00:03:33.08 bitrate=1188.5kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5256 fps= 25 q=31.0 size=   50354KiB time=00:03:30.16 bitrate=1962.8kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5123 fps= 24 q=28.0 size=   30984KiB time=00:03:33.58 bitrate=1188.4kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5269 fps= 25 q=29.0 size=   50435KiB time=00:03:30.68 bitrate=1961.1kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5135 fps= 24 q=28.0 size=   31066KiB time=00:03:34.08 bitrate=1188.7kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5280 fps= 25 q=27.0 size=   50527KiB time=00:03:31.12 bitrate=1960.6kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5147 fps= 24 q=28.0 size=   31150KiB time=00:03:34.58 bitrate=1189.1kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5294 fps= 25 q=28.0 size=   50621KiB time=00:03:31.68 bitrate=1959.0kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5159 fps= 24 q=28.0 size=   31241KiB time=00:03:35.08 bitrate=1189.8kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5307 fps= 25 q=28.0 size=   50767KiB time=00:03:32.20 bitrate=1959.9kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5171 fps= 24 q=28.0 size=   31299KiB time=00:03:35.59 bitrate=1189.3kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5319 fps= 25 q=31.0 size=   50899KiB time=00:03:32.68 bitrate=1960.5kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5183 fps= 24 q=28.0 size=   31433KiB time=00:03:36.09 bitrate=1191.6kbits/s speed=0.992x    
-FFmpeg stderr: frame= 5331 fps= 25 q=34.0 size=   51041KiB time=00:03:33.16 bitrate=1961.5kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5195 fps= 24 q=28.0 size=   31473KiB time=00:03:36.59 bitrate=1190.4kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5344 fps= 25 q=34.0 size=   51239KiB time=00:03:33.68 bitrate=1964.4kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5207 fps= 24 q=28.0 size=   31519KiB time=00:03:37.09 bitrate=1189.4kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5356 fps= 25 q=34.0 size=   51378KiB time=00:03:34.16 bitrate=1965.3kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5219 fps= 24 q=28.0 size=   31570KiB time=00:03:37.59 bitrate=1188.6kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5369 fps= 25 q=31.0 size=   51485KiB time=00:03:34.68 bitrate=1964.6kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5231 fps= 24 q=28.0 size=   31675KiB time=00:03:38.09 bitrate=1189.8kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5380 fps= 25 q=33.0 size=   51621KiB time=00:03:35.12 bitrate=1965.8kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5243 fps= 24 q=28.0 size=   31722KiB time=00:03:38.59 bitrate=1188.8kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5394 fps= 25 q=33.0 size=   51777KiB time=00:03:35.68 bitrate=1966.6kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5255 fps= 24 q=25.0 size=   31764KiB time=00:03:39.09 bitrate=1187.7kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5406 fps= 25 q=34.0 size=   51898KiB time=00:03:36.16 bitrate=1966.8kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5267 fps= 24 q=28.0 size=   31797KiB time=00:03:39.59 bitrate=1186.2kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5419 fps= 25 q=36.0 size=   52019KiB time=00:03:36.68 bitrate=1966.7kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5279 fps= 24 q=28.0 size=   31882KiB time=00:03:40.09 bitrate=1186.6kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5431 fps= 25 q=33.0 size=   52145KiB time=00:03:37.16 bitrate=1967.1kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5291 fps= 24 q=28.0 size=   31964KiB time=00:03:40.59 bitrate=1187.0kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5443 fps= 25 q=29.0 size=   52258KiB time=00:03:37.64 bitrate=1967.0kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5304 fps= 24 q=28.0 size=   32054KiB time=00:03:41.13 bitrate=1187.4kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5456 fps= 25 q=33.0 size=   52382KiB time=00:03:38.16 bitrate=1967.0kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5316 fps= 24 q=28.0 size=   32142KiB time=00:03:41.63 bitrate=1188.0kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5469 fps= 25 q=34.0 size=   52521KiB time=00:03:38.68 bitrate=1967.5kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5328 fps= 24 q=28.0 size=   32255KiB time=00:03:42.13 bitrate=1189.5kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5481 fps= 25 q=34.0 size=   52670KiB time=00:03:39.16 bitrate=1968.7kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5340 fps= 24 q=28.0 size=   32318KiB time=00:03:42.63 bitrate=1189.2kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5494 fps= 25 q=33.0 size=   52788KiB time=00:03:39.68 bitrate=1968.5kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5352 fps= 24 q=28.0 size=   32378KiB time=00:03:43.13 bitrate=1188.7kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5506 fps= 25 q=32.0 size=   52894KiB time=00:03:40.16 bitrate=1968.1kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5364 fps= 24 q=28.0 size=   32450KiB time=00:03:43.64 bitrate=1188.7kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5519 fps= 25 q=34.0 size=   53052KiB time=00:03:40.68 bitrate=1969.4kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5376 fps= 24 q=28.0 size=   32591KiB time=00:03:44.14 bitrate=1191.1kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5532 fps= 25 q=32.0 size=   53192KiB time=00:03:41.20 bitrate=1969.9kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5388 fps= 24 q=28.0 size=   32649KiB time=00:03:44.64 bitrate=1190.6kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5544 fps= 25 q=31.0 size=   53320KiB time=00:03:41.68 bitrate=1970.4kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5399 fps= 24 q=28.0 size=   32701KiB time=00:03:45.09 bitrate=1190.1kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5557 fps= 25 q=30.0 size=   53470KiB time=00:03:42.20 bitrate=1971.3kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5411 fps= 24 q=28.0 size=   32770KiB time=00:03:45.60 bitrate=1189.9kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5569 fps= 25 q=28.0 size=   53545KiB time=00:03:42.68 bitrate=1969.8kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5423 fps= 24 q=28.0 size=   32865KiB time=00:03:46.10 bitrate=1190.8kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5582 fps= 25 q=28.0 size=   53612KiB time=00:03:43.20 bitrate=1967.7kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5435 fps= 24 q=28.0 size=   32910KiB time=00:03:46.60 bitrate=1189.7kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5594 fps= 25 q=28.0 size=   53684KiB time=00:03:43.68 bitrate=1966.1kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5447 fps= 24 q=28.0 size=   32966KiB time=00:03:47.10 bitrate=1189.2kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5607 fps= 25 q=28.0 size=   53789KiB time=00:03:44.20 bitrate=1965.4kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5459 fps= 24 q=28.0 size=   33075KiB time=00:03:47.60 bitrate=1190.5kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5619 fps= 25 q=28.0 size=   53870KiB time=00:03:44.68 bitrate=1964.1kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5471 fps= 24 q=28.0 size=   33165KiB time=00:03:48.10 bitrate=1191.1kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5632 fps= 25 q=28.0 size=   53947KiB time=00:03:45.20 bitrate=1962.4kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5483 fps= 24 q=28.0 size=   33293KiB time=00:03:48.60 bitrate=1193.1kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5644 fps= 25 q=28.0 size=   54027KiB time=00:03:45.68 bitrate=1961.2kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5495 fps= 24 q=28.0 size=   33445KiB time=00:03:49.10 bitrate=1195.9kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5657 fps= 25 q=28.0 size=   54134KiB time=00:03:46.20 bitrate=1960.5kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5507 fps= 24 q=28.0 size=   33553KiB time=00:03:49.60 bitrate=1197.1kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5668 fps= 25 q=28.0 size=   54222KiB time=00:03:46.64 bitrate=1959.9kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5520 fps= 24 q=28.0 size=   33681KiB time=00:03:50.14 bitrate=1198.9kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5681 fps= 25 q=28.0 size=   54311KiB time=00:03:47.16 bitrate=1958.6kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5531 fps= 24 q=28.0 size=   33805KiB time=00:03:50.60 bitrate=1200.9kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5693 fps= 25 q=28.0 size=   54380KiB time=00:03:47.64 bitrate=1957.0kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5543 fps= 24 q=28.0 size=   33916KiB time=00:03:51.10 bitrate=1202.2kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5705 fps= 25 q=28.0 size=   54423KiB time=00:03:48.12 bitrate=1954.4kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5555 fps= 24 q=25.0 size=   34028KiB time=00:03:51.60 bitrate=1203.6kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5720 fps= 25 q=28.0 size=   54435KiB time=00:03:48.72 bitrate=1949.7kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5567 fps= 24 q=28.0 size=   34125KiB time=00:03:52.10 bitrate=1204.4kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5729 fps= 25 q=28.0 size=   54441KiB time=00:03:49.08 bitrate=1946.8kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5578 fps= 24 q=28.0 size=   34209KiB time=00:03:52.56 bitrate=1205.0kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5743 fps= 25 q=28.0 size=   54446KiB time=00:03:49.64 bitrate=1942.3kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5591 fps= 24 q=28.0 size=   34316KiB time=00:03:53.10 bitrate=1205.9kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5755 fps= 25 q=28.0 size=   54447KiB time=00:03:50.12 bitrate=1938.3kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5603 fps= 24 q=28.0 size=   34418KiB time=00:03:53.60 bitrate=1206.9kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5768 fps= 25 q=28.0 size=   54448KiB time=00:03:50.68 bitrate=1933.6kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5615 fps= 24 q=28.0 size=   34537KiB time=00:03:54.10 bitrate=1208.5kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5780 fps= 25 q=28.0 size=   54450KiB time=00:03:51.16 bitrate=1929.6kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5627 fps= 24 q=28.0 size=   34630KiB time=00:03:54.60 bitrate=1209.2kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5793 fps= 25 q=28.0 size=   54531KiB time=00:03:51.68 bitrate=1928.2kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5639 fps= 24 q=28.0 size=   34739KiB time=00:03:55.10 bitrate=1210.4kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5805 fps= 25 q=28.0 size=   54612KiB time=00:03:52.16 bitrate=1927.0kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5650 fps= 24 q=28.0 size=   34823KiB time=00:03:55.56 bitrate=1211.0kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5818 fps= 25 q=28.0 size=   54674KiB time=00:03:52.68 bitrate=1924.9kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5663 fps= 24 q=28.0 size=   34895KiB time=00:03:56.11 bitrate=1210.7kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5830 fps= 25 q=28.0 size=   54739KiB time=00:03:53.16 bitrate=1923.2kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5675 fps= 24 q=28.0 size=   34933KiB time=00:03:56.61 bitrate=1209.5kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5844 fps= 25 q=28.0 size=   54828KiB time=00:03:53.72 bitrate=1921.7kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5687 fps= 24 q=28.0 size=   35008KiB time=00:03:57.11 bitrate=1209.5kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5855 fps= 25 q=28.0 size=   54909KiB time=00:03:54.16 bitrate=1921.0kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5699 fps= 24 q=28.0 size=   35082KiB time=00:03:57.61 bitrate=1209.5kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5868 fps= 25 q=28.0 size=   55016KiB time=00:03:54.68 bitrate=1920.4kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5711 fps= 24 q=25.0 size=   35166KiB time=00:03:58.11 bitrate=1209.8kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5880 fps= 25 q=28.0 size=   55146KiB time=00:03:55.16 bitrate=1921.1kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5723 fps= 24 q=28.0 size=   35199KiB time=00:03:58.61 bitrate=1208.5kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5893 fps= 25 q=28.0 size=   55291KiB time=00:03:55.68 bitrate=1921.9kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5735 fps= 24 q=28.0 size=   35269KiB time=00:03:59.11 bitrate=1208.3kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5905 fps= 25 q=28.0 size=   55421KiB time=00:03:56.16 bitrate=1922.5kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5747 fps= 24 q=28.0 size=   35367KiB time=00:03:59.61 bitrate=1209.1kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5918 fps= 25 q=28.0 size=   55495KiB time=00:03:56.68 bitrate=1920.8kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5759 fps= 24 q=28.0 size=   35450KiB time=00:04:00.11 bitrate=1209.4kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5931 fps= 25 q=28.0 size=   55538KiB time=00:03:57.20 bitrate=1918.1kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5771 fps= 24 q=28.0 size=   35533KiB time=00:04:00.61 bitrate=1209.8kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5943 fps= 25 q=28.0 size=   55586KiB time=00:03:57.68 bitrate=1915.9kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5783 fps= 24 q=28.0 size=   35606KiB time=00:04:01.11 bitrate=1209.7kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5957 fps= 25 q=28.0 size=   55739KiB time=00:03:58.24 bitrate=1916.6kbits/s speed=0.994x    
-FFmpeg stderr: frame= 5795 fps= 24 q=28.0 size=   35657KiB time=00:04:01.61 bitrate=1209.0kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5969 fps= 25 q=28.0 size=   55835KiB time=00:03:58.72 bitrate=1916.0kbits/s speed=0.994x    
-FFmpeg stderr: frame= 5807 fps= 24 q=28.0 size=   35703KiB time=00:04:02.11 bitrate=1208.0kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5981 fps= 25 q=28.0 size=   55966KiB time=00:03:59.20 bitrate=1916.7kbits/s speed=0.994x    
-FFmpeg stderr: frame= 5818 fps= 24 q=28.0 size=   35760KiB time=00:04:02.57 bitrate=1207.7kbits/s speed=0.993x    
-FFmpeg stderr: frame= 5993 fps= 25 q=28.0 size=   56100KiB time=00:03:59.68 bitrate=1917.4kbits/s speed=0.993x    
