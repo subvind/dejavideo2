@@ -81,6 +81,9 @@ dejavideo/
 │   └── static/
 │       └── uploads/
 └── mix.exs
+
+# install youtube downloader
+sudo pacman -S yt-dlp
 ```
 
 

@@ -1,0 +1,765 @@
+11/19/2024 18:13:14 1012531 [INFO] Node Media Server v2.7.0
+11/19/2024 18:13:14 1012531 [ERROR] Node Media Trans Server startup failed. ffmpeg:ffmpeg cannot be executed.
+API Server running on port 3000
+11/19/2024 18:13:14 1012531 [INFO] Node Media Rtmp Server started on port: 1935
+11/19/2024 18:13:14 1012531 [INFO] Node Media Http Server started on port: 8000
+11/19/2024 18:13:14 1012531 [INFO] Node Media WebSocket Server started on port: 8000
+Load request received for deck: deckA, video: Grimes - Oblivion.mp4
+Checking video path: videos/Grimes - Oblivion.mp4
+Video info: {
+  "streams": [
+    {
+      "index": 0,
+      "codec_name": "vp9",
+      "codec_long_name": "Google VP9",
+      "profile": "Profile 0",
+      "codec_type": "video",
+      "codec_tag_string": "vp09",
+      "codec_tag": "0x39307076",
+      "width": 1920,
+      "height": 1080,
+      "coded_width": 1920,
+      "coded_height": 1080,
+      "closed_captions": 0,
+      "film_grain": 0,
+      "has_b_frames": 0,
+      "sample_aspect_ratio": "N/A",
+      "display_aspect_ratio": "N/A",
+      "pix_fmt": "yuv420p",
+      "level": "-99",
+      "color_range": "tv",
+      "color_space": "bt709",
+      "color_transfer": "bt709",
+      "color_primaries": "bt709",
+      "chroma_location": "unspecified",
+      "field_order": "unknown",
+      "refs": 1,
+      "id": "0x1",
+      "r_frame_rate": "24000/1001",
+      "avg_frame_rate": "2012000/83917",
+      "time_base": "1/16000",
+      "start_pts": 0,
+      "start_time": 0,
+      "duration_ts": 4028016,
+      "duration": 251.751,
+      "bit_rate": 1910208,
+      "max_bit_rate": "N/A",
+      "bits_per_raw_sample": "N/A",
+      "nb_frames": 6036,
+      "nb_read_frames": "N/A",
+      "nb_read_packets": "N/A",
+      "tags": {
+        "language": "und",
+        "handler_name": "ISO Media file produced by Google Inc. Created on: 11/18/2024.",
+        "vendor_id": "[0][0][0][0]"
+      },
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0
+      }
+    },
+    {
+      "index": 1,
+      "codec_name": "aac",
+      "codec_long_name": "AAC (Advanced Audio Coding)",
+      "profile": "LC",
+      "codec_type": "audio",
+      "codec_tag_string": "mp4a",
+      "codec_tag": "0x6134706d",
+      "sample_fmt": "fltp",
+      "sample_rate": 44100,
+      "channels": 2,
+      "channel_layout": "stereo",
+      "bits_per_sample": 0,
+      "initial_padding": 0,
+      "id": "0x2",
+      "r_frame_rate": "0/0",
+      "avg_frame_rate": "0/0",
+      "time_base": "1/44100",
+      "start_pts": 0,
+      "start_time": 0,
+      "duration_ts": 11105280,
+      "duration": 251.820408,
+      "bit_rate": 127999,
+      "max_bit_rate": "N/A",
+      "bits_per_raw_sample": "N/A",
+      "nb_frames": 10845,
+      "nb_read_frames": "N/A",
+      "nb_read_packets": "N/A",
+      "extradata_size": 16,
+      "tags": {
+        "language": "eng",
+        "handler_name": "ISO Media file produced by Google Inc.",
+        "vendor_id": "[0][0][0][0]"
+      },
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0
+      }
+    }
+  ],
+  "format": {
+    "filename": "videos/Grimes - Oblivion.mp4",
+    "nb_streams": 2,
+    "nb_programs": 0,
+    "nb_stream_groups": 0,
+    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+    "format_long_name": "QuickTime / MOV",
+    "start_time": 0,
+    "duration": 251.820408,
+    "size": 64316681,
+    "bit_rate": 2043255,
+    "probe_score": 100,
+    "tags": {
+      "major_brand": "isom",
+      "minor_version": "512",
+      "compatible_brands": "isomiso2mp41",
+      "encoder": "Lavf61.1.100"
+    }
+  },
+  "chapters": []
+}
+Video successfully loaded in deckA
+Play request received for deck: deckA
+Starting playback for deckA with video: Grimes - Oblivion.mp4
+FFmpeg start command: ffmpeg -re -stream_loop -1 -i videos/Grimes - Oblivion.mp4 -filter:v scale=w=1280:h=720 -c:v libx264 -preset veryfast -maxrate 2000k -bufsize 4000k -g 50 -c:a aac -b:a 128k -ar 44100 -pix_fmt yuv420p -profile:v high -level 4.1 -f flv rtmp://localhost:1935/live/deckA
+FFmpeg stderr: ffmpeg version n7.0.2 Copyright (c) 2000-2024 the FFmpeg developers
+FFmpeg stderr:   built with gcc 14.2.1 (GCC) 20240910
+FFmpeg stderr:   configuration: --prefix=/usr --disable-debug --disable-static --disable-stripping --enable-amf --enable-avisynth --enable-cuda-llvm --enable-lto --enable-fontconfig --enable-frei0r --enable-gmp --enable-gnutls --enable-gpl --enable-ladspa --enable-libaom --enable-libass --enable-libbluray --enable-libbs2b --enable-libdav1d --enable-libdrm --enable-libdvdnav --enable-libdvdread --enable-libfreetype --enable-libfribidi --enable-libgsm --enable-libharfbuzz --enable-libiec61883 --enable-libjack --enable-libjxl --enable-libmodplug --enable-libmp3lame --enable-libopencore_amrnb --enable-libopencore_amrwb --enable-libopenjpeg --enable-libopenmpt --enable-libopus --enable-libplacebo --enable-libpulse --enable-librav1e --enable-librsvg --enable-librubberband --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtheora --enable-libv4l2 --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpl --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxcb --enable-libxml2 --enable-libxvid --enable-libzimg --enable-libzmq --enable-nvdec --enable-nvenc --enable-opencl --enable-opengl --enable-shared --enable-vapoursynth --enable-version3 --enable-vulkan
+FFmpeg stderr:   libavutil      59.  8.100 / 59.  8.100
+FFmpeg stderr:   libavcodec     61.  3.100 / 61.  3.100
+FFmpeg stderr:   libavformat    61.  1.100 / 61.  1.100
+FFmpeg stderr:   libavdevice    61.  1.100 / 61.  1.100
+FFmpeg stderr:   libavfilter    10.  1.100 / 10.  1.100
+FFmpeg stderr:   libswscale      8.  1.100 /  8.  1.100
+FFmpeg stderr:   libswresample   5.  1.100 /  5.  1.100
+FFmpeg stderr:   libpostproc    58.  1.100 / 58.  1.100
+FFmpeg stderr: Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'videos/Grimes - Oblivion.mp4':
+FFmpeg stderr:   Metadata:
+FFmpeg stderr:     major_brand     : isom
+FFmpeg stderr:     minor_version   : 512
+FFmpeg stderr:     compatible_brands: isomiso2mp41
+FFmpeg stderr:     encoder         : Lavf61.1.100
+FFmpeg stderr:   Duration: 00:04:11.82, start: 0.000000, bitrate: 2043 kb/s
+FFmpeg stderr:   Stream #0:0[0x1](und): Video: vp9 (Profile 0) (vp09 / 0x39307076), yuv420p(tv, bt709), 1920x1080, 1910 kb/s, 23.98 fps, 23.98 tbr, 16k tbn (default)
+FFmpeg stderr:       Metadata:
+FFmpeg stderr:         handler_name    : ISO Media file produced by Google Inc. Created on: 11/18/2024.
+FFmpeg stderr:         vendor_id       : [0][0][0][0]
+FFmpeg stderr:   Stream #0:1[0x2](eng): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 127 kb/s (default)
+FFmpeg stderr:       Metadata:
+FFmpeg stderr:         handler_name    : ISO Media file produced by Google Inc.
+FFmpeg stderr:         vendor_id       : [0][0][0][0]
+11/19/2024 18:13:21 1012531 [INFO] [rtmp connect] id=Y9O0U068 ip=::1 app=live args={"app":"live","type":"nonprivate","flashVer":"FMLE/3.0 (compatible; Lavf61.1.100)","tcUrl":"rtmp://localhost:1935/live"}
+11/19/2024 18:13:21 1012531 [INFO] [rtmp publish] New stream. id=Y9O0U068 streamPath=/live/deckA streamId=1
+FFmpeg stderr: Stream mapping:
+FFmpeg stderr:   Stream #0:0 -> #0:0 (vp9 (native) -> h264 (libx264))
+FFmpeg stderr:   Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+FFmpeg stderr: Press [q] to stop, [?] for help
+FFmpeg stderr: [libx264 @ 0x5868fab21200] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+FFmpeg stderr: [libx264 @ 0x5868fab21200] profile High, level 4.1, 4:2:0, 8-bit
+FFmpeg stderr: [libx264 @ 0x5868fab21200] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=1 ref=1 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=2 psy=1 psy_rd=1.00:0.00 mixed_ref=0 me_range=16 chroma_me=1 trellis=0 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=0 threads=22 lookahead_threads=5 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=1 keyint=50 keyint_min=5 scenecut=40 intra_refresh=0 rc_lookahead=10 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 vbv_maxrate=2000 vbv_bufsize=4000 crf_max=0.0 nal_hrd=none filler=0 ip_ratio=1.40 aq=1:1.00
+FFmpeg stderr: Output #0, flv, to 'rtmp://localhost:1935/live/deckA':
+FFmpeg stderr:   Metadata:
+FFmpeg stderr:     major_brand     : isom
+FFmpeg stderr:     minor_version   : 512
+FFmpeg stderr:     compatible_brands: isomiso2mp41
+FFmpeg stderr:     encoder         : Lavf61.1.100
+FFmpeg stderr:   Stream #0:0(und): Video: h264 ([7][0][0][0] / 0x0007), yuv420p(tv, bt709, progressive), 1280x720, q=2-31, 23.98 fps, 1k tbn (default)
+FFmpeg stderr:       Metadata:
+FFmpeg stderr:         handler_name    : ISO Media file produced by Google Inc. Created on: 11/18/2024.
+FFmpeg stderr:         vendor_id       : [0][0][0][0]
+FFmpeg stderr:         encoder         : Lavc61.3.100 libx264
+FFmpeg stderr:       Side data:
+FFmpeg stderr:         cpb: bitrate max/min/avg: 2000000/0/0 buffer size: 4000000 vbv_delay: N/A
+FFmpeg stderr:   Stream #0:1(eng): Audio: aac (LC) ([10][0][0][0] / 0x000A), 44100 Hz, stereo, fltp, 128 kb/s (default)
+FFmpeg stderr:       Metadata:
+FFmpeg stderr:         handler_name    : ISO Media file produced by Google Inc.
+FFmpeg stderr:         vendor_id       : [0][0][0][0]
+FFmpeg stderr:         encoder         : Lavc61.3.100 aac
+11/19/2024 18:13:21 1012531 [INFO] [rtmp publish] Handle video. id=Y9O0U068 streamPath=/live/deckA frame_type=1 codec_id=7 codec_name=H264 1280x720
+11/19/2024 18:13:21 1012531 [INFO] [rtmp publish] Handle audio. id=Y9O0U068 streamPath=/live/deckA sound_format=10 sound_type=2 sound_size=1 sound_rate=3 codec_name=AAC 44100 2ch
+FFmpeg stderr: frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
+FFmpeg stderr: frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
+FFmpeg stderr: frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
+FFmpeg stderr: frame=   10 fps=5.0 q=28.0 size=      49KiB time=00:00:00.33 bitrate=1209.0kbits/s speed=0.167x    
+FFmpeg stderr: frame=   22 fps=8.8 q=28.0 size=     148KiB time=00:00:00.83 bitrate=1456.8kbits/s speed=0.333x    
+FFmpeg stderr: frame=   34 fps= 11 q=28.0 size=     211KiB time=00:00:01.33 bitrate=1295.9kbits/s speed=0.445x    
+FFmpeg stderr: frame=   46 fps= 13 q=28.0 size=     287KiB time=00:00:01.83 bitrate=1282.4kbits/s speed=0.524x    
+FFmpeg stderr: frame=   58 fps= 14 q=28.0 size=     430KiB time=00:00:02.33 bitrate=1507.4kbits/s speed=0.583x    
+Load request received for deck: deckA, video: Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4
+Checking video path: videos/Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4
+Video info: {
+  "streams": [
+    {
+      "index": 0,
+      "codec_name": "vp9",
+      "codec_long_name": "Google VP9",
+      "profile": "Profile 0",
+      "codec_type": "video",
+      "codec_tag_string": "vp09",
+      "codec_tag": "0x39307076",
+      "width": 1920,
+      "height": 1080,
+      "coded_width": 1920,
+      "coded_height": 1080,
+      "closed_captions": 0,
+      "film_grain": 0,
+      "has_b_frames": 0,
+      "sample_aspect_ratio": "N/A",
+      "display_aspect_ratio": "N/A",
+      "pix_fmt": "yuv420p",
+      "level": "-99",
+      "color_range": "tv",
+      "color_space": "bt709",
+      "color_transfer": "bt709",
+      "color_primaries": "bt709",
+      "chroma_location": "unspecified",
+      "field_order": "unknown",
+      "refs": 1,
+      "id": "0x1",
+      "r_frame_rate": "25/1",
+      "avg_frame_rate": "25/1",
+      "time_base": "1/16000",
+      "start_pts": 0,
+      "start_time": 0,
+      "duration_ts": 3683840,
+      "duration": 230.24,
+      "bit_rate": 3905095,
+      "max_bit_rate": "N/A",
+      "bits_per_raw_sample": "N/A",
+      "nb_frames": 5756,
+      "nb_read_frames": "N/A",
+      "nb_read_packets": "N/A",
+      "tags": {
+        "language": "und",
+        "handler_name": "ISO Media file produced by Google Inc. Created on: 11/18/2024.",
+        "vendor_id": "[0][0][0][0]"
+      },
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0
+      }
+    },
+    {
+      "index": 1,
+      "codec_name": "aac",
+      "codec_long_name": "AAC (Advanced Audio Coding)",
+      "profile": "LC",
+      "codec_type": "audio",
+      "codec_tag_string": "mp4a",
+      "codec_tag": "0x6134706d",
+      "sample_fmt": "fltp",
+      "sample_rate": 44100,
+      "channels": 2,
+      "channel_layout": "stereo",
+      "bits_per_sample": 0,
+      "initial_padding": 0,
+      "id": "0x2",
+      "r_frame_rate": "0/0",
+      "avg_frame_rate": "0/0",
+      "time_base": "1/44100",
+      "start_pts": 0,
+      "start_time": 0,
+      "duration_ts": 10156032,
+      "duration": 230.29551,
+      "bit_rate": 127999,
+      "max_bit_rate": "N/A",
+      "bits_per_raw_sample": "N/A",
+      "nb_frames": 9918,
+      "nb_read_frames": "N/A",
+      "nb_read_packets": "N/A",
+      "extradata_size": 16,
+      "tags": {
+        "language": "eng",
+        "handler_name": "ISO Media file produced by Google Inc.",
+        "vendor_id": "[0][0][0][0]"
+      },
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0
+      }
+    }
+  ],
+  "format": {
+    "filename": "videos/Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4",
+    "nb_streams": 2,
+    "nb_programs": 0,
+    "nb_stream_groups": 0,
+    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+    "format_long_name": "QuickTime / MOV",
+    "start_time": 0,
+    "duration": 230.29551,
+    "size": 116222501,
+    "bit_rate": 4037334,
+    "probe_score": 100,
+    "tags": {
+      "major_brand": "isom",
+      "minor_version": "512",
+      "compatible_brands": "isomiso2mp41",
+      "encoder": "Lavf61.1.100"
+    }
+  },
+  "chapters": []
+}
+Stopping current video in deckA
+Video successfully loaded in deckA
+11/19/2024 18:13:26 1012531 [INFO] [rtmp publish] Close stream. id=Y9O0U068 streamPath=/live/deckA streamId=1
+11/19/2024 18:13:26 1012531 [INFO] [rtmp disconnect] id=Y9O0U068
+FFmpeg stderr: 
+FFmpeg error: ffmpeg was killed with signal SIGKILL
+FFmpeg stderr: ffmpeg version n7.0.2 Copyright (c) 2000-2024 the FFmpeg developers
+  built with gcc 14.2.1 (GCC) 20240910
+  configuration: --prefix=/usr --disable-debug --disable-static --disable-stripping --enable-amf --enable-avisynth --enable-cuda-llvm --enable-lto --enable-fontconfig --enable-frei0r --enable-gmp --enable-gnutls --enable-gpl --enable-ladspa --enable-libaom --enable-libass --enable-libbluray --enable-libbs2b --enable-libdav1d --enable-libdrm --enable-libdvdnav --enable-libdvdread --enable-libfreetype --enable-libfribidi --enable-libgsm --enable-libharfbuzz --enable-libiec61883 --enable-libjack --enable-libjxl --enable-libmodplug --enable-libmp3lame --enable-libopencore_amrnb --enable-libopencore_amrwb --enable-libopenjpeg --enable-libopenmpt --enable-libopus --enable-libplacebo --enable-libpulse --enable-librav1e --enable-librsvg --enable-librubberband --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtheora --enable-libv4l2 --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpl --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxcb --enable-libxml2 --enable-libxvid --enable-libzimg --enable-libzmq --enable-nvdec --enable-nvenc --enable-opencl --enable-opengl --enable-shared --enable-vapoursynth --enable-version3 --enable-vulkan
+  libavutil      59.  8.100 / 59.  8.100
+  libavcodec     61.  3.100 / 61.  3.100
+  libavformat    61.  1.100 / 61.  1.100
+  libavdevice    61.  1.100 / 61.  1.100
+  libavfilter    10.  1.100 / 10.  1.100
+  libswscale      8.  1.100 /  8.  1.100
+  libswresample   5.  1.100 /  5.  1.100
+  libpostproc    58.  1.100 / 58.  1.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'videos/Grimes - Oblivion.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2mp41
+    encoder         : Lavf61.1.100
+  Duration: 00:04:11.82, start: 0.000000, bitrate: 2043 kb/s
+  Stream #0:0[0x1](und): Video: vp9 (Profile 0) (vp09 / 0x39307076), yuv420p(tv, bt709), 1920x1080, 1910 kb/s, 23.98 fps, 23.98 tbr, 16k tbn (default)
+      Metadata:
+        handler_name    : ISO Media file produced by Google Inc. Created on: 11/18/2024.
+        vendor_id       : [0][0][0][0]
+  Stream #0:1[0x2](eng): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 127 kb/s (default)
+      Metadata:
+        handler_name    : ISO Media file produced by Google Inc.
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (vp9 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x5868fab21200] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x5868fab21200] profile High, level 4.1, 4:2:0, 8-bit
+[libx264 @ 0x5868fab21200] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=1 ref=1 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=2 psy=1 psy_rd=1.00:0.00 mixed_ref=0 me_range=16 chroma_me=1 trellis=0 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=0 threads=22 lookahead_threads=5 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=1 keyint=50 keyint_min=5 scenecut=40 intra_refresh=0 rc_lookahead=10 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 vbv_maxrate=2000 vbv_bufsize=4000 crf_max=0.0 nal_hrd=none filler=0 ip_ratio=1.40 aq=1:1.00
+Output #0, flv, to 'rtmp://localhost:1935/live/deckA':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2mp41
+    encoder         : Lavf61.1.100
+  Stream #0:0(und): Video: h264 ([7][0][0][0] / 0x0007), yuv420p(tv, bt709, progressive), 1280x720, q=2-31, 23.98 fps, 1k tbn (default)
+      Metadata:
+        handler_name    : ISO Media file produced by Google Inc. Created on: 11/18/2024.
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.3.100 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 2000000/0/0 buffer size: 4000000 vbv_delay: N/A
+  Stream #0:1(eng): Audio: aac (LC) ([10][0][0][0] / 0x000A), 44100 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : ISO Media file produced by Google Inc.
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.3.100 aac
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
+frame=   10 fps=5.0 q=28.0 size=      49KiB time=00:00:00.33 bitrate=1209.0kbits/s speed=0.167x    
+frame=   22 fps=8.8 q=28.0 size=     148KiB time=00:00:00.83 bitrate=1456.8kbits/s speed=0.333x    
+frame=   34 fps= 11 q=28.0 size=     211KiB time=00:00:01.33 bitrate=1295.9kbits/s speed=0.445x    
+frame=   46 fps= 13 q=28.0 size=     287KiB time=00:00:01.83 bitrate=1282.4kbits/s speed=0.524x    
+frame=   58 fps= 14 q=28.0 size=     430KiB time=00:00:02.33 bitrate=1507.4kbits/s speed=0.583x    
+
+Play request received for deck: deckA
+Starting playback for deckA with video: Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4
+FFmpeg start command: ffmpeg -re -stream_loop -1 -i videos/Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4 -filter:v scale=w=1280:h=720 -c:v libx264 -preset veryfast -maxrate 2000k -bufsize 4000k -g 50 -c:a aac -b:a 128k -ar 44100 -pix_fmt yuv420p -profile:v high -level 4.1 -f flv rtmp://localhost:1935/live/deckA
+FFmpeg stderr: ffmpeg version n7.0.2 Copyright (c) 2000-2024 the FFmpeg developers
+FFmpeg stderr:   built with gcc 14.2.1 (GCC) 20240910
+FFmpeg stderr:   configuration: --prefix=/usr --disable-debug --disable-static --disable-stripping --enable-amf --enable-avisynth --enable-cuda-llvm --enable-lto --enable-fontconfig --enable-frei0r --enable-gmp --enable-gnutls --enable-gpl --enable-ladspa --enable-libaom --enable-libass --enable-libbluray --enable-libbs2b --enable-libdav1d --enable-libdrm --enable-libdvdnav --enable-libdvdread --enable-libfreetype --enable-libfribidi --enable-libgsm --enable-libharfbuzz --enable-libiec61883 --enable-libjack --enable-libjxl --enable-libmodplug --enable-libmp3lame --enable-libopencore_amrnb --enable-libopencore_amrwb --enable-libopenjpeg --enable-libopenmpt --enable-libopus --enable-libplacebo --enable-libpulse --enable-librav1e --enable-librsvg --enable-librubberband --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtheora --enable-libv4l2 --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpl --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxcb --enable-libxml2 --enable-libxvid --enable-libzimg --enable-libzmq --enable-nvdec --enable-nvenc --enable-opencl --enable-opengl --enable-shared --enable-vapoursynth --enable-version3 --enable-vulkan
+FFmpeg stderr:   libavutil      59.  8.100 / 59.  8.100
+FFmpeg stderr:   libavcodec     61.  3.100 / 61.  3.100
+FFmpeg stderr:   libavformat    61.  1.100 / 61.  1.100
+FFmpeg stderr:   libavdevice    61.  1.100 / 61.  1.100
+FFmpeg stderr:   libavfilter    10.  1.100 / 10.  1.100
+FFmpeg stderr:   libswscale      8.  1.100 /  8.  1.100
+FFmpeg stderr:   libswresample   5.  1.100 /  5.  1.100
+FFmpeg stderr:   libpostproc    58.  1.100 / 58.  1.100
+FFmpeg stderr: Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'videos/Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4':
+FFmpeg stderr:   Metadata:
+FFmpeg stderr:     major_brand     : isom
+FFmpeg stderr:     minor_version   : 512
+FFmpeg stderr:     compatible_brands: isomiso2mp41
+FFmpeg stderr:     encoder         : Lavf61.1.100
+FFmpeg stderr:   Duration: 00:03:50.30, start: 0.000000, bitrate: 4037 kb/s
+FFmpeg stderr:   Stream #0:0[0x1](und): Video: vp9 (Profile 0) (vp09 / 0x39307076), yuv420p(tv, bt709), 1920x1080, 3905 kb/s, 25 fps, 25 tbr, 16k tbn (default)
+FFmpeg stderr:       Metadata:
+FFmpeg stderr:         handler_name    : ISO Media file produced by Google Inc. Created on: 11/18/2024.
+FFmpeg stderr:         vendor_id       : [0][0][0][0]
+FFmpeg stderr:   Stream #0:1[0x2](eng): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 127 kb/s (default)
+FFmpeg stderr:       Metadata:
+FFmpeg stderr:         handler_name    : ISO Media file produced by Google Inc.
+FFmpeg stderr:         vendor_id       : [0][0][0][0]
+11/19/2024 18:13:28 1012531 [INFO] [rtmp connect] id=5JI247CN ip=::1 app=live args={"app":"live","type":"nonprivate","flashVer":"FMLE/3.0 (compatible; Lavf61.1.100)","tcUrl":"rtmp://localhost:1935/live"}
+11/19/2024 18:13:28 1012531 [INFO] [rtmp publish] New stream. id=5JI247CN streamPath=/live/deckA streamId=1
+FFmpeg stderr: Stream mapping:
+FFmpeg stderr:   Stream #0:0 -> #0:0 (vp9 (native) -> h264 (libx264))
+FFmpeg stderr:   Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+FFmpeg stderr: Press [q] to stop, [?] for help
+FFmpeg stderr: [libx264 @ 0x61875f125f40] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+FFmpeg stderr: [libx264 @ 0x61875f125f40] profile High, level 4.1, 4:2:0, 8-bit
+FFmpeg stderr: [libx264 @ 0x61875f125f40] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=1 ref=1 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=2 psy=1 psy_rd=1.00:0.00 mixed_ref=0 me_range=16 chroma_me=1 trellis=0 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=0 threads=22 lookahead_threads=5 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=1 keyint=50 keyint_min=5 scenecut=40 intra_refresh=0 rc_lookahead=10 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 vbv_maxrate=2000 vbv_bufsize=4000 crf_max=0.0 nal_hrd=none filler=0 ip_ratio=1.40 aq=1:1.00
+FFmpeg stderr: Output #0, flv, to 'rtmp://localhost:1935/live/deckA':
+FFmpeg stderr:   Metadata:
+FFmpeg stderr:     major_brand     : isom
+FFmpeg stderr:     minor_version   : 512
+FFmpeg stderr:     compatible_brands: isomiso2mp41
+FFmpeg stderr:     encoder         : Lavf61.1.100
+FFmpeg stderr:   Stream #0:0(und): Video: h264 ([7][0][0][0] / 0x0007), yuv420p(tv, bt709, progressive), 1280x720, q=2-31, 25 fps, 1k tbn (default)
+FFmpeg stderr:       Metadata:
+FFmpeg stderr:         handler_name    : ISO Media file produced by Google Inc. Created on: 11/18/2024.
+FFmpeg stderr:         vendor_id       : [0][0][0][0]
+FFmpeg stderr:         encoder         : Lavc61.3.100 libx264
+FFmpeg stderr:       Side data:
+FFmpeg stderr:         cpb: bitrate max/min/avg: 2000000/0/0 buffer size: 4000000 vbv_delay: N/A
+FFmpeg stderr:   Stream #0:1(eng): Audio: aac (LC) ([10][0][0][0] / 0x000A), 44100 Hz, stereo, fltp, 128 kb/s (default)
+FFmpeg stderr:       Metadata:
+FFmpeg stderr:         handler_name    : ISO Media file produced by Google Inc.
+FFmpeg stderr:         vendor_id       : [0][0][0][0]
+FFmpeg stderr:         encoder         : Lavc61.3.100 aac
+11/19/2024 18:13:29 1012531 [INFO] [rtmp publish] Handle video. id=5JI247CN streamPath=/live/deckA frame_type=1 codec_id=7 codec_name=H264 1280x720
+11/19/2024 18:13:29 1012531 [INFO] [rtmp publish] Handle audio. id=5JI247CN streamPath=/live/deckA sound_format=10 sound_type=2 sound_size=1 sound_rate=3 codec_name=AAC 44100 2ch
+FFmpeg stderr: frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
+FFmpeg stderr: frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
+FFmpeg stderr: frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
+FFmpeg stderr: frame=   13 fps=6.5 q=28.0 size=       3KiB time=00:00:00.44 bitrate=  47.9kbits/s speed=0.22x    
+Stop request received for deck: deckA
+Active deck state: {
+  videoFile: "Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4",
+  ffmpeg: FfmpegCommand {
+    _events: [Object: null prototype] {
+      start: [Function (anonymous)],
+      stderr: [Function (anonymous)],
+      error: [Function (anonymous)],
+      end: [Function (anonymous)],
+      newListener: [Function]
+    },
+    _eventsCount: 5,
+    _maxListeners: undefined,
+    _inputs: [ [Object] ],
+    _currentInput: {
+      source: "videos/Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4",
+      isFile: true,
+      isStream: false,
+      options: [Function]
+    },
+    _outputs: [ [Object] ],
+    _currentOutput: {
+      isFile: false,
+      flags: {},
+      pipeopts: {},
+      audio: [Function],
+      audioFilters: [Function],
+      video: [Function],
+      videoFilters: [Function],
+      sizeFilters: [Function],
+      options: [Function],
+      sizeData: [Object],
+      target: 'rtmp://localhost:1935/live/deckA'
+    },
+    _global: [Function: argfunc] {
+      clear: [Function (anonymous)],
+      get: [Function (anonymous)],
+      find: [Function (anonymous)],
+      remove: [Function (anonymous)],
+      clone: [Function (anonymous)]
+    },
+    _complexFilters: [Function: argfunc] {
+      clear: [Function (anonymous)],
+      get: [Function (anonymous)],
+      find: [Function (anonymous)],
+      remove: [Function (anonymous)],
+      clone: [Function (anonymous)]
+    },
+    options: {
+      source: "videos/Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4",
+      stdoutLines: 100,
+      presets: '/home/travis/Projects/dejavideo2/dj-controller/node_modules/fluent-ffmpeg/lib/presets',
+      niceness: 0
+    },
+    logger: {
+      debug: [Function: debug],
+      info: [Function: info],
+      warn: [Function: warn],
+      error: [Function: error]
+    },
+    ffmpegProc: ChildProcess {
+      _events: [Object: null prototype],
+      _eventsCount: 2,
+      _maxListeners: undefined,
+      _closesNeeded: 3,
+      _closesGot: 0,
+      connected: false,
+      signalCode: null,
+      exitCode: null,
+      killed: false,
+      spawnfile: '/usr/bin/ffmpeg',
+      _handle: [Process],
+      spawnargs: [Array],
+      pid: 1012882,
+      stdin: [Socket],
+      stdout: [Socket],
+      stderr: [Socket],
+      stdio: [Array],
+      [Symbol(shapeMode)]: false,
+      [Symbol(kCapture)]: false
+    },
+    [Symbol(shapeMode)]: false,
+    [Symbol(kCapture)]: false
+  },
+  status: 'playing',
+  volume: 1,
+  metadata: {
+    streams: [ [Object], [Object] ],
+    format: {
+      filename: "videos/Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4",
+      nb_streams: 2,
+      nb_programs: 0,
+      nb_stream_groups: 0,
+      format_name: 'mov,mp4,m4a,3gp,3g2,mj2',
+      format_long_name: 'QuickTime / MOV',
+      start_time: 0,
+      duration: 230.29551,
+      size: 116222501,
+      bit_rate: 4037334,
+      probe_score: 100,
+      tags: [Object]
+    },
+    chapters: []
+  }
+}
+Stopping playback for deckA
+Successfully stopped deckA. New state: {
+  videoFile: "Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4",
+  ffmpeg: FfmpegCommand {
+    _events: [Object: null prototype] {
+      start: [Function (anonymous)],
+      stderr: [Function (anonymous)],
+      error: [Function (anonymous)],
+      end: [Function (anonymous)],
+      newListener: [Function]
+    },
+    _eventsCount: 5,
+    _maxListeners: undefined,
+    _inputs: [ [Object] ],
+    _currentInput: {
+      source: "videos/Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4",
+      isFile: true,
+      isStream: false,
+      options: [Function]
+    },
+    _outputs: [ [Object] ],
+    _currentOutput: {
+      isFile: false,
+      flags: {},
+      pipeopts: {},
+      audio: [Function],
+      audioFilters: [Function],
+      video: [Function],
+      videoFilters: [Function],
+      sizeFilters: [Function],
+      options: [Function],
+      sizeData: [Object],
+      target: 'rtmp://localhost:1935/live/deckA'
+    },
+    _global: [Function: argfunc] {
+      clear: [Function (anonymous)],
+      get: [Function (anonymous)],
+      find: [Function (anonymous)],
+      remove: [Function (anonymous)],
+      clone: [Function (anonymous)]
+    },
+    _complexFilters: [Function: argfunc] {
+      clear: [Function (anonymous)],
+      get: [Function (anonymous)],
+      find: [Function (anonymous)],
+      remove: [Function (anonymous)],
+      clone: [Function (anonymous)]
+    },
+    options: {
+      source: "videos/Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4",
+      stdoutLines: 100,
+      presets: '/home/travis/Projects/dejavideo2/dj-controller/node_modules/fluent-ffmpeg/lib/presets',
+      niceness: 0
+    },
+    logger: {
+      debug: [Function: debug],
+      info: [Function: info],
+      warn: [Function: warn],
+      error: [Function: error]
+    },
+    ffmpegProc: ChildProcess {
+      _events: [Object: null prototype],
+      _eventsCount: 2,
+      _maxListeners: undefined,
+      _closesNeeded: 3,
+      _closesGot: 0,
+      connected: false,
+      signalCode: null,
+      exitCode: null,
+      killed: true,
+      spawnfile: '/usr/bin/ffmpeg',
+      _handle: [Process],
+      spawnargs: [Array],
+      pid: 1012882,
+      stdin: [Socket],
+      stdout: [Socket],
+      stderr: [Socket],
+      stdio: [Array],
+      [Symbol(shapeMode)]: false,
+      [Symbol(kCapture)]: false
+    },
+    [Symbol(shapeMode)]: false,
+    [Symbol(kCapture)]: false
+  },
+  status: 'stopped',
+  volume: 1,
+  metadata: {
+    streams: [ [Object], [Object] ],
+    format: {
+      filename: "videos/Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4",
+      nb_streams: 2,
+      nb_programs: 0,
+      nb_stream_groups: 0,
+      format_name: 'mov,mp4,m4a,3gp,3g2,mj2',
+      format_long_name: 'QuickTime / MOV',
+      start_time: 0,
+      duration: 230.29551,
+      size: 116222501,
+      bit_rate: 4037334,
+      probe_score: 100,
+      tags: [Object]
+    },
+    chapters: []
+  }
+}
+11/19/2024 18:13:31 1012531 [INFO] [rtmp publish] Close stream. id=5JI247CN streamPath=/live/deckA streamId=1
+11/19/2024 18:13:31 1012531 [INFO] [rtmp disconnect] id=5JI247CN
+FFmpeg stderr: 
+FFmpeg error: ffmpeg was killed with signal SIGKILL
+FFmpeg stderr: ffmpeg version n7.0.2 Copyright (c) 2000-2024 the FFmpeg developers
+  built with gcc 14.2.1 (GCC) 20240910
+  configuration: --prefix=/usr --disable-debug --disable-static --disable-stripping --enable-amf --enable-avisynth --enable-cuda-llvm --enable-lto --enable-fontconfig --enable-frei0r --enable-gmp --enable-gnutls --enable-gpl --enable-ladspa --enable-libaom --enable-libass --enable-libbluray --enable-libbs2b --enable-libdav1d --enable-libdrm --enable-libdvdnav --enable-libdvdread --enable-libfreetype --enable-libfribidi --enable-libgsm --enable-libharfbuzz --enable-libiec61883 --enable-libjack --enable-libjxl --enable-libmodplug --enable-libmp3lame --enable-libopencore_amrnb --enable-libopencore_amrwb --enable-libopenjpeg --enable-libopenmpt --enable-libopus --enable-libplacebo --enable-libpulse --enable-librav1e --enable-librsvg --enable-librubberband --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libsrt --enable-libssh --enable-libsvtav1 --enable-libtheora --enable-libv4l2 --enable-libvidstab --enable-libvmaf --enable-libvorbis --enable-libvpl --enable-libvpx --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxcb --enable-libxml2 --enable-libxvid --enable-libzimg --enable-libzmq --enable-nvdec --enable-nvenc --enable-opencl --enable-opengl --enable-shared --enable-vapoursynth --enable-version3 --enable-vulkan
+  libavutil      59.  8.100 / 59.  8.100
+  libavcodec     61.  3.100 / 61.  3.100
+  libavformat    61.  1.100 / 61.  1.100
+  libavdevice    61.  1.100 / 61.  1.100
+  libavfilter    10.  1.100 / 10.  1.100
+  libswscale      8.  1.100 /  8.  1.100
+  libswresample   5.  1.100 /  5.  1.100
+  libpostproc    58.  1.100 / 58.  1.100
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'videos/Kylie Minogue - Can't Get You Out Of My Head (Official Video).mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2mp41
+    encoder         : Lavf61.1.100
+  Duration: 00:03:50.30, start: 0.000000, bitrate: 4037 kb/s
+  Stream #0:0[0x1](und): Video: vp9 (Profile 0) (vp09 / 0x39307076), yuv420p(tv, bt709), 1920x1080, 3905 kb/s, 25 fps, 25 tbr, 16k tbn (default)
+      Metadata:
+        handler_name    : ISO Media file produced by Google Inc. Created on: 11/18/2024.
+        vendor_id       : [0][0][0][0]
+  Stream #0:1[0x2](eng): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 127 kb/s (default)
+      Metadata:
+        handler_name    : ISO Media file produced by Google Inc.
+        vendor_id       : [0][0][0][0]
+Stream mapping:
+  Stream #0:0 -> #0:0 (vp9 (native) -> h264 (libx264))
+  Stream #0:1 -> #0:1 (aac (native) -> aac (native))
+Press [q] to stop, [?] for help
+[libx264 @ 0x61875f125f40] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2 AVX512
+[libx264 @ 0x61875f125f40] profile High, level 4.1, 4:2:0, 8-bit
+[libx264 @ 0x61875f125f40] 264 - core 164 r3108 31e19f9 - H.264/MPEG-4 AVC codec - Copyleft 2003-2023 - http://www.videolan.org/x264.html - options: cabac=1 ref=1 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=2 psy=1 psy_rd=1.00:0.00 mixed_ref=0 me_range=16 chroma_me=1 trellis=0 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=0 threads=22 lookahead_threads=5 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=1 keyint=50 keyint_min=5 scenecut=40 intra_refresh=0 rc_lookahead=10 rc=crf mbtree=1 crf=23.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 vbv_maxrate=2000 vbv_bufsize=4000 crf_max=0.0 nal_hrd=none filler=0 ip_ratio=1.40 aq=1:1.00
+Output #0, flv, to 'rtmp://localhost:1935/live/deckA':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2mp41
+    encoder         : Lavf61.1.100
+  Stream #0:0(und): Video: h264 ([7][0][0][0] / 0x0007), yuv420p(tv, bt709, progressive), 1280x720, q=2-31, 25 fps, 1k tbn (default)
+      Metadata:
+        handler_name    : ISO Media file produced by Google Inc. Created on: 11/18/2024.
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.3.100 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 2000000/0/0 buffer size: 4000000 vbv_delay: N/A
+  Stream #0:1(eng): Audio: aac (LC) ([10][0][0][0] / 0x000A), 44100 Hz, stereo, fltp, 128 kb/s (default)
+      Metadata:
+        handler_name    : ISO Media file produced by Google Inc.
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.3.100 aac
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    
+frame=   13 fps=6.5 q=28.0 size=       3KiB time=00:00:00.44 bitrate=  47.9kbits/s speed=0.22x    
+

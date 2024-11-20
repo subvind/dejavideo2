@@ -20,7 +20,8 @@ defmodule Dejavideo.Application do
       # Start a worker by calling: Dejavideo.Worker.start_link(arg)
       # {Dejavideo.Worker, arg},
       # Start to serve requests, typically the last entry
-      DejavideoWeb.Endpoint
+      DejavideoWeb.Endpoint,
+      {Dejavideo.StreamState, name: Dejavideo.StreamState}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
