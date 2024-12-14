@@ -1,0 +1,11 @@
+apps:
+  myapp:
+    domain: myapp.local
+    port: 4001
+    repository: https://github.com/username/myapp.git
+    branch: main
+    enabled: true
+    buildCommand: mix do deps.get, assets.deploy, release --overwrite
+    env:
+      SECRET_KEY_BASE: your-secret-key
+      DATABASE_URL: ecto://user:pass@localhost/myapp
