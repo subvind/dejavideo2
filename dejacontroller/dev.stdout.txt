@@ -3,14 +3,14 @@
 [33m[nodemon] watching path(s): src/**/*[39m
 [33m[nodemon] watching extensions: ts,js[39m
 [32m[nodemon] starting `ts-node ./src/index.ts -r dotenv/config src/index.ts`[39m
-[12/15/2024, 2:15:28 PM] [INFO] Node-Media-Server v4.0.7
-[12/15/2024, 2:15:28 PM] [INFO] Homepage: https://github.com/illuspas/Node-Media-Server
-[12/15/2024, 2:15:28 PM] [INFO] License: Apache-2.0
-[12/15/2024, 2:15:28 PM] [INFO] Author: Chen Mingliang
-[12/15/2024, 2:15:28 PM] [INFO] Node-Media-Server v4.0.7
-[12/15/2024, 2:15:28 PM] [INFO] Homepage: https://github.com/illuspas/Node-Media-Server
-[12/15/2024, 2:15:28 PM] [INFO] License: Apache-2.0
-[12/15/2024, 2:15:28 PM] [INFO] Author: Chen Mingliang
+[12/15/2024, 2:56:56 PM] [INFO] Node-Media-Server v4.0.7
+[12/15/2024, 2:56:56 PM] [INFO] Homepage: https://github.com/illuspas/Node-Media-Server
+[12/15/2024, 2:56:56 PM] [INFO] License: Apache-2.0
+[12/15/2024, 2:56:56 PM] [INFO] Author: Chen Mingliang
+[12/15/2024, 2:56:56 PM] [INFO] Node-Media-Server v4.0.7
+[12/15/2024, 2:56:56 PM] [INFO] Homepage: https://github.com/illuspas/Node-Media-Server
+[12/15/2024, 2:56:56 PM] [INFO] License: Apache-2.0
+[12/15/2024, 2:56:56 PM] [INFO] Author: Chen Mingliang
 query: PRAGMA foreign_keys = OFF
 query: BEGIN TRANSACTION
 query: SELECT * FROM "sqlite_master" WHERE "type" = 'table' AND "name" IN ('video','deck','broadcast','dj')
@@ -33,11 +33,32 @@ query: SELECT * FROM "sqlite_master" WHERE "type" = 'table' AND "name" = 'typeor
 query: COMMIT
 query: PRAGMA foreign_keys = ON
 Database initialized
-[12/15/2024, 2:15:28 PM] [INFO] HTTP server listening on port undefined:8000
-[12/15/2024, 2:15:28 PM] [INFO] Rtmp Server listening on port undefined:1935
+[12/15/2024, 2:56:56 PM] [INFO] HTTP server listening on port undefined:8000
+[12/15/2024, 2:56:56 PM] [INFO] Rtmp Server listening on port undefined:1935
 RTMP service initialized
 query: SELECT "DJ"."id" AS "DJ_id", "DJ"."username" AS "DJ_username", "DJ"."email" AS "DJ_email", "DJ"."status" AS "DJ_status", "DJ"."resourceUsage" AS "DJ_resourceUsage", "DJ"."createdAt" AS "DJ_createdAt", "DJ"."updatedAt" AS "DJ_updatedAt", "DJ__DJ_decks"."id" AS "DJ__DJ_decks_id", "DJ__DJ_decks"."type" AS "DJ__DJ_decks_type", "DJ__DJ_decks"."status" AS "DJ__DJ_decks_status", "DJ__DJ_decks"."streamHealth" AS "DJ__DJ_decks_streamHealth", "DJ__DJ_decks"."obsPort" AS "DJ__DJ_decks_obsPort", "DJ__DJ_decks"."djId" AS "DJ__DJ_decks_djId", "DJ__DJ_decks"."currentVideoId" AS "DJ__DJ_decks_currentVideoId" FROM "dj" "DJ" LEFT JOIN "deck" "DJ__DJ_decks" ON "DJ__DJ_decks"."djId"="DJ"."id" WHERE (("DJ"."status" = ?)) -- PARAMETERS: ["active"]
 Stream manager initialized
 API Server running on port 3000
 RTMP Server running on port 1935
 RTMP HTTP Server running on port 8000
+[12/15/2024, 2:58:17 PM] [INFO] RTMP session xl4j5rz2314mktcp close
+query: BEGIN TRANSACTION
+query: INSERT INTO "dj"("id", "username", "email", "status", "resourceUsage", "createdAt", "updatedAt") VALUES (?, NULL, NULL, ?, ?, datetime('now'), datetime('now')) -- PARAMETERS: ["5aeeec83-d02f-44a1-ad86-9d057b964ad3","inactive","{\"cpu\":0,\"memory\":0,\"bandwidth\":0}"]
+query failed: INSERT INTO "dj"("id", "username", "email", "status", "resourceUsage", "createdAt", "updatedAt") VALUES (?, NULL, NULL, ?, ?, datetime('now'), datetime('now')) -- PARAMETERS: ["5aeeec83-d02f-44a1-ad86-9d057b964ad3","inactive","{\"cpu\":0,\"memory\":0,\"bandwidth\":0}"]
+error: Error: SQLITE_CONSTRAINT: NOT NULL constraint failed: dj.username
+query: ROLLBACK
+Error creating DJ: QueryFailedError: SQLITE_CONSTRAINT: NOT NULL constraint failed: dj.username
+    at Statement.handler (/home/travis/Projects/dejavideo2/dejacontroller/node_modules/typeorm/src/driver/sqlite/SqliteQueryRunner.ts:135:29) {
+  query: `INSERT INTO "dj"("id", "username", "email", "status", "resourceUsage", "createdAt", "updatedAt") VALUES (?, NULL, NULL, ?, ?, datetime('now'), datetime('now'))`,
+  parameters: [
+    '5aeeec83-d02f-44a1-ad86-9d057b964ad3',
+    'inactive',
+    '{"cpu":0,"memory":0,"bandwidth":0}'
+  ],
+  driverError: [Error: SQLITE_CONSTRAINT: NOT NULL constraint failed: dj.username] {
+    errno: 19,
+    code: 'SQLITE_CONSTRAINT'
+  },
+  errno: 19,
+  code: 'SQLITE_CONSTRAINT'
+}
