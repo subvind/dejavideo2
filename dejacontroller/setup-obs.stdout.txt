@@ -1,0 +1,5 @@
+Attempting to connect to OBS WebSocket...
+Connected to OBS WebSocket v5.5.4 (using RPC 1)
+Created Deck A scene
+Created Deck B scene
+OBS scenes setup completed successfully

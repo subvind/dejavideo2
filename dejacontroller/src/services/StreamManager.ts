@@ -1,3 +1,4 @@
+import OBSWebSocket from "obs-websocket-js";
 import { OBSService } from "./OBSService";
 import { RTMPService } from "./RTMPService";
 import { AppDataSource } from "../data-source";
@@ -8,7 +9,7 @@ export class StreamManager {
   private obsInstances: Map<string, OBSService> = new Map();
   private rtmpService: RTMPService;
   private usedPorts: Set<number> = new Set();
-  private basePort: number = 4444;
+  private basePort: number = 4455;
 
   constructor() {
     this.rtmpService = RTMPService.getInstance();
@@ -40,8 +41,12 @@ export class StreamManager {
 
   private async checkOBSConnection(port: number): Promise<boolean> {
     try {
-      const response = await fetch(`http://localhost:${port}`);
-      return response.ok;
+      const obs = new OBSWebSocket();
+      await obs.connect(`ws://localhost:${port}`, process.env.OBS_PASSWORD, {
+        rpcVersion: 1,
+      });
+      await obs.disconnect();
+      return true;
     } catch (error) {
       return false;
     }

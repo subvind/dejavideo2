@@ -52,6 +52,9 @@ OBS_PASSWORD=your_obs_websocket_password
 
 4. Start the application:
 ```bash
+export OBS_PASSWORD=your_password_here
+npm run setup-obs
+
 npm run build
 npm start
 ```

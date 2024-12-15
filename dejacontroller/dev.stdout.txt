@@ -3,38 +3,36 @@
 [33m[nodemon] watching path(s): src/**/*[39m
 [33m[nodemon] watching extensions: ts,js[39m
 [32m[nodemon] starting `ts-node ./src/index.ts -r dotenv/config src/index.ts`[39m
-[12/15/2024, 3:51:24 PM] [INFO] Node-Media-Server v4.0.7
-[12/15/2024, 3:51:24 PM] [INFO] Homepage: https://github.com/illuspas/Node-Media-Server
-[12/15/2024, 3:51:24 PM] [INFO] License: Apache-2.0
-[12/15/2024, 3:51:24 PM] [INFO] Author: Chen Mingliang
-[12/15/2024, 3:51:24 PM] [INFO] Node-Media-Server v4.0.7
-[12/15/2024, 3:51:24 PM] [INFO] Homepage: https://github.com/illuspas/Node-Media-Server
-[12/15/2024, 3:51:24 PM] [INFO] License: Apache-2.0
-[12/15/2024, 3:51:24 PM] [INFO] Author: Chen Mingliang
+[12/15/2024, 4:56:41 PM] [INFO] Node-Media-Server v4.0.7
+[12/15/2024, 4:56:41 PM] [INFO] Homepage: https://github.com/illuspas/Node-Media-Server
+[12/15/2024, 4:56:41 PM] [INFO] License: Apache-2.0
+[12/15/2024, 4:56:41 PM] [INFO] Author: Chen Mingliang
+[12/15/2024, 4:56:41 PM] [INFO] Node-Media-Server v4.0.7
+[12/15/2024, 4:56:41 PM] [INFO] Homepage: https://github.com/illuspas/Node-Media-Server
+[12/15/2024, 4:56:41 PM] [INFO] License: Apache-2.0
+[12/15/2024, 4:56:41 PM] [INFO] Author: Chen Mingliang
 query: PRAGMA foreign_keys = OFF
 query: BEGIN TRANSACTION
 query: SELECT * FROM "sqlite_master" WHERE "type" = 'table' AND "name" IN ('video','deck','broadcast','dj')
 query: SELECT * FROM "sqlite_master" WHERE "type" = 'index' AND "tbl_name" IN ('video','deck','broadcast','dj')
-query: PRAGMA table_xinfo("video")
-query: PRAGMA index_list("video")
-query: PRAGMA foreign_key_list("video")
-query: PRAGMA table_xinfo("dj")
-query: PRAGMA index_list("dj")
-query: PRAGMA foreign_key_list("dj")
-query: PRAGMA table_xinfo("deck")
-query: PRAGMA index_list("deck")
-query: PRAGMA foreign_key_list("deck")
-query: PRAGMA table_xinfo("broadcast")
-query: PRAGMA index_list("broadcast")
-query: PRAGMA foreign_key_list("broadcast")
-query: PRAGMA index_info("sqlite_autoindex_dj_3")
-query: PRAGMA index_info("sqlite_autoindex_dj_2")
 query: SELECT * FROM "sqlite_master" WHERE "type" = 'table' AND "name" = 'typeorm_metadata'
+query: CREATE TABLE "video" ("id" varchar PRIMARY KEY NOT NULL, "filename" varchar NOT NULL, "path" varchar NOT NULL, "duration" float NOT NULL, "source" varchar CHECK( "source" IN ('local','youtube') ) NOT NULL DEFAULT ('local'), "youtubeUrl" varchar, "createdAt" datetime NOT NULL DEFAULT (datetime('now')))
+query: CREATE TABLE "deck" ("id" varchar PRIMARY KEY NOT NULL, "type" varchar CHECK( "type" IN ('A','B') ) NOT NULL, "status" varchar CHECK( "status" IN ('playing','stopped','loading','loaded') ) NOT NULL DEFAULT ('stopped'), "streamHealth" float NOT NULL DEFAULT (100), "obsPort" integer NOT NULL, "djId" varchar, "currentVideoId" varchar)
+query: CREATE TABLE "broadcast" ("id" varchar PRIMARY KEY NOT NULL, "channelId" varchar NOT NULL, "status" varchar CHECK( "status" IN ('live','offline') ) NOT NULL DEFAULT ('offline'), "crossfaderPosition" float NOT NULL DEFAULT (0.5), "streamStats" text NOT NULL DEFAULT ('{"viewers":0,"startTime":null,"bitrate":0}'), "djId" varchar)
+query: CREATE TABLE "dj" ("id" varchar PRIMARY KEY NOT NULL, "username" varchar NOT NULL, "email" varchar NOT NULL, "status" varchar CHECK( "status" IN ('active','inactive') ) NOT NULL DEFAULT ('inactive'), "resourceUsage" text NOT NULL DEFAULT ('{"cpu":0,"memory":0,"bandwidth":0}'), "createdAt" datetime NOT NULL DEFAULT (datetime('now')), "updatedAt" datetime NOT NULL DEFAULT (datetime('now')), CONSTRAINT "UQ_f05eee983581006450f64cf9213" UNIQUE ("username"), CONSTRAINT "UQ_841748742bed2ccdaefe3d794d2" UNIQUE ("email"))
+query: CREATE TABLE "temporary_deck" ("id" varchar PRIMARY KEY NOT NULL, "type" varchar CHECK( "type" IN ('A','B') ) NOT NULL, "status" varchar CHECK( "status" IN ('playing','stopped','loading','loaded') ) NOT NULL DEFAULT ('stopped'), "streamHealth" float NOT NULL DEFAULT (100), "obsPort" integer NOT NULL, "djId" varchar, "currentVideoId" varchar, CONSTRAINT "FK_9047256de2e350f52f6f1464109" FOREIGN KEY ("djId") REFERENCES "dj" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT "FK_5969824cd9a206bd8603b480b28" FOREIGN KEY ("currentVideoId") REFERENCES "video" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION)
+query: INSERT INTO "temporary_deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") SELECT "id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId" FROM "deck"
+query: DROP TABLE "deck"
+query: ALTER TABLE "temporary_deck" RENAME TO "deck"
+query: CREATE TABLE "temporary_broadcast" ("id" varchar PRIMARY KEY NOT NULL, "channelId" varchar NOT NULL, "status" varchar CHECK( "status" IN ('live','offline') ) NOT NULL DEFAULT ('offline'), "crossfaderPosition" float NOT NULL DEFAULT (0.5), "streamStats" text NOT NULL DEFAULT ('{"viewers":0,"startTime":null,"bitrate":0}'), "djId" varchar, CONSTRAINT "FK_0b3a2e3c3260df7d219558aa221" FOREIGN KEY ("djId") REFERENCES "dj" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION)
+query: INSERT INTO "temporary_broadcast"("id", "channelId", "status", "crossfaderPosition", "streamStats", "djId") SELECT "id", "channelId", "status", "crossfaderPosition", "streamStats", "djId" FROM "broadcast"
+query: DROP TABLE "broadcast"
+query: ALTER TABLE "temporary_broadcast" RENAME TO "broadcast"
 query: COMMIT
 query: PRAGMA foreign_keys = ON
 Database initialized
-[12/15/2024, 3:51:24 PM] [INFO] HTTP server listening on port undefined:8000
-[12/15/2024, 3:51:24 PM] [INFO] Rtmp Server listening on port undefined:1935
+[12/15/2024, 4:56:41 PM] [INFO] HTTP server listening on port undefined:8000
+[12/15/2024, 4:56:41 PM] [INFO] Rtmp Server listening on port undefined:1935
 RTMP service initialized
 query: SELECT "DJ"."id" AS "DJ_id", "DJ"."username" AS "DJ_username", "DJ"."email" AS "DJ_email", "DJ"."status" AS "DJ_status", "DJ"."resourceUsage" AS "DJ_resourceUsage", "DJ"."createdAt" AS "DJ_createdAt", "DJ"."updatedAt" AS "DJ_updatedAt", "DJ__DJ_decks"."id" AS "DJ__DJ_decks_id", "DJ__DJ_decks"."type" AS "DJ__DJ_decks_type", "DJ__DJ_decks"."status" AS "DJ__DJ_decks_status", "DJ__DJ_decks"."streamHealth" AS "DJ__DJ_decks_streamHealth", "DJ__DJ_decks"."obsPort" AS "DJ__DJ_decks_obsPort", "DJ__DJ_decks"."djId" AS "DJ__DJ_decks_djId", "DJ__DJ_decks"."currentVideoId" AS "DJ__DJ_decks_currentVideoId" FROM "dj" "DJ" LEFT JOIN "deck" "DJ__DJ_decks" ON "DJ__DJ_decks"."djId"="DJ"."id" WHERE (("DJ"."status" = ?)) -- PARAMETERS: ["active"]
 Stream manager initialized
@@ -42,54 +40,146 @@ API Server running on port 3000
 RTMP Server running on port 1935
 RTMP HTTP Server running on port 8000
 query: BEGIN TRANSACTION
-query: INSERT INTO "dj"("id", "username", "email", "status", "resourceUsage", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now')) -- PARAMETERS: ["bcfa1667-0b70-483c-9d71-7b35926be8a0","dj_684","dj751@example.com","inactive","{\"cpu\":0,\"memory\":0,\"bandwidth\":0}"]
-query: SELECT "DJ"."id" AS "DJ_id", "DJ"."status" AS "DJ_status", "DJ"."resourceUsage" AS "DJ_resourceUsage", "DJ"."createdAt" AS "DJ_createdAt", "DJ"."updatedAt" AS "DJ_updatedAt" FROM "dj" "DJ" WHERE "DJ"."id" = ? -- PARAMETERS: ["bcfa1667-0b70-483c-9d71-7b35926be8a0"]
+query: INSERT INTO "dj"("id", "username", "email", "status", "resourceUsage", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now')) -- PARAMETERS: ["a7d98072-05c2-485f-9574-826208aa327b","dj_619","dj745@example.com","inactive","{\"cpu\":0,\"memory\":0,\"bandwidth\":0}"]
+query: SELECT "DJ"."id" AS "DJ_id", "DJ"."status" AS "DJ_status", "DJ"."resourceUsage" AS "DJ_resourceUsage", "DJ"."createdAt" AS "DJ_createdAt", "DJ"."updatedAt" AS "DJ_updatedAt" FROM "dj" "DJ" WHERE "DJ"."id" = ? -- PARAMETERS: ["a7d98072-05c2-485f-9574-826208aa327b"]
 query: COMMIT
 query: BEGIN TRANSACTION
-query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4444, ?, ?) -- PARAMETERS: ["93440395-c7e5-4a6c-8547-fec59b29a5a8","A","stopped","bcfa1667-0b70-483c-9d71-7b35926be8a0",null]
-query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["93440395-c7e5-4a6c-8547-fec59b29a5a8"]
-query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4445, ?, ?) -- PARAMETERS: ["267c7161-f860-49fc-8940-ec909675f9e2","B","stopped","bcfa1667-0b70-483c-9d71-7b35926be8a0",null]
-query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["267c7161-f860-49fc-8940-ec909675f9e2"]
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4455, ?, ?) -- PARAMETERS: ["c6562b87-7782-4665-b73c-c25cd0bcd6e6","A","stopped","a7d98072-05c2-485f-9574-826208aa327b",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["c6562b87-7782-4665-b73c-c25cd0bcd6e6"]
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4456, ?, ?) -- PARAMETERS: ["22b61d50-dfbd-433d-becb-fc29476d1c72","B","stopped","a7d98072-05c2-485f-9574-826208aa327b",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["22b61d50-dfbd-433d-becb-fc29476d1c72"]
 query: COMMIT
-query: SELECT "Deck"."id" AS "Deck_id", "Deck"."type" AS "Deck_type", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth", "Deck"."obsPort" AS "Deck_obsPort", "Deck"."djId" AS "Deck_djId", "Deck"."currentVideoId" AS "Deck_currentVideoId", "Deck__Deck_dj"."id" AS "Deck__Deck_dj_id", "Deck__Deck_dj"."username" AS "Deck__Deck_dj_username", "Deck__Deck_dj"."email" AS "Deck__Deck_dj_email", "Deck__Deck_dj"."status" AS "Deck__Deck_dj_status", "Deck__Deck_dj"."resourceUsage" AS "Deck__Deck_dj_resourceUsage", "Deck__Deck_dj"."createdAt" AS "Deck__Deck_dj_createdAt", "Deck__Deck_dj"."updatedAt" AS "Deck__Deck_dj_updatedAt" FROM "deck" "Deck" LEFT JOIN "dj" "Deck__Deck_dj" ON "Deck__Deck_dj"."id"="Deck"."djId" WHERE (((("Deck__Deck_dj"."id" = ?)))) -- PARAMETERS: ["bcfa1667-0b70-483c-9d71-7b35926be8a0"]
-OBS not running on port 4444 for deck A
-OBS not running on port 4445 for deck B
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."type" AS "Deck_type", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth", "Deck"."obsPort" AS "Deck_obsPort", "Deck"."djId" AS "Deck_djId", "Deck"."currentVideoId" AS "Deck_currentVideoId", "Deck__Deck_dj"."id" AS "Deck__Deck_dj_id", "Deck__Deck_dj"."username" AS "Deck__Deck_dj_username", "Deck__Deck_dj"."email" AS "Deck__Deck_dj_email", "Deck__Deck_dj"."status" AS "Deck__Deck_dj_status", "Deck__Deck_dj"."resourceUsage" AS "Deck__Deck_dj_resourceUsage", "Deck__Deck_dj"."createdAt" AS "Deck__Deck_dj_createdAt", "Deck__Deck_dj"."updatedAt" AS "Deck__Deck_dj_updatedAt" FROM "deck" "Deck" LEFT JOIN "dj" "Deck__Deck_dj" ON "Deck__Deck_dj"."id"="Deck"."djId" WHERE (((("Deck__Deck_dj"."id" = ?)))) -- PARAMETERS: ["a7d98072-05c2-485f-9574-826208aa327b"]
+OBS WebSocket connected for Deck A
+Connected to OBS WebSocket for Deck A
+OBS not running on port 4456 for deck B
 query: BEGIN TRANSACTION
-query: INSERT INTO "dj"("id", "username", "email", "status", "resourceUsage", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now')) -- PARAMETERS: ["8084ad6f-f4c4-4458-abc7-d28623a90376","dj_576","dj31@example.com","inactive","{\"cpu\":0,\"memory\":0,\"bandwidth\":0}"]
-query: SELECT "DJ"."id" AS "DJ_id", "DJ"."status" AS "DJ_status", "DJ"."resourceUsage" AS "DJ_resourceUsage", "DJ"."createdAt" AS "DJ_createdAt", "DJ"."updatedAt" AS "DJ_updatedAt" FROM "dj" "DJ" WHERE "DJ"."id" = ? -- PARAMETERS: ["8084ad6f-f4c4-4458-abc7-d28623a90376"]
-query: COMMIT
-query: BEGIN TRANSACTION
-query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4446, ?, ?) -- PARAMETERS: ["bf00befb-fc59-40c8-9fbc-e9d17a608c53","A","stopped","8084ad6f-f4c4-4458-abc7-d28623a90376",null]
-query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["bf00befb-fc59-40c8-9fbc-e9d17a608c53"]
-query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4447, ?, ?) -- PARAMETERS: ["3d3bf9cc-6347-4ccc-8bbe-35c4cbb575fc","B","stopped","8084ad6f-f4c4-4458-abc7-d28623a90376",null]
-query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["3d3bf9cc-6347-4ccc-8bbe-35c4cbb575fc"]
-query: COMMIT
-query: SELECT "Deck"."id" AS "Deck_id", "Deck"."type" AS "Deck_type", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth", "Deck"."obsPort" AS "Deck_obsPort", "Deck"."djId" AS "Deck_djId", "Deck"."currentVideoId" AS "Deck_currentVideoId", "Deck__Deck_dj"."id" AS "Deck__Deck_dj_id", "Deck__Deck_dj"."username" AS "Deck__Deck_dj_username", "Deck__Deck_dj"."email" AS "Deck__Deck_dj_email", "Deck__Deck_dj"."status" AS "Deck__Deck_dj_status", "Deck__Deck_dj"."resourceUsage" AS "Deck__Deck_dj_resourceUsage", "Deck__Deck_dj"."createdAt" AS "Deck__Deck_dj_createdAt", "Deck__Deck_dj"."updatedAt" AS "Deck__Deck_dj_updatedAt" FROM "deck" "Deck" LEFT JOIN "dj" "Deck__Deck_dj" ON "Deck__Deck_dj"."id"="Deck"."djId" WHERE (((("Deck__Deck_dj"."id" = ?)))) -- PARAMETERS: ["8084ad6f-f4c4-4458-abc7-d28623a90376"]
-OBS not running on port 4446 for deck A
-OBS not running on port 4447 for deck B
-query: BEGIN TRANSACTION
-query: INSERT INTO "dj"("id", "username", "email", "status", "resourceUsage", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now')) -- PARAMETERS: ["fed227cc-f284-4061-9305-10cebc22c0ad","dj_194","dj70@example.com","inactive","{\"cpu\":0,\"memory\":0,\"bandwidth\":0}"]
-query: SELECT "DJ"."id" AS "DJ_id", "DJ"."status" AS "DJ_status", "DJ"."resourceUsage" AS "DJ_resourceUsage", "DJ"."createdAt" AS "DJ_createdAt", "DJ"."updatedAt" AS "DJ_updatedAt" FROM "dj" "DJ" WHERE "DJ"."id" = ? -- PARAMETERS: ["fed227cc-f284-4061-9305-10cebc22c0ad"]
+query: INSERT INTO "dj"("id", "username", "email", "status", "resourceUsage", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now')) -- PARAMETERS: ["c1a8f710-d168-4b04-86d2-3d568e0f316a","dj_351","dj118@example.com","inactive","{\"cpu\":0,\"memory\":0,\"bandwidth\":0}"]
+query: SELECT "DJ"."id" AS "DJ_id", "DJ"."status" AS "DJ_status", "DJ"."resourceUsage" AS "DJ_resourceUsage", "DJ"."createdAt" AS "DJ_createdAt", "DJ"."updatedAt" AS "DJ_updatedAt" FROM "dj" "DJ" WHERE "DJ"."id" = ? -- PARAMETERS: ["c1a8f710-d168-4b04-86d2-3d568e0f316a"]
 query: COMMIT
 query: BEGIN TRANSACTION
-query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4448, ?, ?) -- PARAMETERS: ["4d8ea2ea-3437-42f0-ad80-3b8a932f8547","A","stopped","fed227cc-f284-4061-9305-10cebc22c0ad",null]
-query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["4d8ea2ea-3437-42f0-ad80-3b8a932f8547"]
-query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4449, ?, ?) -- PARAMETERS: ["a2cce57a-2a21-4bd9-bf5a-9ce9d48b55df","B","stopped","fed227cc-f284-4061-9305-10cebc22c0ad",null]
-query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["a2cce57a-2a21-4bd9-bf5a-9ce9d48b55df"]
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4457, ?, ?) -- PARAMETERS: ["32574198-cb6c-47be-854a-08ef4e421b77","A","stopped","c1a8f710-d168-4b04-86d2-3d568e0f316a",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["32574198-cb6c-47be-854a-08ef4e421b77"]
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4458, ?, ?) -- PARAMETERS: ["e2ceb390-0f01-4761-a396-8d53d1d1ffba","B","stopped","c1a8f710-d168-4b04-86d2-3d568e0f316a",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["e2ceb390-0f01-4761-a396-8d53d1d1ffba"]
 query: COMMIT
-query: SELECT "Deck"."id" AS "Deck_id", "Deck"."type" AS "Deck_type", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth", "Deck"."obsPort" AS "Deck_obsPort", "Deck"."djId" AS "Deck_djId", "Deck"."currentVideoId" AS "Deck_currentVideoId", "Deck__Deck_dj"."id" AS "Deck__Deck_dj_id", "Deck__Deck_dj"."username" AS "Deck__Deck_dj_username", "Deck__Deck_dj"."email" AS "Deck__Deck_dj_email", "Deck__Deck_dj"."status" AS "Deck__Deck_dj_status", "Deck__Deck_dj"."resourceUsage" AS "Deck__Deck_dj_resourceUsage", "Deck__Deck_dj"."createdAt" AS "Deck__Deck_dj_createdAt", "Deck__Deck_dj"."updatedAt" AS "Deck__Deck_dj_updatedAt" FROM "deck" "Deck" LEFT JOIN "dj" "Deck__Deck_dj" ON "Deck__Deck_dj"."id"="Deck"."djId" WHERE (((("Deck__Deck_dj"."id" = ?)))) -- PARAMETERS: ["fed227cc-f284-4061-9305-10cebc22c0ad"]
-OBS not running on port 4448 for deck A
-OBS not running on port 4449 for deck B
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."type" AS "Deck_type", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth", "Deck"."obsPort" AS "Deck_obsPort", "Deck"."djId" AS "Deck_djId", "Deck"."currentVideoId" AS "Deck_currentVideoId", "Deck__Deck_dj"."id" AS "Deck__Deck_dj_id", "Deck__Deck_dj"."username" AS "Deck__Deck_dj_username", "Deck__Deck_dj"."email" AS "Deck__Deck_dj_email", "Deck__Deck_dj"."status" AS "Deck__Deck_dj_status", "Deck__Deck_dj"."resourceUsage" AS "Deck__Deck_dj_resourceUsage", "Deck__Deck_dj"."createdAt" AS "Deck__Deck_dj_createdAt", "Deck__Deck_dj"."updatedAt" AS "Deck__Deck_dj_updatedAt" FROM "deck" "Deck" LEFT JOIN "dj" "Deck__Deck_dj" ON "Deck__Deck_dj"."id"="Deck"."djId" WHERE (((("Deck__Deck_dj"."id" = ?)))) -- PARAMETERS: ["c1a8f710-d168-4b04-86d2-3d568e0f316a"]
+OBS not running on port 4457 for deck A
+OBS not running on port 4458 for deck B
 query: BEGIN TRANSACTION
-query: INSERT INTO "dj"("id", "username", "email", "status", "resourceUsage", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now')) -- PARAMETERS: ["9c975579-3d29-4d50-82f6-6d647c231c7a","dj_83","dj288@example.com","inactive","{\"cpu\":0,\"memory\":0,\"bandwidth\":0}"]
-query: SELECT "DJ"."id" AS "DJ_id", "DJ"."status" AS "DJ_status", "DJ"."resourceUsage" AS "DJ_resourceUsage", "DJ"."createdAt" AS "DJ_createdAt", "DJ"."updatedAt" AS "DJ_updatedAt" FROM "dj" "DJ" WHERE "DJ"."id" = ? -- PARAMETERS: ["9c975579-3d29-4d50-82f6-6d647c231c7a"]
+query: INSERT INTO "dj"("id", "username", "email", "status", "resourceUsage", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now')) -- PARAMETERS: ["4fa363b6-b337-4ec7-aa3a-10eedcdf6de5","dj_239","dj683@example.com","inactive","{\"cpu\":0,\"memory\":0,\"bandwidth\":0}"]
+query: SELECT "DJ"."id" AS "DJ_id", "DJ"."status" AS "DJ_status", "DJ"."resourceUsage" AS "DJ_resourceUsage", "DJ"."createdAt" AS "DJ_createdAt", "DJ"."updatedAt" AS "DJ_updatedAt" FROM "dj" "DJ" WHERE "DJ"."id" = ? -- PARAMETERS: ["4fa363b6-b337-4ec7-aa3a-10eedcdf6de5"]
 query: COMMIT
 query: BEGIN TRANSACTION
-query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4450, ?, ?) -- PARAMETERS: ["f2b67ccf-fb7e-46e0-97c1-79a9d0753902","A","stopped","9c975579-3d29-4d50-82f6-6d647c231c7a",null]
-query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["f2b67ccf-fb7e-46e0-97c1-79a9d0753902"]
-query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4451, ?, ?) -- PARAMETERS: ["2309f71f-fd70-4109-9a89-9d3d08ccbc33","B","stopped","9c975579-3d29-4d50-82f6-6d647c231c7a",null]
-query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["2309f71f-fd70-4109-9a89-9d3d08ccbc33"]
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4459, ?, ?) -- PARAMETERS: ["449749e6-a479-4790-b7fb-ff01b2515036","A","stopped","4fa363b6-b337-4ec7-aa3a-10eedcdf6de5",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["449749e6-a479-4790-b7fb-ff01b2515036"]
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4460, ?, ?) -- PARAMETERS: ["fbe54282-f6b2-4668-ba87-88444683f0a3","B","stopped","4fa363b6-b337-4ec7-aa3a-10eedcdf6de5",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["fbe54282-f6b2-4668-ba87-88444683f0a3"]
 query: COMMIT
-query: SELECT "Deck"."id" AS "Deck_id", "Deck"."type" AS "Deck_type", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth", "Deck"."obsPort" AS "Deck_obsPort", "Deck"."djId" AS "Deck_djId", "Deck"."currentVideoId" AS "Deck_currentVideoId", "Deck__Deck_dj"."id" AS "Deck__Deck_dj_id", "Deck__Deck_dj"."username" AS "Deck__Deck_dj_username", "Deck__Deck_dj"."email" AS "Deck__Deck_dj_email", "Deck__Deck_dj"."status" AS "Deck__Deck_dj_status", "Deck__Deck_dj"."resourceUsage" AS "Deck__Deck_dj_resourceUsage", "Deck__Deck_dj"."createdAt" AS "Deck__Deck_dj_createdAt", "Deck__Deck_dj"."updatedAt" AS "Deck__Deck_dj_updatedAt" FROM "deck" "Deck" LEFT JOIN "dj" "Deck__Deck_dj" ON "Deck__Deck_dj"."id"="Deck"."djId" WHERE (((("Deck__Deck_dj"."id" = ?)))) -- PARAMETERS: ["9c975579-3d29-4d50-82f6-6d647c231c7a"]
-OBS not running on port 4450 for deck A
-OBS not running on port 4451 for deck B
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."type" AS "Deck_type", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth", "Deck"."obsPort" AS "Deck_obsPort", "Deck"."djId" AS "Deck_djId", "Deck"."currentVideoId" AS "Deck_currentVideoId", "Deck__Deck_dj"."id" AS "Deck__Deck_dj_id", "Deck__Deck_dj"."username" AS "Deck__Deck_dj_username", "Deck__Deck_dj"."email" AS "Deck__Deck_dj_email", "Deck__Deck_dj"."status" AS "Deck__Deck_dj_status", "Deck__Deck_dj"."resourceUsage" AS "Deck__Deck_dj_resourceUsage", "Deck__Deck_dj"."createdAt" AS "Deck__Deck_dj_createdAt", "Deck__Deck_dj"."updatedAt" AS "Deck__Deck_dj_updatedAt" FROM "deck" "Deck" LEFT JOIN "dj" "Deck__Deck_dj" ON "Deck__Deck_dj"."id"="Deck"."djId" WHERE (((("Deck__Deck_dj"."id" = ?)))) -- PARAMETERS: ["4fa363b6-b337-4ec7-aa3a-10eedcdf6de5"]
+OBS not running on port 4459 for deck A
+OBS not running on port 4460 for deck B
+query: BEGIN TRANSACTION
+query: INSERT INTO "dj"("id", "username", "email", "status", "resourceUsage", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now')) -- PARAMETERS: ["bb927716-cc69-4879-9e5f-2e8ffc4d22f0","dj_626","dj403@example.com","inactive","{\"cpu\":0,\"memory\":0,\"bandwidth\":0}"]
+query: SELECT "DJ"."id" AS "DJ_id", "DJ"."status" AS "DJ_status", "DJ"."resourceUsage" AS "DJ_resourceUsage", "DJ"."createdAt" AS "DJ_createdAt", "DJ"."updatedAt" AS "DJ_updatedAt" FROM "dj" "DJ" WHERE "DJ"."id" = ? -- PARAMETERS: ["bb927716-cc69-4879-9e5f-2e8ffc4d22f0"]
+query: COMMIT
+query: BEGIN TRANSACTION
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4461, ?, ?) -- PARAMETERS: ["e8850044-bc1f-4ffb-a5bc-e63e0e07b186","A","stopped","bb927716-cc69-4879-9e5f-2e8ffc4d22f0",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["e8850044-bc1f-4ffb-a5bc-e63e0e07b186"]
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4462, ?, ?) -- PARAMETERS: ["0ed861f2-360c-48d6-bba5-fa74cf029417","B","stopped","bb927716-cc69-4879-9e5f-2e8ffc4d22f0",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["0ed861f2-360c-48d6-bba5-fa74cf029417"]
+query: COMMIT
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."type" AS "Deck_type", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth", "Deck"."obsPort" AS "Deck_obsPort", "Deck"."djId" AS "Deck_djId", "Deck"."currentVideoId" AS "Deck_currentVideoId", "Deck__Deck_dj"."id" AS "Deck__Deck_dj_id", "Deck__Deck_dj"."username" AS "Deck__Deck_dj_username", "Deck__Deck_dj"."email" AS "Deck__Deck_dj_email", "Deck__Deck_dj"."status" AS "Deck__Deck_dj_status", "Deck__Deck_dj"."resourceUsage" AS "Deck__Deck_dj_resourceUsage", "Deck__Deck_dj"."createdAt" AS "Deck__Deck_dj_createdAt", "Deck__Deck_dj"."updatedAt" AS "Deck__Deck_dj_updatedAt" FROM "deck" "Deck" LEFT JOIN "dj" "Deck__Deck_dj" ON "Deck__Deck_dj"."id"="Deck"."djId" WHERE (((("Deck__Deck_dj"."id" = ?)))) -- PARAMETERS: ["bb927716-cc69-4879-9e5f-2e8ffc4d22f0"]
+OBS not running on port 4461 for deck A
+OBS not running on port 4462 for deck B
+query: BEGIN TRANSACTION
+query: INSERT INTO "dj"("id", "username", "email", "status", "resourceUsage", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now')) -- PARAMETERS: ["5b016a54-55c9-49fc-bc22-949c8be08c32","dj_698","dj435@example.com","inactive","{\"cpu\":0,\"memory\":0,\"bandwidth\":0}"]
+query: SELECT "DJ"."id" AS "DJ_id", "DJ"."status" AS "DJ_status", "DJ"."resourceUsage" AS "DJ_resourceUsage", "DJ"."createdAt" AS "DJ_createdAt", "DJ"."updatedAt" AS "DJ_updatedAt" FROM "dj" "DJ" WHERE "DJ"."id" = ? -- PARAMETERS: ["5b016a54-55c9-49fc-bc22-949c8be08c32"]
+query: COMMIT
+query: BEGIN TRANSACTION
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4463, ?, ?) -- PARAMETERS: ["7658943b-b6b7-4b75-939a-d0c200a57044","A","stopped","5b016a54-55c9-49fc-bc22-949c8be08c32",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["7658943b-b6b7-4b75-939a-d0c200a57044"]
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4464, ?, ?) -- PARAMETERS: ["e61f467e-c174-4dc3-900d-6fa5f0138885","B","stopped","5b016a54-55c9-49fc-bc22-949c8be08c32",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["e61f467e-c174-4dc3-900d-6fa5f0138885"]
+query: COMMIT
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."type" AS "Deck_type", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth", "Deck"."obsPort" AS "Deck_obsPort", "Deck"."djId" AS "Deck_djId", "Deck"."currentVideoId" AS "Deck_currentVideoId", "Deck__Deck_dj"."id" AS "Deck__Deck_dj_id", "Deck__Deck_dj"."username" AS "Deck__Deck_dj_username", "Deck__Deck_dj"."email" AS "Deck__Deck_dj_email", "Deck__Deck_dj"."status" AS "Deck__Deck_dj_status", "Deck__Deck_dj"."resourceUsage" AS "Deck__Deck_dj_resourceUsage", "Deck__Deck_dj"."createdAt" AS "Deck__Deck_dj_createdAt", "Deck__Deck_dj"."updatedAt" AS "Deck__Deck_dj_updatedAt" FROM "deck" "Deck" LEFT JOIN "dj" "Deck__Deck_dj" ON "Deck__Deck_dj"."id"="Deck"."djId" WHERE (((("Deck__Deck_dj"."id" = ?)))) -- PARAMETERS: ["5b016a54-55c9-49fc-bc22-949c8be08c32"]
+OBS not running on port 4463 for deck A
+OBS not running on port 4464 for deck B
+query: BEGIN TRANSACTION
+query: INSERT INTO "dj"("id", "username", "email", "status", "resourceUsage", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now')) -- PARAMETERS: ["a840b77d-3e36-426c-94bc-eb9b6fc136cb","dj_597","dj918@example.com","inactive","{\"cpu\":0,\"memory\":0,\"bandwidth\":0}"]
+query: SELECT "DJ"."id" AS "DJ_id", "DJ"."status" AS "DJ_status", "DJ"."resourceUsage" AS "DJ_resourceUsage", "DJ"."createdAt" AS "DJ_createdAt", "DJ"."updatedAt" AS "DJ_updatedAt" FROM "dj" "DJ" WHERE "DJ"."id" = ? -- PARAMETERS: ["a840b77d-3e36-426c-94bc-eb9b6fc136cb"]
+query: COMMIT
+query: BEGIN TRANSACTION
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4465, ?, ?) -- PARAMETERS: ["875e1551-79f0-4167-9c32-b952a004d77c","A","stopped","a840b77d-3e36-426c-94bc-eb9b6fc136cb",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["875e1551-79f0-4167-9c32-b952a004d77c"]
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4466, ?, ?) -- PARAMETERS: ["449b4c0b-4bb7-48c4-9b8e-6a39e8769b66","B","stopped","a840b77d-3e36-426c-94bc-eb9b6fc136cb",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["449b4c0b-4bb7-48c4-9b8e-6a39e8769b66"]
+query: COMMIT
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."type" AS "Deck_type", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth", "Deck"."obsPort" AS "Deck_obsPort", "Deck"."djId" AS "Deck_djId", "Deck"."currentVideoId" AS "Deck_currentVideoId", "Deck__Deck_dj"."id" AS "Deck__Deck_dj_id", "Deck__Deck_dj"."username" AS "Deck__Deck_dj_username", "Deck__Deck_dj"."email" AS "Deck__Deck_dj_email", "Deck__Deck_dj"."status" AS "Deck__Deck_dj_status", "Deck__Deck_dj"."resourceUsage" AS "Deck__Deck_dj_resourceUsage", "Deck__Deck_dj"."createdAt" AS "Deck__Deck_dj_createdAt", "Deck__Deck_dj"."updatedAt" AS "Deck__Deck_dj_updatedAt" FROM "deck" "Deck" LEFT JOIN "dj" "Deck__Deck_dj" ON "Deck__Deck_dj"."id"="Deck"."djId" WHERE (((("Deck__Deck_dj"."id" = ?)))) -- PARAMETERS: ["a840b77d-3e36-426c-94bc-eb9b6fc136cb"]
+OBS not running on port 4465 for deck A
+OBS not running on port 4466 for deck B
+query: BEGIN TRANSACTION
+query: INSERT INTO "dj"("id", "username", "email", "status", "resourceUsage", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now')) -- PARAMETERS: ["d673e8eb-830c-4f71-8c52-55f373cfa80b","dj_768","dj842@example.com","inactive","{\"cpu\":0,\"memory\":0,\"bandwidth\":0}"]
+query: SELECT "DJ"."id" AS "DJ_id", "DJ"."status" AS "DJ_status", "DJ"."resourceUsage" AS "DJ_resourceUsage", "DJ"."createdAt" AS "DJ_createdAt", "DJ"."updatedAt" AS "DJ_updatedAt" FROM "dj" "DJ" WHERE "DJ"."id" = ? -- PARAMETERS: ["d673e8eb-830c-4f71-8c52-55f373cfa80b"]
+query: COMMIT
+query: BEGIN TRANSACTION
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4467, ?, ?) -- PARAMETERS: ["327cc61e-8d7c-48c4-a0c2-3e91213bfab6","A","stopped","d673e8eb-830c-4f71-8c52-55f373cfa80b",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["327cc61e-8d7c-48c4-a0c2-3e91213bfab6"]
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4468, ?, ?) -- PARAMETERS: ["3be86988-81d3-456c-8db3-2cca2abe4963","B","stopped","d673e8eb-830c-4f71-8c52-55f373cfa80b",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["3be86988-81d3-456c-8db3-2cca2abe4963"]
+query: COMMIT
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."type" AS "Deck_type", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth", "Deck"."obsPort" AS "Deck_obsPort", "Deck"."djId" AS "Deck_djId", "Deck"."currentVideoId" AS "Deck_currentVideoId", "Deck__Deck_dj"."id" AS "Deck__Deck_dj_id", "Deck__Deck_dj"."username" AS "Deck__Deck_dj_username", "Deck__Deck_dj"."email" AS "Deck__Deck_dj_email", "Deck__Deck_dj"."status" AS "Deck__Deck_dj_status", "Deck__Deck_dj"."resourceUsage" AS "Deck__Deck_dj_resourceUsage", "Deck__Deck_dj"."createdAt" AS "Deck__Deck_dj_createdAt", "Deck__Deck_dj"."updatedAt" AS "Deck__Deck_dj_updatedAt" FROM "deck" "Deck" LEFT JOIN "dj" "Deck__Deck_dj" ON "Deck__Deck_dj"."id"="Deck"."djId" WHERE (((("Deck__Deck_dj"."id" = ?)))) -- PARAMETERS: ["d673e8eb-830c-4f71-8c52-55f373cfa80b"]
+OBS not running on port 4467 for deck A
+OBS not running on port 4468 for deck B
+query: BEGIN TRANSACTION
+query: INSERT INTO "dj"("id", "username", "email", "status", "resourceUsage", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now')) -- PARAMETERS: ["aa8863ad-6be1-4e15-95e3-a7aafb9e07a6","dj_493","dj79@example.com","inactive","{\"cpu\":0,\"memory\":0,\"bandwidth\":0}"]
+query: SELECT "DJ"."id" AS "DJ_id", "DJ"."status" AS "DJ_status", "DJ"."resourceUsage" AS "DJ_resourceUsage", "DJ"."createdAt" AS "DJ_createdAt", "DJ"."updatedAt" AS "DJ_updatedAt" FROM "dj" "DJ" WHERE "DJ"."id" = ? -- PARAMETERS: ["aa8863ad-6be1-4e15-95e3-a7aafb9e07a6"]
+query: COMMIT
+query: BEGIN TRANSACTION
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4469, ?, ?) -- PARAMETERS: ["5fa4e110-792a-43ff-8849-06bd3c97eab5","A","stopped","aa8863ad-6be1-4e15-95e3-a7aafb9e07a6",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["5fa4e110-792a-43ff-8849-06bd3c97eab5"]
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4470, ?, ?) -- PARAMETERS: ["e52a1633-1a1a-41a3-b125-82a75bcabb92","B","stopped","aa8863ad-6be1-4e15-95e3-a7aafb9e07a6",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["e52a1633-1a1a-41a3-b125-82a75bcabb92"]
+query: COMMIT
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."type" AS "Deck_type", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth", "Deck"."obsPort" AS "Deck_obsPort", "Deck"."djId" AS "Deck_djId", "Deck"."currentVideoId" AS "Deck_currentVideoId", "Deck__Deck_dj"."id" AS "Deck__Deck_dj_id", "Deck__Deck_dj"."username" AS "Deck__Deck_dj_username", "Deck__Deck_dj"."email" AS "Deck__Deck_dj_email", "Deck__Deck_dj"."status" AS "Deck__Deck_dj_status", "Deck__Deck_dj"."resourceUsage" AS "Deck__Deck_dj_resourceUsage", "Deck__Deck_dj"."createdAt" AS "Deck__Deck_dj_createdAt", "Deck__Deck_dj"."updatedAt" AS "Deck__Deck_dj_updatedAt" FROM "deck" "Deck" LEFT JOIN "dj" "Deck__Deck_dj" ON "Deck__Deck_dj"."id"="Deck"."djId" WHERE (((("Deck__Deck_dj"."id" = ?)))) -- PARAMETERS: ["aa8863ad-6be1-4e15-95e3-a7aafb9e07a6"]
+OBS not running on port 4469 for deck A
+OBS not running on port 4470 for deck B
+query: BEGIN TRANSACTION
+query: INSERT INTO "dj"("id", "username", "email", "status", "resourceUsage", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now')) -- PARAMETERS: ["4c33e37b-20db-4392-a7a4-92696a0b268f","dj_223","dj327@example.com","inactive","{\"cpu\":0,\"memory\":0,\"bandwidth\":0}"]
+query: SELECT "DJ"."id" AS "DJ_id", "DJ"."status" AS "DJ_status", "DJ"."resourceUsage" AS "DJ_resourceUsage", "DJ"."createdAt" AS "DJ_createdAt", "DJ"."updatedAt" AS "DJ_updatedAt" FROM "dj" "DJ" WHERE "DJ"."id" = ? -- PARAMETERS: ["4c33e37b-20db-4392-a7a4-92696a0b268f"]
+query: COMMIT
+query: BEGIN TRANSACTION
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4471, ?, ?) -- PARAMETERS: ["afab2d93-f688-4a15-8344-49a26b7d5c8c","A","stopped","4c33e37b-20db-4392-a7a4-92696a0b268f",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["afab2d93-f688-4a15-8344-49a26b7d5c8c"]
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4472, ?, ?) -- PARAMETERS: ["23fcfbb7-9b39-41c9-a877-8dcf553d7631","B","stopped","4c33e37b-20db-4392-a7a4-92696a0b268f",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["23fcfbb7-9b39-41c9-a877-8dcf553d7631"]
+query: COMMIT
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."type" AS "Deck_type", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth", "Deck"."obsPort" AS "Deck_obsPort", "Deck"."djId" AS "Deck_djId", "Deck"."currentVideoId" AS "Deck_currentVideoId", "Deck__Deck_dj"."id" AS "Deck__Deck_dj_id", "Deck__Deck_dj"."username" AS "Deck__Deck_dj_username", "Deck__Deck_dj"."email" AS "Deck__Deck_dj_email", "Deck__Deck_dj"."status" AS "Deck__Deck_dj_status", "Deck__Deck_dj"."resourceUsage" AS "Deck__Deck_dj_resourceUsage", "Deck__Deck_dj"."createdAt" AS "Deck__Deck_dj_createdAt", "Deck__Deck_dj"."updatedAt" AS "Deck__Deck_dj_updatedAt" FROM "deck" "Deck" LEFT JOIN "dj" "Deck__Deck_dj" ON "Deck__Deck_dj"."id"="Deck"."djId" WHERE (((("Deck__Deck_dj"."id" = ?)))) -- PARAMETERS: ["4c33e37b-20db-4392-a7a4-92696a0b268f"]
+OBS not running on port 4471 for deck A
+OBS not running on port 4472 for deck B
+query: BEGIN TRANSACTION
+query: INSERT INTO "dj"("id", "username", "email", "status", "resourceUsage", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now')) -- PARAMETERS: ["e1a62b03-4eb8-4511-acf2-0ff99bca3670","dj_997","dj859@example.com","inactive","{\"cpu\":0,\"memory\":0,\"bandwidth\":0}"]
+query: SELECT "DJ"."id" AS "DJ_id", "DJ"."status" AS "DJ_status", "DJ"."resourceUsage" AS "DJ_resourceUsage", "DJ"."createdAt" AS "DJ_createdAt", "DJ"."updatedAt" AS "DJ_updatedAt" FROM "dj" "DJ" WHERE "DJ"."id" = ? -- PARAMETERS: ["e1a62b03-4eb8-4511-acf2-0ff99bca3670"]
+query: COMMIT
+query: BEGIN TRANSACTION
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4473, ?, ?) -- PARAMETERS: ["68aeefd5-0c4a-4b92-b958-51fa50ef3be2","A","stopped","e1a62b03-4eb8-4511-acf2-0ff99bca3670",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["68aeefd5-0c4a-4b92-b958-51fa50ef3be2"]
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4474, ?, ?) -- PARAMETERS: ["ca59596e-d8fc-455e-aeee-45700c900511","B","stopped","e1a62b03-4eb8-4511-acf2-0ff99bca3670",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["ca59596e-d8fc-455e-aeee-45700c900511"]
+query: COMMIT
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."type" AS "Deck_type", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth", "Deck"."obsPort" AS "Deck_obsPort", "Deck"."djId" AS "Deck_djId", "Deck"."currentVideoId" AS "Deck_currentVideoId", "Deck__Deck_dj"."id" AS "Deck__Deck_dj_id", "Deck__Deck_dj"."username" AS "Deck__Deck_dj_username", "Deck__Deck_dj"."email" AS "Deck__Deck_dj_email", "Deck__Deck_dj"."status" AS "Deck__Deck_dj_status", "Deck__Deck_dj"."resourceUsage" AS "Deck__Deck_dj_resourceUsage", "Deck__Deck_dj"."createdAt" AS "Deck__Deck_dj_createdAt", "Deck__Deck_dj"."updatedAt" AS "Deck__Deck_dj_updatedAt" FROM "deck" "Deck" LEFT JOIN "dj" "Deck__Deck_dj" ON "Deck__Deck_dj"."id"="Deck"."djId" WHERE (((("Deck__Deck_dj"."id" = ?)))) -- PARAMETERS: ["e1a62b03-4eb8-4511-acf2-0ff99bca3670"]
+OBS not running on port 4473 for deck A
+OBS not running on port 4474 for deck B
+query: BEGIN TRANSACTION
+query: INSERT INTO "dj"("id", "username", "email", "status", "resourceUsage", "createdAt", "updatedAt") VALUES (?, ?, ?, ?, ?, datetime('now'), datetime('now')) -- PARAMETERS: ["3440c49e-fd92-42cc-8e38-b29fa937de2c","dj_677","dj855@example.com","inactive","{\"cpu\":0,\"memory\":0,\"bandwidth\":0}"]
+query: SELECT "DJ"."id" AS "DJ_id", "DJ"."status" AS "DJ_status", "DJ"."resourceUsage" AS "DJ_resourceUsage", "DJ"."createdAt" AS "DJ_createdAt", "DJ"."updatedAt" AS "DJ_updatedAt" FROM "dj" "DJ" WHERE "DJ"."id" = ? -- PARAMETERS: ["3440c49e-fd92-42cc-8e38-b29fa937de2c"]
+query: COMMIT
+query: BEGIN TRANSACTION
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4475, ?, ?) -- PARAMETERS: ["02697f8d-1d83-4d2b-ad2c-1167b9d30a7d","A","stopped","3440c49e-fd92-42cc-8e38-b29fa937de2c",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["02697f8d-1d83-4d2b-ad2c-1167b9d30a7d"]
+query: INSERT INTO "deck"("id", "type", "status", "streamHealth", "obsPort", "djId", "currentVideoId") VALUES (?, ?, ?, 100, 4476, ?, ?) -- PARAMETERS: ["5b4e9f4f-8b4c-4227-a37c-ae94fa59da97","B","stopped","3440c49e-fd92-42cc-8e38-b29fa937de2c",null]
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth" FROM "deck" "Deck" WHERE "Deck"."id" = ? -- PARAMETERS: ["5b4e9f4f-8b4c-4227-a37c-ae94fa59da97"]
+query: COMMIT
+query: SELECT "Deck"."id" AS "Deck_id", "Deck"."type" AS "Deck_type", "Deck"."status" AS "Deck_status", "Deck"."streamHealth" AS "Deck_streamHealth", "Deck"."obsPort" AS "Deck_obsPort", "Deck"."djId" AS "Deck_djId", "Deck"."currentVideoId" AS "Deck_currentVideoId", "Deck__Deck_dj"."id" AS "Deck__Deck_dj_id", "Deck__Deck_dj"."username" AS "Deck__Deck_dj_username", "Deck__Deck_dj"."email" AS "Deck__Deck_dj_email", "Deck__Deck_dj"."status" AS "Deck__Deck_dj_status", "Deck__Deck_dj"."resourceUsage" AS "Deck__Deck_dj_resourceUsage", "Deck__Deck_dj"."createdAt" AS "Deck__Deck_dj_createdAt", "Deck__Deck_dj"."updatedAt" AS "Deck__Deck_dj_updatedAt" FROM "deck" "Deck" LEFT JOIN "dj" "Deck__Deck_dj" ON "Deck__Deck_dj"."id"="Deck"."djId" WHERE (((("Deck__Deck_dj"."id" = ?)))) -- PARAMETERS: ["3440c49e-fd92-42cc-8e38-b29fa937de2c"]
+OBS not running on port 4475 for deck A
+OBS not running on port 4476 for deck B

@@ -25,7 +25,7 @@ defmodule DejavideoWeb.DjLive do
       :timer.send_interval(1000, self(), :update_decks)
       :timer.send_interval(1000, self(), :update_broadcast)
       # Initialize DJ if needed
-      send(self(), :initialize_dj)
+      Process.send_after(self(), :initialize_dj, 0)
     end
 
     {:ok,
@@ -33,6 +33,7 @@ defmodule DejavideoWeb.DjLive do
        # DJ State
        dj: nil,
        dj_id: session["dj_id"],
+       initializing: true,
 
        # Deck States
        decks: %{
@@ -87,30 +88,39 @@ defmodule DejavideoWeb.DjLive do
          socket
          |> assign(:dj, dj)
          |> assign(:dj_id, dj["id"])
+         |> assign(:initializing, false)
          |> assign_deck_ids(dj["decks"])}
 
       {:error, reason} ->
-        {:noreply, put_flash(socket, :error, "Failed to initialize DJ: #{reason}")}
+        {:noreply,
+         socket
+         |> put_flash(:error, reason)
+         |> assign(:initializing, false)}
     end
   end
 
   defp create_or_get_dj(nil) do
+    username = "dj_#{:rand.uniform(999)}"
+    email = "dj#{:rand.uniform(999)}@example.com"
+
     case HTTPoison.post!(
-           "#{@api_base_url}/djs",
+           @endpoints.create_dj,
            Jason.encode!(%{
-             username: "dj_#{:rand.uniform(1000)}",
-             email: "dj#{:rand.uniform(1000)}@example.com"
+             username: username,
+             email: email
            }),
            [{"Content-Type", "application/json"}]
          ) do
-      %{status_code: 201, body: body} ->
-        {:ok, Jason.decode!(body)}
+      %{status_code: status, body: body} when status in [200, 201] ->
+        {:ok, Jason.decode!(body)["dj"]}
 
       %{status_code: status, body: body} when status in 400..499 ->
-        {:error, Jason.decode!(body)["error"]}
+        error = Jason.decode!(body)["error"]
+        {:error, "Failed to create DJ: #{error}"}
 
-      _ ->
-        {:error, "Failed to create DJ"}
+      error ->
+        IO.inspect(error, label: "DJ Creation Error")
+        {:error, "Failed to create DJ: unexpected error"}
     end
   end
 
@@ -518,225 +528,236 @@ defmodule DejavideoWeb.DjLive do
   def render(assigns) do
     ~H"""
     <div class="min-h-screen bg-gray-900 text-white p-8">
-      <!-- DJ Status Header -->
-      <div class="mb-8 flex justify-between items-center">
-        <h1 class="text-4xl font-bold">Video DJ Console</h1>
-        <div class="bg-gray-800 px-4 py-2 rounded-lg">
-          <span class="text-gray-400">DJ ID:</span>
-          <span class="font-mono"><%= @dj_id %></span>
-        </div>
-      </div>
-
-      <!-- Broadcast Control Panel -->
-      <div class="mb-8 bg-gray-800 p-6 rounded-lg">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-2xl font-bold">Broadcast Control</h2>
-          <div class="flex items-center space-x-2">
-            <div class={[
-              "px-3 py-1 rounded-full",
-              @broadcast.status == "live" && "bg-green-600",
-              @broadcast.status == "offline" && "bg-red-600"
-            ]}>
-              <%= String.upcase(@broadcast.status) %>
-            </div>
-            <%= if @broadcast.status == "live" do %>
-              <div class="text-sm text-gray-400">
-                Uptime: <%= format_duration(@broadcast.uptime) %>
-              </div>
-            <% end %>
+      <%= if @initializing do %>
+        <div class="flex items-center justify-center h-screen">
+          <div class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+            <p class="text-xl">Initializing DJ Console...</p>
           </div>
         </div>
-
-        <%= if @broadcast.status == "offline" do %>
-          <form phx-submit="start_broadcast" class="flex space-x-4">
-            <input
-              type="text"
-              name="channel_id"
-              placeholder="Enter channel ID"
-              class="flex-1 bg-gray-700 p-2 rounded"
-              required
-            />
-            <button
-              type="submit"
-              class="bg-green-600 px-4 py-2 rounded hover:bg-green-700 transition"
-              disabled={not all_decks_ready?(@decks)}
-            >
-              Start Broadcasting
-            </button>
-          </form>
-          <%= unless all_decks_ready?(@decks) do %>
-            <p class="text-yellow-400 text-sm mt-2">
-              Both decks must be ready to start broadcasting
-            </p>
-          <% end %>
-        <% else %>
-          <div class="flex justify-between items-center">
-            <div class="text-sm">
-              <p>Channel: <%= @broadcast.channel_id %></p>
-              <p class="font-mono text-gray-400">
-                Stream URL: <%= @broadcast.stream_url %>
-              </p>
-              <p>Viewers: <%= @broadcast.viewers %></p>
+      <% else %>
+        <div class="min-h-screen bg-gray-900 text-white p-8">
+          <!-- DJ Status Header -->
+          <div class="mb-8 flex justify-between items-center">
+            <h1 class="text-4xl font-bold">Video DJ Console</h1>
+            <div class="bg-gray-800 px-4 py-2 rounded-lg">
+              <span class="text-gray-400">DJ ID:</span>
+              <span class="font-mono"><%= @dj_id %></span>
             </div>
-            <button
-              phx-click="stop_broadcast"
-              class="bg-red-600 px-4 py-2 rounded hover:bg-red-700 transition"
-            >
-              Stop Broadcasting
-            </button>
           </div>
-        <% end %>
-      </div>
 
-      <!-- Deck Controls -->
-      <div class="grid grid-cols-2 gap-8 mb-8">
-        <%= for {deck_type, deck} <- @decks do %>
-          <div class="bg-gray-800 p-6 rounded-lg">
+          <!-- Broadcast Control Panel -->
+          <div class="mb-8 bg-gray-800 p-6 rounded-lg">
             <div class="flex justify-between items-center mb-4">
-              <h2 class="text-2xl font-bold">Deck <%= deck_type %></h2>
-              <div class={[
-                "px-3 py-1 rounded-full text-sm",
-                deck_status_color(deck.status)
-              ]}>
-                <%= String.upcase(deck.status) %>
+              <h2 class="text-2xl font-bold">Broadcast Control</h2>
+              <div class="flex items-center space-x-2">
+                <div class={[
+                  "px-3 py-1 rounded-full",
+                  @broadcast.status == "live" && "bg-green-600",
+                  @broadcast.status == "offline" && "bg-red-600"
+                ]}>
+                  <%= String.upcase(@broadcast.status) %>
+                </div>
+                <%= if @broadcast.status == "live" do %>
+                  <div class="text-sm text-gray-400">
+                    Uptime: <%= format_duration(@broadcast.uptime) %>
+                  </div>
+                <% end %>
               </div>
             </div>
 
-            <!-- Video Preview -->
-            <div class="relative aspect-video bg-black rounded-lg mb-4 overflow-hidden">
-              <.preview
-                id={"deck-#{String.downcase(deck_type)}-preview"}
-                src={deck_stream_url(deck)}
-                autoplay={true}
-                muted={true}
-                controls={false}
-                type={'video/pm4'}
-              />
-
-              <!-- Stream Health Indicator -->
-              <div class={[
-                "absolute top-2 right-2 px-2 py-1 rounded text-xs",
-                stream_health_color(deck.stream_health)
-              ]}>
-                <%= deck.stream_health %>%
-              </div>
-            </div>
-
-            <!-- Video Selection -->
-            <div class="mb-4">
-              <form phx-change={"select_video_#{String.downcase(deck_type)}"}>
-                <select
-                  name="video_id"
-                  class="w-full bg-gray-700 p-2 rounded"
-                  disabled={deck.status in ["loading", "playing"]}
+            <%= if @broadcast.status == "offline" do %>
+              <form phx-submit="start_broadcast" class="flex space-x-4">
+                <input
+                  type="text"
+                  name="channel_id"
+                  placeholder="Enter channel ID"
+                  class="flex-1 bg-gray-700 p-2 rounded"
+                  required
+                />
+                <button
+                  type="submit"
+                  class="bg-green-600 px-4 py-2 rounded hover:bg-green-700 transition"
+                  disabled={not all_decks_ready?(@decks)}
                 >
-                  <option value="">Select Video</option>
-                  <%= for video <- @videos do %>
-                    <option
-                      value={video.id}
-                      selected={deck.current_video && deck.current_video.id == video.id}
-                    >
-                      <%= video.filename %>
-                    </option>
-                  <% end %>
-                </select>
+                  Start Broadcasting
+                </button>
               </form>
-            </div>
-
-            <!-- Deck Controls -->
-            <div class="flex space-x-4 mb-4">
-              <button
-                phx-click="play_deck"
-                phx-value-deck={deck_type}
-                class="bg-green-600 px-4 py-2 rounded hover:bg-green-700 transition"
-                disabled={deck.status not in ["loaded", "stopped"] or is_nil(deck.current_video)}
-              >
-                Play
-              </button>
-              <button
-                phx-click="stop_deck"
-                phx-value-deck={deck_type}
-                class="bg-red-600 px-4 py-2 rounded hover:bg-red-700 transition"
-                disabled={deck.status not in ["playing", "loading"]}
-              >
-                Stop
-              </button>
-            </div>
-
-            <!-- Volume Control -->
-            <div class="mb-4">
-              <label class="block text-sm text-gray-400 mb-2">Volume</label>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                value={deck.volume}
-                class="w-full"
-                phx-change="update_volume"
-                phx-value-deck={deck_type}
-              />
-            </div>
-
-            <!-- Current Video Info -->
-            <%= if deck.current_video do %>
-              <div class="text-sm text-gray-400">
-                <p>Current: <%= deck.current_video.filename %></p>
-                <p>Duration: <%= format_duration(deck.current_video.duration) %></p>
+              <%= unless all_decks_ready?(@decks) do %>
+                <p class="text-yellow-400 text-sm mt-2">
+                  Both decks must be ready to start broadcasting
+                </p>
+              <% end %>
+            <% else %>
+              <div class="flex justify-between items-center">
+                <div class="text-sm">
+                  <p>Channel: <%= @broadcast.channel_id %></p>
+                  <p class="font-mono text-gray-400">
+                    Stream URL: <%= @broadcast.stream_url %>
+                  </p>
+                  <p>Viewers: <%= @broadcast.viewers %></p>
+                </div>
+                <button
+                  phx-click="stop_broadcast"
+                  class="bg-red-600 px-4 py-2 rounded hover:bg-red-700 transition"
+                >
+                  Stop Broadcasting
+                </button>
               </div>
             <% end %>
           </div>
-        <% end %>
-      </div>
 
-      <!-- Crossfader -->
-      <%= if @broadcast.status == "live" do %>
-        <div class="bg-gray-800 p-6 rounded-lg mb-8">
-          <h2 class="text-2xl font-bold mb-4">Crossfader</h2>
-          <div class="flex items-center space-x-4">
-            <span class="text-sm">Deck A</span>
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              value={@broadcast.crossfader_position}
-              class="flex-1"
-              phx-change="update_crossfader"
-              phx-debounce="100"
-            />
-            <span class="text-sm">Deck B</span>
+          <!-- Deck Controls -->
+          <div class="grid grid-cols-2 gap-8 mb-8">
+            <%= for {deck_type, deck} <- @decks do %>
+              <div class="bg-gray-800 p-6 rounded-lg">
+                <div class="flex justify-between items-center mb-4">
+                  <h2 class="text-2xl font-bold">Deck <%= deck_type %></h2>
+                  <div class={[
+                    "px-3 py-1 rounded-full text-sm",
+                    deck_status_color(deck.status)
+                  ]}>
+                    <%= String.upcase(deck.status) %>
+                  </div>
+                </div>
+
+                <!-- Video Preview -->
+                <div class="relative aspect-video bg-black rounded-lg mb-4 overflow-hidden">
+                  <.preview
+                    id={"deck-#{String.downcase(deck_type)}-preview"}
+                    src={deck_stream_url(deck)}
+                    autoplay={true}
+                    muted={true}
+                    controls={false}
+                    type={'video/pm4'}
+                  />
+
+                  <!-- Stream Health Indicator -->
+                  <div class={[
+                    "absolute top-2 right-2 px-2 py-1 rounded text-xs",
+                    stream_health_color(deck.stream_health)
+                  ]}>
+                    <%= deck.stream_health %>%
+                  </div>
+                </div>
+
+                <!-- Video Selection -->
+                <div class="mb-4">
+                  <form phx-change={"select_video_#{String.downcase(deck_type)}"}>
+                    <select
+                      name="video_id"
+                      class="w-full bg-gray-700 p-2 rounded"
+                      disabled={deck.status in ["loading", "playing"]}
+                    >
+                      <option value="">Select Video</option>
+                      <%= for video <- @videos do %>
+                        <option
+                          value={video.id}
+                          selected={deck.current_video && deck.current_video.id == video.id}
+                        >
+                          <%= video.filename %>
+                        </option>
+                      <% end %>
+                    </select>
+                  </form>
+                </div>
+
+                <!-- Deck Controls -->
+                <div class="flex space-x-4 mb-4">
+                  <button
+                    phx-click="play_deck"
+                    phx-value-deck={deck_type}
+                    class="bg-green-600 px-4 py-2 rounded hover:bg-green-700 transition"
+                    disabled={deck.status not in ["loaded", "stopped"] or is_nil(deck.current_video)}
+                  >
+                    Play
+                  </button>
+                  <button
+                    phx-click="stop_deck"
+                    phx-value-deck={deck_type}
+                    class="bg-red-600 px-4 py-2 rounded hover:bg-red-700 transition"
+                    disabled={deck.status not in ["playing", "loading"]}
+                  >
+                    Stop
+                  </button>
+                </div>
+
+                <!-- Volume Control -->
+                <div class="mb-4">
+                  <label class="block text-sm text-gray-400 mb-2">Volume</label>
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value={deck.volume}
+                    class="w-full"
+                    phx-change="update_volume"
+                    phx-value-deck={deck_type}
+                  />
+                </div>
+
+                <!-- Current Video Info -->
+                <%= if deck.current_video do %>
+                  <div class="text-sm text-gray-400">
+                    <p>Current: <%= deck.current_video.filename %></p>
+                    <p>Duration: <%= format_duration(deck.current_video.duration) %></p>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
           </div>
-          <div class="text-center text-sm text-gray-400 mt-2">
-            <%= Float.round(@broadcast.crossfader_position * 100, 1) %>% Deck B
+
+          <!-- Crossfader -->
+          <%= if @broadcast.status == "live" do %>
+            <div class="bg-gray-800 p-6 rounded-lg mb-8">
+              <h2 class="text-2xl font-bold mb-4">Crossfader</h2>
+              <div class="flex items-center space-x-4">
+                <span class="text-sm">Deck A</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={@broadcast.crossfader_position}
+                  class="flex-1"
+                  phx-change="update_crossfader"
+                  phx-debounce="100"
+                />
+                <span class="text-sm">Deck B</span>
+              </div>
+              <div class="text-center text-sm text-gray-400 mt-2">
+                <%= Float.round(@broadcast.crossfader_position * 100, 1) %>% Deck B
+              </div>
+            </div>
+          <% end %>
+
+          <!-- YouTube Import -->
+          <div class="bg-gray-800 p-6 rounded-lg">
+            <h2 class="text-2xl font-bold mb-4">Import from YouTube</h2>
+            <form phx-submit="import_youtube" class="flex space-x-4">
+              <input
+                type="text"
+                name="url"
+                value={@youtube_url}
+                placeholder="YouTube URL"
+                class="flex-1 bg-gray-700 p-2 rounded"
+                disabled={@importing}
+              />
+              <button
+                type="submit"
+                class="bg-red-600 px-4 py-2 rounded hover:bg-red-700 transition"
+                disabled={@importing}
+              >
+                <%= if @importing, do: "Importing...", else: "Import" %>
+              </button>
+            </form>
+            <%= if @import_error do %>
+              <p class="text-red-400 text-sm mt-2"><%= @import_error %></p>
+            <% end %>
           </div>
         </div>
       <% end %>
-
-      <!-- YouTube Import -->
-      <div class="bg-gray-800 p-6 rounded-lg">
-        <h2 class="text-2xl font-bold mb-4">Import from YouTube</h2>
-        <form phx-submit="import_youtube" class="flex space-x-4">
-          <input
-            type="text"
-            name="url"
-            value={@youtube_url}
-            placeholder="YouTube URL"
-            class="flex-1 bg-gray-700 p-2 rounded"
-            disabled={@importing}
-          />
-          <button
-            type="submit"
-            class="bg-red-600 px-4 py-2 rounded hover:bg-red-700 transition"
-            disabled={@importing}
-          >
-            <%= if @importing, do: "Importing...", else: "Import" %>
-          </button>
-        </form>
-        <%= if @import_error do %>
-          <p class="text-red-400 text-sm mt-2"><%= @import_error %></p>
-        <% end %>
-      </div>
     </div>
     """
   end

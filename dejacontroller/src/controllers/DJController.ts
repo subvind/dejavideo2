@@ -25,9 +25,37 @@ export class DJController {
         });
       }
 
-      // Create new DJ
-      const dj = createDJ(username, email);
-      await this.djRepository.save(dj);
+      // Generate unique username if conflict occurs
+      let dj;
+      let attempts = 0;
+      const maxAttempts = 5;
+
+      while (attempts < maxAttempts) {
+        try {
+          const adjustedUsername =
+            attempts === 0
+              ? username
+              : `${username}_${Math.floor(Math.random() * 1000)}`;
+          dj = createDJ(adjustedUsername, email);
+          await this.djRepository.save(dj);
+          break;
+        } catch (error: any) {
+          if (
+            error.code === "SQLITE_CONSTRAINT" &&
+            attempts < maxAttempts - 1
+          ) {
+            attempts++;
+            continue;
+          }
+          throw error;
+        }
+      }
+
+      if (!dj) {
+        return res
+          .status(500)
+          .json({ error: "Failed to create DJ after multiple attempts" });
+      }
 
       // Create decks for DJ
       const deckA = new Deck();

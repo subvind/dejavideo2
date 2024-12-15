@@ -30,6 +30,18 @@ export class BroadcastController {
         return res.status(404).json({ error: "DJ not found" });
       }
 
+      // Check if OBS instances are connected
+      const obsInstances = dj.decks.map((deck) =>
+        this.streamManager.getOBSInstance(dj.id, deck.type),
+      );
+
+      if (obsInstances.some((obs) => !obs?.isConnected())) {
+        return res.status(400).json({
+          error:
+            "OBS instances not ready. Please ensure OBS Studio is running.",
+        });
+      }
+
       // Check if both decks are ready
       const decksReady = dj.decks.every((deck) =>
         this.rtmpService.isStreamActive(dj.id, deck.type),
