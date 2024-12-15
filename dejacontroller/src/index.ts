@@ -7,6 +7,7 @@ import { createDJRouter } from "./routes/dj";
 import { createDeckRouter } from "./routes/deck";
 import { createBroadcastRouter } from "./routes/broadcast";
 import { config } from "dotenv";
+import path from "path";
 
 config(); // Load environment variables
 
@@ -20,6 +21,14 @@ app.use(express.json());
 app.use("/api/djs", createDJRouter(streamManager));
 app.use("/api/decks", createDeckRouter(streamManager));
 app.use("/api/broadcasts", createBroadcastRouter(streamManager, rtmpService));
+app.use("/media", express.static(path.join(__dirname, "../media")));
+
+// Create default media directory if it doesn't exist
+import fs from "fs";
+const mediaDir = path.join(__dirname, "../media");
+if (!fs.existsSync(mediaDir)) {
+  fs.mkdirSync(mediaDir, { recursive: true });
+}
 
 // Error handling middleware
 app.use(

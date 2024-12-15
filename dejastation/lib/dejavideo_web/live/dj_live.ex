@@ -2,6 +2,7 @@ defmodule DejavideoWeb.DjLive do
   require Logger
   use DejavideoWeb, :live_view
   alias Dejavideo.StreamState
+  import DejavideoWeb.Components.VideoPlayer
 
   @api_base_url "http://localhost:3000/api"
 
@@ -94,16 +95,22 @@ defmodule DejavideoWeb.DjLive do
   end
 
   defp create_or_get_dj(nil) do
-    # Create new DJ if no ID exists
     case HTTPoison.post!(
            "#{@api_base_url}/djs",
            Jason.encode!(%{
              username: "dj_#{:rand.uniform(1000)}",
              email: "dj#{:rand.uniform(1000)}@example.com"
-           })
+           }),
+           [{"Content-Type", "application/json"}]
          ) do
-      %{status_code: 201, body: body} -> {:ok, Jason.decode!(body)}
-      error -> {:error, "Failed to create DJ"}
+      %{status_code: 201, body: body} ->
+        {:ok, Jason.decode!(body)}
+
+      %{status_code: status, body: body} when status in 400..499 ->
+        {:error, Jason.decode!(body)["error"]}
+
+      _ ->
+        {:error, "Failed to create DJ"}
     end
   end
 
@@ -597,13 +604,14 @@ defmodule DejavideoWeb.DjLive do
 
             <!-- Video Preview -->
             <div class="relative aspect-video bg-black rounded-lg mb-4 overflow-hidden">
-              <video
+              <.preview
                 id={"deck-#{String.downcase(deck_type)}-preview"}
-                class="w-full h-full object-contain"
-                data-setup='{"fluid": true}'
-              >
-                <source src={deck_stream_url(deck)} type="application/x-mpegURL" />
-              </video>
+                src={deck_stream_url(deck)}
+                autoplay={true}
+                muted={true}
+                controls={false}
+                type={'video/pm4'}
+              />
 
               <!-- Stream Health Indicator -->
               <div class={[

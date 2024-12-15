@@ -36,14 +36,22 @@ export class OBSService extends EventEmitter {
 
   public async connect(): Promise<void> {
     try {
+      if (!process.env.OBS_PASSWORD) {
+        throw new Error("OBS_PASSWORD not set in environment variables");
+      }
+
       await this.obs.connect(
         `ws://localhost:${this.deck.obsPort}`,
         process.env.OBS_PASSWORD,
       );
+
       this.connected = true;
       this.emit("connected");
+
+      console.log(`Successfully connected to OBS on port ${this.deck.obsPort}`);
     } catch (error) {
       console.error(`Failed to connect to OBS (Deck ${this.deck.id}):`, error);
+      this.connected = false;
       throw error;
     }
   }
@@ -142,15 +150,19 @@ export class OBSService extends EventEmitter {
 
     while (retries < maxRetries && !this.connected) {
       try {
+        console.log(
+          `Attempting to reconnect to OBS (Attempt ${retries + 1}/${maxRetries})`,
+        );
         await this.connect();
         break;
       } catch (error) {
         retries++;
-        console.error(
-          `Reconnection attempt ${retries} failed for Deck ${this.deck.id}:`,
-          error,
-        );
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        if (retries === maxRetries) {
+          console.error("Max reconnection attempts reached");
+          this.emit("error", error);
+        } else {
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+        }
       }
     }
   }

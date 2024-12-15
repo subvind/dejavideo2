@@ -19,6 +19,12 @@ export class DJController {
     try {
       const { username, email } = req.body;
 
+      if (!username || !email) {
+        return res.status(400).json({
+          error: "Username and email are required",
+        });
+      }
+
       // Create new DJ
       const dj = createDJ(username, email);
       await this.djRepository.save(dj);

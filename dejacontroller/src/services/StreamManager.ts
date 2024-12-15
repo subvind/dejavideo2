@@ -38,6 +38,15 @@ export class StreamManager {
     return port;
   }
 
+  private async checkOBSConnection(port: number): Promise<boolean> {
+    try {
+      const response = await fetch(`http://localhost:${port}`);
+      return response.ok;
+    } catch (error) {
+      return false;
+    }
+  }
+
   public async initializeDJStreams(djId: string): Promise<void> {
     const deckRepository = AppDataSource.getRepository(Deck);
     const decks = await deckRepository.find({
@@ -46,20 +55,39 @@ export class StreamManager {
     });
 
     for (const deck of decks) {
+      // Check if OBS is running on the assigned port
+      const obsRunning = await this.checkOBSConnection(deck.obsPort);
+      if (!obsRunning) {
+        console.warn(
+          `OBS not running on port ${deck.obsPort} for deck ${deck.type}`,
+        );
+        continue;
+      }
+
       const obsInstance = new OBSService(deck);
 
       try {
-        await obsInstance.connect();
+        // Add retry logic for connection
+        let retries = 3;
+        while (retries > 0) {
+          try {
+            await obsInstance.connect();
+            break;
+          } catch (error) {
+            retries--;
+            if (retries === 0) throw error;
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+          }
+        }
+
         this.obsInstances.set(`${djId}_${deck.type}`, obsInstance);
 
-        // Setup event handlers
         obsInstance.on("error", (error) => {
           console.error(`OBS Error for DJ ${djId} Deck ${deck.type}:`, error);
         });
 
         obsInstance.on("disconnected", async () => {
           console.log(`OBS Disconnected for DJ ${djId} Deck ${deck.type}`);
-          // Update deck status in database
           deck.status = "stopped";
           await deckRepository.save(deck);
         });
