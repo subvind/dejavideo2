@@ -85,6 +85,3 @@ dejavideo/
 # install youtube downloader
 sudo pacman -S yt-dlp
 ```
-
-
-

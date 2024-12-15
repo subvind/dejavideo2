@@ -43,14 +43,17 @@ async function startServer() {
     await AppDataSource.initialize();
     console.log("Database initialized");
 
+    // Initialize RTMP service first
+    const rtmpService = RTMPService.getInstance();
     try {
       await rtmpService.initialize();
-      console.log("RTMP service initialized");
+      console.log(`RTMP service initialized`);
     } catch (error) {
       console.error("Failed to initialize RTMP service:", error);
       throw error;
     }
 
+    // Then initialize stream manager
     try {
       await streamManager.initialize();
       console.log("Stream manager initialized");

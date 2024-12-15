@@ -40,13 +40,14 @@ cd dejacontroller
 
 2. Install dependencies:
 ```bash
+yay -S obs-studio-git
+
 npm install
 ```
 
-3. Create a `.env` file with the following configurations:
+3. Rename a `.env.public` to `.env` and make the following configurations:
 ```env
 OBS_PASSWORD=your_obs_websocket_password
-PORT=3000
 ```
 
 4. Start the application:

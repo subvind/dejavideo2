@@ -2,6 +2,8 @@ import NodeMediaServer from "node-media-server";
 import { EventEmitter } from "events";
 import { AppDataSource } from "../data-source";
 import { Deck } from "../entities/Deck";
+import { promises as fs } from "fs";
+import path from "path";
 
 export class RTMPService extends EventEmitter {
   private static instance: RTMPService;
@@ -12,8 +14,12 @@ export class RTMPService extends EventEmitter {
   constructor() {
     super();
     // Get ports from environment variables or use defaults
-    const rtmpPort = parseInt(process.env.RTMP_PORT || "1935");
-    const httpPort = parseInt(process.env.RTMP_HTTP_PORT || "8000");
+    const rtmpPort = process.env.RTMP_PORT
+      ? parseInt(process.env.RTMP_PORT)
+      : 1935;
+    const httpPort = process.env.RTMP_HTTP_PORT
+      ? parseInt(process.env.RTMP_HTTP_PORT)
+      : 8000;
 
     this.nms = new NodeMediaServer({
       rtmp: {
@@ -43,26 +49,37 @@ export class RTMPService extends EventEmitter {
       return;
     }
 
+    // Ensure media directory exists
+    const mediaDir = path.join(process.cwd(), "media");
+    try {
+      await fs.mkdir(mediaDir, { recursive: true });
+    } catch (error) {
+      console.warn(
+        "Media directory already exists or could not be created:",
+        error,
+      );
+    }
+
     try {
       // Wrap the server start in a promise
       await new Promise<void>((resolve, reject) => {
         try {
           this.nms.run();
 
-          // Give a small delay to ensure the server has started
+          // Setup event handlers
+          const app = (this.nms as any).nms;
+          if (app) {
+            app.on("preConnect", this.handlePreConnect.bind(this));
+            app.on("postConnect", this.handlePostConnect.bind(this));
+            app.on("prePublish", this.handlePrePublish.bind(this));
+            app.on("donePublish", this.handleDonePublish.bind(this));
+          }
+
+          // Give the server a moment to start
           setTimeout(() => {
-            const app = (this.nms as any).app;
-            if (app) {
-              app.on("preConnect", this.handlePreConnect.bind(this));
-              app.on("postConnect", this.handlePostConnect.bind(this));
-              app.on("prePublish", this.handlePrePublish.bind(this));
-              app.on("donePublish", this.handleDonePublish.bind(this));
-              this.initialized = true;
-              resolve();
-            } else {
-              reject(new Error("Failed to initialize RTMP server"));
-            }
-          }, 2000);
+            this.initialized = true;
+            resolve();
+          }, 1000);
         } catch (error) {
           reject(error);
         }
