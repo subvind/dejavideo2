@@ -1,0 +1,91 @@
+[33m[nodemon] 3.1.9[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): src/**/*[39m
+[33m[nodemon] watching extensions: ts,js[39m
+[32m[nodemon] starting `ts-node ./src/index.ts src/index.ts`[39m
+[12/15/2024, 12:52:03 PM] [INFO] Node-Media-Server v4.0.7
+[12/15/2024, 12:52:03 PM] [INFO] Homepage: https://github.com/illuspas/Node-Media-Server
+[12/15/2024, 12:52:03 PM] [INFO] License: Apache-2.0
+[12/15/2024, 12:52:03 PM] [INFO] Author: Chen Mingliang
+[12/15/2024, 12:52:03 PM] [INFO] Node-Media-Server v4.0.7
+[12/15/2024, 12:52:03 PM] [INFO] Homepage: https://github.com/illuspas/Node-Media-Server
+[12/15/2024, 12:52:03 PM] [INFO] License: Apache-2.0
+[12/15/2024, 12:52:03 PM] [INFO] Author: Chen Mingliang
+query: PRAGMA foreign_keys = OFF
+query: BEGIN TRANSACTION
+query: SELECT * FROM "sqlite_master" WHERE "type" = 'table' AND "name" IN ('video','deck','broadcast','dj')
+query: SELECT * FROM "sqlite_master" WHERE "type" = 'index' AND "tbl_name" IN ('video','deck','broadcast','dj')
+query: PRAGMA table_xinfo("video")
+query: PRAGMA index_list("video")
+query: PRAGMA foreign_key_list("video")
+query: PRAGMA table_xinfo("dj")
+query: PRAGMA index_list("dj")
+query: PRAGMA foreign_key_list("dj")
+query: PRAGMA table_xinfo("deck")
+query: PRAGMA index_list("deck")
+query: PRAGMA foreign_key_list("deck")
+query: PRAGMA table_xinfo("broadcast")
+query: PRAGMA index_list("broadcast")
+query: PRAGMA foreign_key_list("broadcast")
+query: PRAGMA index_info("sqlite_autoindex_dj_3")
+query: PRAGMA index_info("sqlite_autoindex_dj_2")
+query: SELECT * FROM "sqlite_master" WHERE "type" = 'table' AND "name" = 'typeorm_metadata'
+query: COMMIT
+query: PRAGMA foreign_keys = ON
+Database initialized
+[12/15/2024, 12:52:03 PM] [INFO] HTTP server listening on port undefined:8000
+[12/15/2024, 12:52:03 PM] [INFO] Rtmp Server listening on port undefined:1935
+Failed to initialize RTMP service: Error: Failed to initialize RTMP server
+    at Timeout._onTimeout (/home/travis/Projects/dejavideo2/dejacontroller/src/services/RTMPService.ts:63:22)
+    at listOnTimeout (node:internal/timers:581:17)
+    at processTimers (node:internal/timers:519:7)
+Failed to start server: Error: Failed to initialize RTMP server
+    at Timeout._onTimeout (/home/travis/Projects/dejavideo2/dejacontroller/src/services/RTMPService.ts:63:22)
+    at listOnTimeout (node:internal/timers:581:17)
+    at processTimers (node:internal/timers:519:7)
+Cleaning up...
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `ts-node ./src/index.ts src/index.ts`[39m
+[12/15/2024, 12:52:37 PM] [INFO] Node-Media-Server v4.0.7
+[12/15/2024, 12:52:37 PM] [INFO] Homepage: https://github.com/illuspas/Node-Media-Server
+[12/15/2024, 12:52:37 PM] [INFO] License: Apache-2.0
+[12/15/2024, 12:52:37 PM] [INFO] Author: Chen Mingliang
+[12/15/2024, 12:52:37 PM] [INFO] Node-Media-Server v4.0.7
+[12/15/2024, 12:52:37 PM] [INFO] Homepage: https://github.com/illuspas/Node-Media-Server
+[12/15/2024, 12:52:37 PM] [INFO] License: Apache-2.0
+[12/15/2024, 12:52:37 PM] [INFO] Author: Chen Mingliang
+query: PRAGMA foreign_keys = OFF
+query: BEGIN TRANSACTION
+query: SELECT * FROM "sqlite_master" WHERE "type" = 'table' AND "name" IN ('video','deck','broadcast','dj')
+query: SELECT * FROM "sqlite_master" WHERE "type" = 'index' AND "tbl_name" IN ('video','deck','broadcast','dj')
+query: PRAGMA table_xinfo("video")
+query: PRAGMA index_list("video")
+query: PRAGMA foreign_key_list("video")
+query: PRAGMA table_xinfo("dj")
+query: PRAGMA index_list("dj")
+query: PRAGMA foreign_key_list("dj")
+query: PRAGMA table_xinfo("deck")
+query: PRAGMA index_list("deck")
+query: PRAGMA foreign_key_list("deck")
+query: PRAGMA table_xinfo("broadcast")
+query: PRAGMA index_list("broadcast")
+query: PRAGMA foreign_key_list("broadcast")
+query: PRAGMA index_info("sqlite_autoindex_dj_3")
+query: PRAGMA index_info("sqlite_autoindex_dj_2")
+query: SELECT * FROM "sqlite_master" WHERE "type" = 'table' AND "name" = 'typeorm_metadata'
+query: COMMIT
+query: PRAGMA foreign_keys = ON
+Database initialized
+[12/15/2024, 12:52:37 PM] [INFO] HTTP server listening on port undefined:8000
+[12/15/2024, 12:52:37 PM] [INFO] Rtmp Server listening on port undefined:1935
+Failed to initialize RTMP service: Error: Failed to initialize RTMP server
+    at Timeout._onTimeout (/home/travis/Projects/dejavideo2/dejacontroller/src/services/RTMPService.ts:63:22)
+    at listOnTimeout (node:internal/timers:581:17)
+    at processTimers (node:internal/timers:519:7)
+Failed to start server: Error: Failed to initialize RTMP server
+    at Timeout._onTimeout (/home/travis/Projects/dejavideo2/dejacontroller/src/services/RTMPService.ts:63:22)
+    at listOnTimeout (node:internal/timers:581:17)
+    at processTimers (node:internal/timers:519:7)
+Cleaning up...
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
