@@ -1,5 +1,7 @@
 defmodule DejavideoWeb.DjListLive do
   use DejavideoWeb, :live_view
+  import Phoenix.HTML.Form
+  alias Phoenix.HTML.Form
 
   @api_base_url "http://localhost:3000/api"
 
@@ -12,8 +14,79 @@ defmodule DejavideoWeb.DjListLive do
     {:ok,
      assign(socket,
        djs: [],
-       loading: true
+       loading: true,
+       show_create_modal: false,
+       form: to_form(%{"username" => "", "email" => ""}, as: :new_dj)
      )}
+  end
+
+  def handle_event("update_new_dj", %{"field" => field, "value" => value}, socket) do
+    {:noreply,
+     assign(socket, :new_dj, Map.put(socket.assigns.new_dj, String.to_atom(field), value))}
+  end
+
+  def handle_event("update_form", %{"new_dj" => params}, socket) do
+    {:noreply, assign(socket, :new_dj, Map.merge(socket.assigns.new_dj, params))}
+  end
+
+  def handle_event("create_dj", %{"new_dj" => params}, socket) do
+    # Extract username and email from params
+    username = params["username"]
+    email = params["email"]
+
+    case create_new_dj(%{username: username, email: email}) do
+      {:ok, _dj} ->
+        send(self(), :update_djs)
+
+        {:noreply,
+         socket
+         |> assign(show_create_modal: false)
+         |> assign(form: to_form(%{"username" => "", "email" => ""}, as: :new_dj))
+         |> put_flash(:info, "DJ created successfully")}
+
+      {:error, reason} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, "Failed to create DJ: #{reason}")}
+    end
+  end
+
+  def handle_event("show_create_modal", _, socket) do
+    {:noreply, assign(socket, show_create_modal: true)}
+  end
+
+  def handle_event("hide_create_modal", _, socket) do
+    {:noreply,
+     socket
+     |> assign(show_create_modal: false)
+     |> assign(form: to_form(%{"username" => "", "email" => ""}, as: :new_dj))}
+  end
+
+  # Add this helper function
+  defp create_new_dj(%{username: username, email: email}) do
+    case HTTPoison.post!(
+           "#{@api_base_url}/djs",
+           Jason.encode!(%{
+             username: username,
+             email: email
+           }),
+           [{"Content-Type", "application/json"}]
+         ) do
+      %{status_code: status, body: body} when status in [200, 201] ->
+        {:ok, Jason.decode!(body)["dj"]}
+
+      %{status_code: status, body: body} when status in 400..499 ->
+        {:error, Jason.decode!(body)["error"]}
+
+      error ->
+        IO.inspect(error, label: "DJ Creation Error")
+        {:error, "Unexpected error"}
+    end
+  end
+
+  # Add an overload that handles string key maps
+  defp create_new_dj(%{"username" => username, "email" => email}) do
+    create_new_dj(%{username: username, email: email})
   end
 
   def handle_info(:update_djs, socket) do
@@ -55,13 +128,64 @@ defmodule DejavideoWeb.DjListLive do
       <div class="max-w-7xl mx-auto">
         <div class="flex justify-between items-center mb-8">
           <h1 class="text-4xl font-bold">DJ Sessions</h1>
-          <.link
-            href={~p"/dj/new"}
+          <button
+            phx-click="show_create_modal"
             class="bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 transition"
           >
             New Session
-          </.link>
+          </button>
         </div>
+
+        <!-- Create DJ Modal -->
+        <%= if @show_create_modal do %>
+          <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-gray-800 p-6 rounded-lg w-96">
+              <h2 class="text-xl font-bold mb-4">Create New DJ Session</h2>
+              <.form
+                for={@form}
+                phx-submit="create_dj"
+              >
+                <div class="space-y-4">
+                  <div>
+                    <label class="block text-sm text-gray-400 mb-1">Vusername</label>
+                    <input
+                      type="text"
+                      name="new_dj[username]"
+                      value={@form[:username].value}
+                      class="w-full bg-gray-700 p-2 rounded text-white"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-sm text-gray-400 mb-1">Email</label>
+                    <input
+                      type="email"
+                      name="new_dj[email]"
+                      value={@form[:email].value}
+                      class="w-full bg-gray-700 p-2 rounded text-white"
+                      required
+                    />
+                  </div>
+                  <div class="flex justify-end space-x-2 mt-4">
+                    <button
+                      type="button"
+                      phx-click="hide_create_modal"
+                      class="px-4 py-2 rounded bg-gray-700 hover:bg-gray-600"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700"
+                    >
+                      Create
+                    </button>
+                  </div>
+                </div>
+              </.form>
+            </div>
+          </div>
+        <% end %>
 
         <%= if @loading do %>
           <div class="flex justify-center items-center h-64">

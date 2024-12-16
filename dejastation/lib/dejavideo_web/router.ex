@@ -25,7 +25,6 @@ defmodule DejavideoWeb.Router do
     live("/playlists/:id", PlaylistDetailLive, :show)
     live("/upload", ChannelUploadLive)
     live("/dj", DjLive)
-    get("/dj/new", DjController, :new)
     live("/dj/:id", DjLive)
     live("/djs", DjListLive)
   end
