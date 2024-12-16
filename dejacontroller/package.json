@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "setup-obs": "ts-node scripts/setup-obs-scenes.ts 2>&1 | tee ./setup-obs.stdout.txt",
+    "setup-obs": "ts-node src/scripts/setup-obs-scenes.ts 2>&1 | tee ./setup-obs.stdout.txt",
     "start": "node -r dotenv/config dist/index.js",
     "dev": "nodemon -r dotenv/config src/index.ts 2>&1 | tee ./dev.stdout.txt",
     "build": "tsc",

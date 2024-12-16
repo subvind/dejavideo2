@@ -18,18 +18,18 @@ async function setupOBSScenes(djId: string) {
       `Connected to OBS WebSocket v${obsWebSocketVersion} (using RPC ${negotiatedRpcVersion})`,
     );
 
-    // Create DJ's main output scene
-    await createMainScene(obs, djId);
-    console.log(`Created main output scene for DJ ${djId}`);
-
-    // Setup DJ's deck scenes
+    // First create deck scenes and sources
     await createDeckScene(obs, djId, "A");
-    console.log(`Created Deck A scene for DJ ${djId}`);
+    console.log("Created Deck A scene");
 
     await createDeckScene(obs, djId, "B");
-    console.log(`Created Deck B scene for DJ ${djId}`);
+    console.log("Created Deck B scene");
 
-    console.log(`OBS scenes setup completed successfully for DJ ${djId}`);
+    // Then create the main scene that references them
+    await createMainScene(obs, djId);
+    console.log("Created main scene");
+
+    console.log("OBS scenes setup completed successfully");
   } catch (error: any) {
     if (error.code === 1006) {
       console.error("Failed to connect to OBS. Please check that:");
@@ -42,41 +42,9 @@ async function setupOBSScenes(djId: string) {
     } else {
       console.error("Error setting up OBS scenes:", error);
     }
-    process.exit(1);
-  } finally {
-    obs.disconnect();
-  }
-}
-
-async function createMainScene(obs: OBSWebSocket, djId: string) {
-  const sceneName = `DJ_${djId}_Main`;
-
-  try {
-    // Create main scene
-    await obs.call("CreateScene", { sceneName });
-
-    // Add deck sources to main scene
-    await obs.call("CreateSceneItem", {
-      sceneName,
-      sourceName: `DJ_${djId}_DeckA`,
-      sceneItemEnabled: true,
-    });
-
-    await obs.call("CreateSceneItem", {
-      sceneName,
-      sourceName: `DJ_${djId}_DeckB`,
-      sceneItemEnabled: true,
-    });
-
-    // Add crossfade transition
-    await obs.call("CreateSourceFilter", {
-      sourceName: `DJ_${djId}_Crossfade`,
-      filterKind: "fade_transition",
-      filterName: sceneName,
-    });
-  } catch (error) {
-    console.error(`Error creating main scene for DJ ${djId}:`, error);
     throw error;
+  } finally {
+    await obs.disconnect();
   }
 }
 
@@ -90,12 +58,14 @@ async function createDeckScene(
 
   try {
     // Create scene
-    await obs.call("CreateScene", { sceneName });
+    await obs.call("CreateScene", {
+      sceneName,
+    });
 
     // Create video source
     await obs.call("CreateInput", {
-      sceneName,
       inputName: sourceName,
+      sceneName: sceneName,
       inputKind: "ffmpeg_source",
       inputSettings: {
         is_local_file: true,
@@ -107,27 +77,65 @@ async function createDeckScene(
 
     // Add volume filter
     await obs.call("CreateSourceFilter", {
-      sourceName: sourceName,
+      sourceName,
       filterName: `DJ_${djId}_Deck${deck}Volume`,
       filterKind: "gain_filter",
       filterSettings: {
         db: 0,
       },
     });
+
+    return sceneName;
   } catch (error) {
-    console.error(`Error creating scene for DJ ${djId} Deck ${deck}:`, error);
+    console.error(`Error creating deck scene ${deck}:`, error);
     throw error;
   }
 }
 
-// Update the DJController to call this when creating a new DJ
+async function createMainScene(obs: OBSWebSocket, djId: string) {
+  const mainSceneName = `DJ_${djId}_Main`;
+  const deckASceneName = `DJ_${djId}_DeckA`;
+  const deckBSceneName = `DJ_${djId}_DeckB`;
+
+  try {
+    // Create main scene
+    await obs.call("CreateScene", {
+      sceneName: mainSceneName,
+    });
+
+    // Add Deck A scene as source
+    await obs.call("CreateSceneItem", {
+      sceneName: mainSceneName,
+      sourceName: deckASceneName,
+    });
+
+    // Add Deck B scene as source
+    await obs.call("CreateSceneItem", {
+      sceneName: mainSceneName,
+      sourceName: deckBSceneName,
+    });
+
+    return mainSceneName;
+  } catch (error) {
+    console.error("Error creating main scene:", error);
+    throw error;
+  }
+}
+
 export async function createDJScenes(djId: string) {
-  await setupOBSScenes(djId);
+  return setupOBSScenes(djId);
 }
 
 // If running directly from command line
 if (require.main === module) {
-  // You can pass DJ ID as command line argument
   const djId = process.argv[2] || "test_dj";
-  setupOBSScenes(djId);
+  setupOBSScenes(djId)
+    .then(() => {
+      console.log("Setup completed successfully");
+      process.exit(0);
+    })
+    .catch((error) => {
+      console.error("Setup failed:", error);
+      process.exit(1);
+    });
 }

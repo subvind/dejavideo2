@@ -43,11 +43,11 @@
     <div class="flex items-center gap-1 pb-4 border-b border-zinc-100">
       <div class="flex items-center justify-center w-12 h-12 rounded-full bg-zinc-100">
         <svg viewBox="0 0 24 24" fill="none" class="w-6 h-6">
-          <path 
-            d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" 
-            stroke="currentColor" 
-            stroke-width="2" 
-            stroke-linecap="round" 
+          <path
+            d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
             stroke-linejoin="round"
           />
         </svg>
@@ -165,12 +165,21 @@
         </div>
       </div>
     </div>
+    <.link
+      href={~p"/djs"}
+      class="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition"
+    >
+      DJ Sessions
+    </.link>
+    <br />
+    <br />
+    <br />
     <hr>
     <h1 class="text-brand mt-10 flex items-center text-sm font-semibold leading-6">
       Deja Video
       <small class="bg-brand/5 text-[0.8125rem] ml-3 rounded-full px-2 font-medium leading-6">
         v<%= Application.spec(:dejavideo, :vsn) %>
-      </small> 
+      </small>
     </h1>
     <p class="text-[2rem] mt-4 font-semibold leading-10 tracking-tighter text-zinc-900 text-balance">
       The feeling that you've already watched a video, even though you know you haven't.

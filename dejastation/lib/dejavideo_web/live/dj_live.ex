@@ -19,12 +19,10 @@ defmodule DejavideoWeb.DjLive do
     broadcast_status: "#{@api_base_url}/broadcasts/:broadcastId/status"
   }
 
-  def mount(_params, session, socket) do
+  def mount(%{"id" => dj_id}, _session, socket) when is_binary(dj_id) do
     if connected?(socket) do
-      # Set up polling intervals
       :timer.send_interval(1000, self(), :update_decks)
       :timer.send_interval(1000, self(), :update_broadcast)
-      # Initialize DJ if needed
       Process.send_after(self(), :initialize_dj, 0)
     end
 
@@ -32,7 +30,7 @@ defmodule DejavideoWeb.DjLive do
      assign(socket,
        # DJ State
        dj: nil,
-       dj_id: session["dj_id"],
+       dj_id: dj_id,
        initializing: true,
 
        # Deck States
@@ -80,14 +78,12 @@ defmodule DejavideoWeb.DjLive do
      )}
   end
 
-  # dj initialization and managemnt
   def handle_info(:initialize_dj, socket) do
-    case create_or_get_dj(socket.assigns.dj_id) do
+    case get_dj(socket.assigns.dj_id) do
       {:ok, dj} ->
         {:noreply,
          socket
          |> assign(:dj, dj)
-         |> assign(:dj_id, dj["id"])
          |> assign(:initializing, false)
          |> assign_deck_ids(dj["decks"])}
 
@@ -95,7 +91,16 @@ defmodule DejavideoWeb.DjLive do
         {:noreply,
          socket
          |> put_flash(:error, reason)
-         |> assign(:initializing, false)}
+         |> redirect(to: ~p"/dj/new")}
+    end
+  end
+
+  # Split create_or_get_dj into separate functions
+  defp get_dj(dj_id) do
+    case HTTPoison.get!("#{@api_base_url}/djs/#{dj_id}") do
+      %{status_code: 200, body: body} -> {:ok, Jason.decode!(body)}
+      %{status_code: 404} -> {:error, "DJ not found"}
+      _error -> {:error, "Failed to fetch DJ"}
     end
   end
 
@@ -145,6 +150,48 @@ defmodule DejavideoWeb.DjLive do
       end)
 
     assign(socket, :decks, updated_decks)
+  end
+
+  # Handle creation of new DJ
+  def handle_info(:create_new_dj, socket) do
+    case create_new_dj() do
+      {:ok, dj} ->
+        {:noreply,
+         socket
+         |> redirect(to: ~p"/dj/#{dj["id"]}")
+         |> put_flash(:info, "DJ console created")}
+
+      {:error, reason} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, reason)
+         |> assign(:initializing, false)}
+    end
+  end
+
+  defp create_new_dj do
+    username = "dj_#{:rand.uniform(999)}"
+    email = "dj#{:rand.uniform(999)}@example.com"
+
+    case HTTPoison.post!(
+           @endpoints.create_dj,
+           Jason.encode!(%{
+             username: username,
+             email: email
+           }),
+           [{"Content-Type", "application/json"}]
+         ) do
+      %{status_code: status, body: body} when status in [200, 201] ->
+        {:ok, Jason.decode!(body)["dj"]}
+
+      %{status_code: status, body: body} when status in 400..499 ->
+        error = Jason.decode!(body)["error"]
+        {:error, "Failed to create DJ: #{error}"}
+
+      error ->
+        IO.inspect(error, label: "DJ Creation Error")
+        {:error, "Failed to create DJ: unexpected error"}
+    end
   end
 
   # Stream status handler
@@ -527,6 +574,11 @@ defmodule DejavideoWeb.DjLive do
 
   def render(assigns) do
     ~H"""
+    <div class="mb-4">
+      <.link navigate={~p"/djs"} class="text-blue-500 hover:underline">
+        ← Back to DJ Sessions
+      </.link>
+    </div>
     <div class="min-h-screen bg-gray-900 text-white p-8">
       <%= if @initializing do %>
         <div class="flex items-center justify-center h-screen">
@@ -539,17 +591,21 @@ defmodule DejavideoWeb.DjLive do
         <div class="min-h-screen bg-gray-900 text-white p-8">
           <!-- DJ Status Header -->
           <div class="mb-8 flex justify-between items-center">
-            <h1 class="text-4xl font-bold">Video DJ Console</h1>
+            <h1 class="text-4xl font-bold">Deja Controller</h1>
             <div class="bg-gray-800 px-4 py-2 rounded-lg">
-              <span class="text-gray-400">DJ ID:</span>
-              <span class="font-mono"><%= @dj_id %></span>
+              <span class="text-gray-400">DJ:</span>
+              <span class="font-mono">
+                <.link navigate={~p"/dj/#{@dj_id}"} class="text-blue-500 hover:underline">
+                  <%= @dj["username"] %>
+                </.link>
+              </span>
             </div>
           </div>
 
           <!-- Broadcast Control Panel -->
           <div class="mb-8 bg-gray-800 p-6 rounded-lg">
             <div class="flex justify-between items-center mb-4">
-              <h2 class="text-2xl font-bold">Broadcast Control</h2>
+              <h2 class="text-2xl font-bold">Broadcast</h2>
               <div class="flex items-center space-x-2">
                 <div class={[
                   "px-3 py-1 rounded-full",
