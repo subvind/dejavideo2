@@ -4,6 +4,10 @@ defmodule DejavideoWeb.DjLive do
   alias Dejavideo.StreamState
   import DejavideoWeb.Components.VideoPlayer
 
+  # 30 seconds timeout for YouTube imports
+  @api_timeout 30_000
+  # 5 seconds for regular requests
+  @default_timeout 5_000
   @api_base_url "http://localhost:3000/api"
 
   # API endpoints
@@ -448,24 +452,56 @@ defmodule DejavideoWeb.DjLive do
     {:noreply, assign(socket, video_info: nil, import_error: nil)}
   end
 
+  # Update the handle_event for "import_youtube"
   def handle_event("import_youtube", %{"url" => url}, socket) do
-    case HTTPoison.post!("#{@api_base_url}/import/youtube", Jason.encode!(%{url: url}), [
-           {"Content-Type", "application/json"}
-         ]) do
-      %{status_code: 200} ->
+    socket = assign(socket, :importing, true)
+
+    case HTTPoison.post!(
+           "#{@api_base_url}/videos/youtube",
+           Jason.encode!(%{url: url}),
+           [{"Content-Type", "application/json"}],
+           # Add timeout options
+           timeout: @api_timeout,
+           recv_timeout: @api_timeout
+         ) do
+      %{status_code: 200, body: body} ->
+        response = Jason.decode!(body)
+
         {:noreply,
          socket
-         |> assign(importing: true, youtube_url: "", video_info: nil)
-         |> put_flash(:info, "Video import started")}
+         |> assign(importing: false, youtube_url: "", video_info: nil)
+         |> put_flash(:info, "Video import started: #{response["video"]["filename"]}")}
 
-      %{status_code: 500, body: body} ->
+      %{status_code: status, body: body} when status in 400..499 ->
         error = Jason.decode!(body)["error"]
-        {:noreply, assign(socket, import_error: error)}
 
-      _ ->
-        {:noreply, put_flash(socket, :error, "Failed to import video")}
+        {:noreply,
+         socket
+         |> assign(importing: false)
+         |> put_flash(:error, error)}
+
+      error ->
+        IO.inspect(error, label: "YouTube Import Error")
+
+        {:noreply,
+         socket
+         |> assign(importing: false)
+         |> put_flash(:error, "Failed to import video: Request timeout")}
     end
+  rescue
+    e in HTTPoison.Error ->
+      IO.inspect(e, label: "HTTPoison Error")
+
+      {:noreply,
+       socket
+       |> assign(importing: false)
+       |> put_flash(:error, "Failed to import video: #{error_message(e)}")}
   end
+
+  # Add this helper function to format error messages
+  defp error_message(%HTTPoison.Error{reason: :timeout}), do: "Request timed out"
+  defp error_message(%HTTPoison.Error{reason: reason}), do: "Network error: #{reason}"
+  defp error_message(error), do: "Unexpected error: #{inspect(error)}"
 
   # Update video list handler
   def handle_info(:update_status, socket) do
@@ -541,7 +577,12 @@ defmodule DejavideoWeb.DjLive do
 
   defp fetch_deck_statuses(socket) do
     for {deck_type, deck} <- socket.assigns.decks do
-      case HTTPoison.get!(String.replace(@endpoints.deck_status, ":deckId", deck.id)) do
+      case HTTPoison.get!(
+             String.replace(@endpoints.deck_status, ":deckId", deck.id),
+             [],
+             timeout: @default_timeout,
+             recv_timeout: @default_timeout
+           ) do
         %{status_code: 200, body: body} ->
           {deck_type, Jason.decode!(body)}
 
@@ -550,6 +591,9 @@ defmodule DejavideoWeb.DjLive do
       end
     end
     |> Enum.into(%{})
+  rescue
+    # Return current deck state on error
+    _ -> socket.assigns.decks
   end
 
   defp update_deck_state(socket, deck_type, deck_data) do
@@ -802,10 +846,21 @@ defmodule DejavideoWeb.DjLive do
               />
               <button
                 type="submit"
-                class="bg-red-600 px-4 py-2 rounded hover:bg-red-700 transition"
+                class={[
+                  "px-4 py-2 rounded transition",
+                  @importing && "bg-gray-600 cursor-not-allowed",
+                  !@importing && "bg-red-600 hover:bg-red-700"
+                ]}
                 disabled={@importing}
               >
-                <%= if @importing, do: "Importing...", else: "Import" %>
+                <%= if @importing do %>
+                  <div class="flex items-center">
+                    <div class="animate-spin mr-2 h-4 w-4 border-2 border-white rounded-full border-t-transparent"></div>
+                    Importing...
+                  </div>
+                <% else %>
+                  Import
+                <% end %>
               </button>
             </form>
             <%= if @import_error do %>

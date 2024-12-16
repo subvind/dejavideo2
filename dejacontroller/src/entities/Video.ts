@@ -29,6 +29,9 @@ export class Video {
   @Column({ nullable: true })
   youtubeUrl?: string;
 
+  @Column({ nullable: true })
+  youtubeId?: string;
+
   @CreateDateColumn()
   createdAt!: Date;
 

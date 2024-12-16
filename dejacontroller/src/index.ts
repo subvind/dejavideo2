@@ -6,6 +6,7 @@ import { RTMPService } from "./services/RTMPService";
 import { createDJRouter } from "./routes/dj";
 import { createDeckRouter } from "./routes/deck";
 import { createBroadcastRouter } from "./routes/broadcast";
+import { createVideoRouter } from "./routes/video";
 import { config } from "dotenv";
 import path from "path";
 
@@ -22,6 +23,7 @@ app.use("/api/djs", createDJRouter(streamManager));
 app.use("/api/decks", createDeckRouter(streamManager));
 app.use("/api/broadcasts", createBroadcastRouter(streamManager, rtmpService));
 app.use("/media", express.static(path.join(__dirname, "../media")));
+app.use("/api/videos", createVideoRouter());
 
 // Create default media directory if it doesn't exist
 import fs from "fs";

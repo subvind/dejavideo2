@@ -29,7 +29,8 @@
     "sqlite3": "^5.1.7",
     "typeorm": "^0.3.20",
     "uuid": "^11.0.3",
-    "ws": "^8.18.0"
+    "ws": "^8.18.0",
+    "ytdl-core": "^4.11.5"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
