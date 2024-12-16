@@ -5,6 +5,7 @@ import { DJ } from "../entities/DJ";
 import { Deck } from "../entities/Deck";
 import { OBSService } from "../services/OBSService";
 import { StreamManager } from "../services/StreamManager";
+import { createDJScenes } from "../scripts/setup-obs-scenes";
 
 export class DJController {
   private djRepository = AppDataSource.getRepository(DJ);
@@ -25,52 +26,27 @@ export class DJController {
         });
       }
 
-      // Generate unique username if conflict occurs
-      let dj;
-      let attempts = 0;
-      const maxAttempts = 5;
-
-      while (attempts < maxAttempts) {
-        try {
-          const adjustedUsername =
-            attempts === 0
-              ? username
-              : `${username}_${Math.floor(Math.random() * 1000)}`;
-          dj = createDJ(adjustedUsername, email);
-          await this.djRepository.save(dj);
-          break;
-        } catch (error: any) {
-          if (
-            error.code === "SQLITE_CONSTRAINT" &&
-            attempts < maxAttempts - 1
-          ) {
-            attempts++;
-            continue;
-          }
-          throw error;
-        }
-      }
-
-      if (!dj) {
-        return res
-          .status(500)
-          .json({ error: "Failed to create DJ after multiple attempts" });
-      }
+      // Create new DJ
+      const dj = createDJ(username, email);
+      await this.djRepository.save(dj);
 
       // Create decks for DJ
       const deckA = new Deck();
       deckA.type = "A";
       deckA.dj = dj;
-      deckA.obsPort = await this.streamManager.allocatePort();
+      deckA.obsPort = 4455; // Using single OBS instance
 
       const deckB = new Deck();
       deckB.type = "B";
       deckB.dj = dj;
-      deckB.obsPort = await this.streamManager.allocatePort();
+      deckB.obsPort = 4455; // Using single OBS instance
 
       await this.deckRepository.save([deckA, deckB]);
 
-      // Initialize OBS instances
+      // Set up OBS scenes for this DJ
+      await createDJScenes(dj.id);
+
+      // Initialize streams
       await this.streamManager.initializeDJStreams(dj.id);
 
       res.status(201).json({
