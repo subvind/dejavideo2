@@ -39,6 +39,7 @@ export class StreamManager {
       });
 
       for (const dj of activeDJs) {
+        console.log("init stream for", dj.id);
         await this.initializeDJStreams(dj.id);
       }
     } catch (error) {
@@ -66,23 +67,29 @@ export class StreamManager {
 
   public async initializeDJStreams(djId: string): Promise<void> {
     try {
+      console.log(`Initializing streams for DJ ${djId}`);
+
       const deckRepository = AppDataSource.getRepository(Deck);
       const decks = await deckRepository.find({
         where: { dj: { id: djId } },
         relations: ["dj"],
       });
 
+      console.log(`Found ${decks.length} decks for DJ ${djId}`);
+
       for (const deck of decks) {
+        const key = `${djId}_${deck.type}`;
+        console.log(`Creating OBS service for ${key}`);
+
         const obsService = new OBSService(deck);
-        this.obsInstances.set(`${djId}_${deck.type}`, obsService);
+        this.obsInstances.set(key, obsService);
 
         try {
           await obsService.connect();
+          console.log(`Connected OBS service for ${key}`);
         } catch (error) {
-          console.error(
-            `Failed to initialize OBS service for DJ ${djId} Deck ${deck.type}:`,
-            error,
-          );
+          console.error(`Failed to connect OBS service for ${key}:`, error);
+          throw error;
         }
       }
     } catch (error) {
@@ -251,7 +258,15 @@ export class StreamManager {
     djId: string,
     deckType: "A" | "B",
   ): OBSService | undefined {
-    return this.obsInstances.get(`${djId}_${deckType}`);
+    const key = `${djId}_${deckType}`;
+    const instance = this.obsInstances.get(key);
+
+    if (!instance) {
+      console.error(`No OBS instance found for key: ${key}`);
+      console.debug("Current instances:", Array.from(this.obsInstances.keys()));
+    }
+
+    return instance;
   }
 
   public async cleanup(): Promise<void> {

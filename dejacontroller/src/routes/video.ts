@@ -22,6 +22,7 @@ export function createVideoRouter(): Router {
       }
     };
 
+  router.get("/", asyncHandler(videoController.getAllVideos));
   router.post("/youtube", asyncHandler(videoController.importFromYoutube));
   router.get("/youtube/info", asyncHandler(videoController.getVideoInfo));
 

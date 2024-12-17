@@ -23,7 +23,7 @@ export class DJ {
   @Column({
     type: "simple-enum",
     enum: ["active", "inactive"],
-    default: "inactive",
+    default: "active",
   })
   status!: "active" | "inactive";
 

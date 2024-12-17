@@ -18,16 +18,26 @@ async function setupOBSScenes(djId: string) {
       `Connected to OBS WebSocket v${obsWebSocketVersion} (using RPC ${negotiatedRpcVersion})`,
     );
 
-    // First create deck scenes and sources
+    // Get current scene collection for reference
+    const { currentProgramSceneName } = await obs.call(
+      "GetCurrentProgramScene",
+    );
+    console.log(`Current scene: ${currentProgramSceneName}`);
+
+    // Create deck scenes and sources
     await createDeckScene(obs, djId, "A");
     console.log("Created Deck A scene");
 
     await createDeckScene(obs, djId, "B");
     console.log("Created Deck B scene");
 
-    // Then create the main scene that references them
+    // Create the main scene that references them
     await createMainScene(obs, djId);
     console.log("Created main scene");
+
+    // Set up transitions
+    await setupTransitions(obs, djId);
+    console.log("Set up transitions");
 
     console.log("OBS scenes setup completed successfully");
   } catch (error: any) {
@@ -70,8 +80,11 @@ async function createDeckScene(
       inputSettings: {
         is_local_file: true,
         looping: false,
-        restart_on_activate: true,
-        clear_on_media_end: false,
+        restart_on_activate: false,
+        close_when_inactive: false,
+        buffering_mb: 2,
+        speed_percent: 100,
+        media_controls: true,
       },
     });
 
@@ -82,6 +95,26 @@ async function createDeckScene(
       filterKind: "gain_filter",
       filterSettings: {
         db: 0,
+      },
+    });
+
+    // Set source properties
+    await obs.call("SetSceneItemTransform", {
+      sceneName,
+      sceneItemId: await getSceneItemId(obs, sceneName, sourceName),
+      sceneItemTransform: {
+        positionX: 0,
+        positionY: 0,
+        rotation: 0,
+        scaleX: 1,
+        scaleY: 1,
+        alignment: 5, // Center
+        boundsType: "OBS_BOUNDS_STRETCH",
+        boundsAlignment: 0,
+        bounds: {
+          x: 1920,
+          y: 1080,
+        },
       },
     });
 
@@ -104,15 +137,61 @@ async function createMainScene(obs: OBSWebSocket, djId: string) {
     });
 
     // Add Deck A scene as source
-    await obs.call("CreateSceneItem", {
+    const deckAItemId = await obs.call("CreateSceneItem", {
       sceneName: mainSceneName,
       sourceName: deckASceneName,
     });
 
     // Add Deck B scene as source
-    await obs.call("CreateSceneItem", {
+    const deckBItemId = await obs.call("CreateSceneItem", {
       sceneName: mainSceneName,
       sourceName: deckBSceneName,
+    });
+
+    // Set initial transform for both decks
+    await obs.call("SetSceneItemTransform", {
+      sceneName: mainSceneName,
+      sceneItemId: deckAItemId.sceneItemId,
+      sceneItemTransform: {
+        positionX: 0,
+        positionY: 0,
+        alignment: 5,
+        boundsType: "OBS_BOUNDS_STRETCH",
+        boundsAlignment: 0,
+        bounds: {
+          x: 1920,
+          y: 1080,
+        },
+      },
+    });
+
+    await obs.call("SetSceneItemTransform", {
+      sceneName: mainSceneName,
+      sceneItemId: deckBItemId.sceneItemId,
+      sceneItemTransform: {
+        positionX: 0,
+        positionY: 0,
+        alignment: 5,
+        boundsType: "OBS_BOUNDS_STRETCH",
+        boundsAlignment: 0,
+        bounds: {
+          x: 1920,
+          y: 1080,
+        },
+      },
+    });
+
+    // Set initial blend mode and opacity
+    await obs.call("SetSceneItemBlendMode", {
+      sceneName: mainSceneName,
+      sceneItemId: deckAItemId.sceneItemId,
+      sceneItemBlendMode: "OBS_BLEND_NORMAL",
+    });
+
+    await obs.call("SetSceneItemBlendMode", {
+      sceneName: mainSceneName,
+      sceneItemId: deckBItemId.sceneItemId,
+      sceneItemBlendMode: "OBS_BLEND_NORMAL",
     });
 
     return mainSceneName;
@@ -120,6 +199,34 @@ async function createMainScene(obs: OBSWebSocket, djId: string) {
     console.error("Error creating main scene:", error);
     throw error;
   }
+}
+
+async function setupTransitions(obs: OBSWebSocket, djId: string) {
+  try {
+    // Create a stinger transition
+    await obs.call("SetCurrentSceneTransition", {
+      transitionName: "Fade",
+    });
+
+    await obs.call("SetCurrentSceneTransitionDuration", {
+      transitionDuration: 200, // Duration in milliseconds
+    });
+  } catch (error) {
+    console.error("Error setting up transitions:", error);
+    throw error;
+  }
+}
+
+async function getSceneItemId(
+  obs: OBSWebSocket,
+  sceneName: string,
+  sourceName: string,
+): Promise<number> {
+  const response = await obs.call("GetSceneItemId", {
+    sceneName,
+    sourceName,
+  });
+  return response.sceneItemId;
 }
 
 export async function createDJScenes(djId: string) {

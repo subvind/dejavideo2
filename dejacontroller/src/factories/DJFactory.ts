@@ -4,7 +4,7 @@ export function createDJ(username: string, email: string): DJ {
   const dj = new DJ();
   dj.username = username;
   dj.email = email;
-  dj.status = "inactive";
+  dj.status = "active";
   dj.decks = [];
   dj.broadcasts = [];
   dj.resourceUsage = {

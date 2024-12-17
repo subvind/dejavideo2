@@ -47,6 +47,7 @@ export class DJController {
       await createDJScenes(dj.id);
 
       // Initialize streams
+      console.log(`Initializing streams for new DJ ${dj.id}`);
       await this.streamManager.initializeDJStreams(dj.id);
 
       res.status(201).json({

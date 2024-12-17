@@ -25,8 +25,9 @@ defmodule DejavideoWeb.DjLive do
 
   def mount(%{"id" => dj_id}, _session, socket) when is_binary(dj_id) do
     if connected?(socket) do
-      :timer.send_interval(1000, self(), :update_decks)
-      :timer.send_interval(1000, self(), :update_broadcast)
+      :timer.send_interval(5000, self(), :update_decks)
+      :timer.send_interval(5000, self(), :update_broadcast)
+      :timer.send_interval(5000, self(), :update_videos)
       Process.send_after(self(), :initialize_dj, 0)
     end
 
@@ -40,22 +41,24 @@ defmodule DejavideoWeb.DjLive do
        # Deck States
        decks: %{
          "A" => %{
-           id: nil,
-           type: "A",
-           status: "stopped",
-           current_video: nil,
-           stream_health: 100,
-           volume: 1.0,
-           stream_url: nil
+           # Change to string key to match JSON response
+           "id" => nil,
+           "type" => "A",
+           "status" => "stopped",
+           "current_video" => nil,
+           "stream_health" => 100,
+           "volume" => 1.0,
+           "stream_url" => nil
          },
          "B" => %{
-           id: nil,
-           type: "B",
-           status: "stopped",
-           current_video: nil,
-           stream_health: 100,
-           volume: 1.0,
-           stream_url: nil
+           # Change to string key to match JSON response
+           "id" => nil,
+           "type" => "B",
+           "status" => "stopped",
+           "current_video" => nil,
+           "stream_health" => 100,
+           "volume" => 1.0,
+           "stream_url" => nil
          }
        },
 
@@ -71,7 +74,7 @@ defmodule DejavideoWeb.DjLive do
        },
 
        # Media State
-       videos: [],
+       videos: fetch_videos(),
        loading_video: false,
        video_error: nil,
 
@@ -82,9 +85,26 @@ defmodule DejavideoWeb.DjLive do
      )}
   end
 
+  defp fetch_videos do
+    case HTTPoison.get!("#{@api_base_url}/videos") do
+      %{status_code: 200, body: body} ->
+        Jason.decode!(body)["videos"]
+
+      _ ->
+        []
+    end
+  end
+
+  def handle_info(:update_videos, socket) do
+    {:noreply, assign(socket, :videos, fetch_videos())}
+  end
+
   def handle_info(:initialize_dj, socket) do
     case get_dj(socket.assigns.dj_id) do
       {:ok, dj} ->
+        Logger.debug("DJ Data: #{inspect(dj)}")
+        Logger.debug("Deck Data: #{inspect(dj["decks"])}")
+
         {:noreply,
          socket
          |> assign(:dj, dj)
@@ -92,6 +112,8 @@ defmodule DejavideoWeb.DjLive do
          |> assign_deck_ids(dj["decks"])}
 
       {:error, reason} ->
+        Logger.error("Failed to initialize DJ: #{reason}")
+
         {:noreply,
          socket
          |> put_flash(:error, reason)
@@ -147,6 +169,7 @@ defmodule DejavideoWeb.DjLive do
         Map.update!(acc, deck["type"], fn current_deck ->
           Map.merge(current_deck, %{
             "id" => deck["id"],
+            "type" => deck["type"],
             "status" => deck["status"],
             "current_video" => deck["currentVideo"]
           })
@@ -242,47 +265,124 @@ defmodule DejavideoWeb.DjLive do
     end
   end
 
-  def handle_event("load_deck", %{"deck" => deck_type, "video_id" => video_id}, socket) do
+  def handle_event("load_deck", %{"deck" => deck_type, "video_id" => video_id}, socket)
+      when video_id != "" do
     deck = get_in(socket.assigns.decks, [deck_type])
 
-    case HTTPoison.post!(
-           "#{@api_base_url}/decks/#{deck["id"]}/load",
-           Jason.encode!(%{
-             videoId: video_id
-           })
-         ) do
-      %{status_code: 200, body: body} ->
-        updated_deck = Jason.decode!(body)
-        {:noreply, update_deck_state(socket, deck_type, updated_deck)}
+    # Debug logging
+    IO.inspect(deck, label: "Selected Deck")
 
-      error ->
-        {:noreply, put_flash(socket, :error, "Failed to load video")}
+    # Make sure we access the ID correctly
+    if deck && deck["id"] do
+      case HTTPoison.post!(
+             "#{@api_base_url}/decks/#{deck["id"]}/load",
+             Jason.encode!(%{videoId: video_id}),
+             [{"Content-Type", "application/json"}],
+             recv_timeout: @default_timeout
+           ) do
+        %{status_code: status, body: body} when status in [200, 201] ->
+          deck_data = Jason.decode!(body)["deck"]
+
+          {:noreply,
+           socket
+           |> update_deck_state(deck_type, deck_data)
+           |> put_flash(:info, "Video loaded successfully")}
+
+        error ->
+          Logger.error("Failed to load video: #{inspect(error)}")
+          {:noreply, put_flash(socket, :error, "Failed to load video")}
+      end
+    else
+      Logger.error("Invalid deck data: #{inspect(deck)}")
+      {:noreply, put_flash(socket, :error, "Invalid deck configuration")}
     end
   end
 
-  def handle_event("play_deck", %{"deck" => deck_type}, socket) do
-    deck = get_in(socket.assigns.decks, [deck_type])
+  # Add handler for empty video selection
+  def handle_event("load_deck", %{"deck" => _deck_type, "video_id" => ""}, socket) do
+    {:noreply, socket}
+  end
 
-    case HTTPoison.post!("#{@api_base_url}/decks/#{deck["id"]}/play", "") do
-      %{status_code: 200, body: body} ->
-        updated_deck = Jason.decode!(body)
-        {:noreply, update_deck_state(socket, deck_type, updated_deck)}
+  def handle_event("play_deck", %{"deck" => deck_letter, "value" => _}, socket) do
+    Logger.debug("Playing deck #{deck_letter}")
+    deck_id = get_deck_id(socket, deck_letter)
+    Logger.debug("Deck ID for #{deck_letter}: #{inspect(deck_id)}")
 
-      error ->
-        {:noreply, put_flash(socket, :error, "Failed to play deck")}
+    case deck_id do
+      nil ->
+        {:noreply, put_flash(socket, :error, "No deck found for #{deck_letter}")}
+
+      id when is_binary(id) ->
+        endpoint = String.replace(@endpoints.deck_play, ":deckId", id)
+        Logger.debug("Making request to endpoint: #{endpoint}")
+
+        case HTTPoison.post!(
+               endpoint,
+               # Empty body
+               "",
+               [{"Content-Type", "application/json"}],
+               recv_timeout: @default_timeout
+             ) do
+          %{status_code: 200, body: body} ->
+            deck_data = Jason.decode!(body)["deck"]
+
+            # Changed deck_type to deck_letter
+            {:noreply,
+             socket
+             |> update_deck_state(deck_letter, deck_data)
+             |> put_flash(:info, "Video started playing successfully")}
+
+          error ->
+            Logger.error("Failed to play deck: #{inspect(error)}")
+            {:noreply, put_flash(socket, :error, "Failed to play deck")}
+        end
     end
   end
 
-  def handle_event("stop_deck", %{"deck" => deck_type}, socket) do
-    deck = get_in(socket.assigns.decks, [deck_type])
+  def handle_event("stop_deck", %{"deck" => deck_letter, "value" => _}, socket) do
+    Logger.debug("Stopping deck #{deck_letter}")
+    deck_id = get_deck_id(socket, deck_letter)
+    Logger.debug("Deck ID for #{deck_letter}: #{inspect(deck_id)}")
 
-    case HTTPoison.post!("#{@api_base_url}/decks/#{deck["id"]}/stop", "") do
-      %{status_code: 200, body: body} ->
-        updated_deck = Jason.decode!(body)
-        {:noreply, update_deck_state(socket, deck_type, updated_deck)}
+    case deck_id do
+      nil ->
+        {:noreply, put_flash(socket, :error, "No deck found for #{deck_letter}")}
 
-      error ->
-        {:noreply, put_flash(socket, :error, "Failed to stop deck")}
+      id when is_binary(id) ->
+        endpoint = String.replace(@endpoints.deck_stop, ":deckId", id)
+        Logger.debug("Making request to endpoint: #{endpoint}")
+
+        case HTTPoison.post!(
+               endpoint,
+               # Empty body
+               "",
+               [{"Content-Type", "application/json"}],
+               recv_timeout: @default_timeout
+             ) do
+          %{status_code: 200, body: body} ->
+            deck_data = Jason.decode!(body)["deck"]
+
+            {:noreply,
+             socket
+             |> update_deck_state(deck_letter, deck_data)
+             |> put_flash(:info, "Video stopped successfully")}
+
+          error ->
+            Logger.error("Failed to stop deck: #{inspect(error)}")
+            {:noreply, put_flash(socket, :error, "Failed to stop deck")}
+        end
+    end
+  end
+
+  # Helper function to get deck ID from socket assigns
+  defp get_deck_id(socket, deck_letter) do
+    case get_in(socket.assigns.decks, [deck_letter, "id"]) do
+      nil ->
+        Logger.error("Could not find deck ID for deck #{deck_letter}")
+        nil
+
+      id ->
+        id
     end
   end
 
@@ -411,27 +511,6 @@ defmodule DejavideoWeb.DjLive do
     end
   end
 
-  # Add broadcast status polling handler
-  def handle_info(:update_broadcast_status, socket) do
-    if socket.assigns.channel_id do
-      case HTTPoison.get!("#{@api_base_url}/broadcast/status/#{socket.assigns.channel_id}") do
-        %{status_code: 200, body: body} ->
-          status = Jason.decode!(body)
-
-          {:noreply,
-           assign(socket,
-             broadcast_status: status["status"],
-             broadcast_uptime: status["uptime"] || 0
-           )}
-
-        _ ->
-          {:noreply, socket}
-      end
-    else
-      {:noreply, socket}
-    end
-  end
-
   # New event handler for fetching video info
   def handle_event("fetch_video_info", %{"value" => url}, socket) when byte_size(url) > 0 do
     case HTTPoison.get!("#{@api_base_url}/import/youtube/info?url=#{URI.encode(url)}") do
@@ -519,7 +598,7 @@ defmodule DejavideoWeb.DjLive do
   def handle_info(:update_decks, socket) do
     updated_decks =
       Enum.map(socket.assigns.decks, fn {type, deck} ->
-        case HTTPoison.get!("#{@api_base_url}/decks/#{deck.id}/status") do
+        case HTTPoison.get!("#{@api_base_url}/decks/#{deck["id"]}/status") do
           %{status_code: 200, body: body} ->
             {type, Jason.decode!(body)}
 
@@ -528,6 +607,11 @@ defmodule DejavideoWeb.DjLive do
         end
       end)
       |> Enum.into(%{})
+
+    # IO.inspect(updated_decks)
+
+    update_deck_state(socket, "A", updated_decks["A"])
+    update_deck_state(socket, "B", updated_decks["B"])
 
     {:noreply, assign(socket, :decks, updated_decks)}
   end
@@ -567,9 +651,15 @@ defmodule DejavideoWeb.DjLive do
     assign(socket,
       decks:
         Map.update!(socket.assigns.decks, deck_type, fn deck ->
+          # Only update status if it's not nil in the new data
+          new_status = if deck_data["status"], do: deck_data["status"], else: deck["status"]
+
           Map.merge(deck, %{
-            status: deck_data["status"],
-            current_video: deck_data["currentVideo"]
+            "id" => deck_data["id"],
+            "status" => new_status,
+            "current_video" => deck_data["currentVideo"] || deck["current_video"],
+            "stream_health" => deck_data["streamHealth"] || deck["stream_health"],
+            "volume" => deck_data["volume"] || deck["volume"]
           })
         end)
     )
@@ -594,15 +684,6 @@ defmodule DejavideoWeb.DjLive do
   rescue
     # Return current deck state on error
     _ -> socket.assigns.decks
-  end
-
-  defp update_deck_state(socket, deck_type, deck_data) do
-    assign(socket,
-      decks:
-        Map.update!(socket.assigns.decks, deck_type, fn deck ->
-          Map.merge(deck, deck_data)
-        end)
-    )
   end
 
   defp format_duration(seconds) when is_number(seconds) do
@@ -715,9 +796,9 @@ defmodule DejavideoWeb.DjLive do
                   <h2 class="text-2xl font-bold">Deck <%= deck_type %></h2>
                   <div class={[
                     "px-3 py-1 rounded-full text-sm",
-                    deck_status_color(deck.status)
+                    deck_status_color(deck["status"])
                   ]}>
-                    <%= String.upcase(deck.status) %>
+                    <%= String.upcase(deck["status"]) %>
                   </div>
                 </div>
 
@@ -735,28 +816,29 @@ defmodule DejavideoWeb.DjLive do
                   <!-- Stream Health Indicator -->
                   <div class={[
                     "absolute top-2 right-2 px-2 py-1 rounded text-xs",
-                    stream_health_color(deck.stream_health)
+                    stream_health_color(deck["stream_health"])
                   ]}>
-                    <%= deck.stream_health %>%
+                    <%= deck["stream_health"] %>%
                   </div>
                 </div>
 
                 <!-- Video Selection -->
                 <div class="mb-4">
-                  <form phx-change={"select_video_#{String.downcase(deck_type)}"}>
+                  <form phx-change="load_deck" id={"deck-#{deck_type}-form"}>
+                    <input type="hidden" name="deck" value={deck_type}>
                     <select
                       name="video_id"
                       class="w-full bg-gray-700 p-2 rounded"
-                      disabled={deck.status in ["loading", "playing"]}
-                    >
+                      disabled={deck["status"] in ["loading", "playing"]}
+                      >
                       <option value="">Select Video</option>
                       <%= for video <- @videos do %>
-                        <option
-                          value={video.id}
-                          selected={deck.current_video && deck.current_video.id == video.id}
+                      <option
+                        value={video["id"]}
+                        selected={deck["current_video"] && deck["current_video"]["id"] == video["id"]}
                         >
-                          <%= video.filename %>
-                        </option>
+                        <%= video["filename"] %>
+                      </option>
                       <% end %>
                     </select>
                   </form>
@@ -767,16 +849,31 @@ defmodule DejavideoWeb.DjLive do
                   <button
                     phx-click="play_deck"
                     phx-value-deck={deck_type}
-                    class="bg-green-600 px-4 py-2 rounded hover:bg-green-700 transition"
-                    disabled={deck.status not in ["loaded", "stopped"] or is_nil(deck.current_video)}
+                    class={[
+                      "px-4 py-2 rounded transition",
+                      if can_play_deck?(deck) do
+                        "bg-green-600 hover:bg-green-700"
+                      else
+                        "bg-gray-600 cursor-not-allowed"
+                      end
+                    ]}
+                    disabled={not can_play_deck?(deck)}
                   >
                     Play
                   </button>
+
                   <button
                     phx-click="stop_deck"
                     phx-value-deck={deck_type}
-                    class="bg-red-600 px-4 py-2 rounded hover:bg-red-700 transition"
-                    disabled={deck.status not in ["playing", "loading"]}
+                    class={[
+                      "px-4 py-2 rounded transition",
+                      if can_stop_deck?(deck) do
+                        "bg-red-600 hover:bg-red-700"
+                      else
+                        "bg-gray-600 cursor-not-allowed"
+                      end
+                    ]}
+                    disabled={not can_stop_deck?(deck)}
                   >
                     Stop
                   </button>
@@ -790,7 +887,7 @@ defmodule DejavideoWeb.DjLive do
                     min="0"
                     max="1"
                     step="0.01"
-                    value={deck.volume}
+                    value={deck["volume"]}
                     class="w-full"
                     phx-change="update_volume"
                     phx-value-deck={deck_type}
@@ -798,12 +895,22 @@ defmodule DejavideoWeb.DjLive do
                 </div>
 
                 <!-- Current Video Info -->
-                <%= if deck.current_video do %>
+                <%= if deck["current_video"] do %>
                   <div class="text-sm text-gray-400">
-                    <p>Current: <%= deck.current_video.filename %></p>
-                    <p>Duration: <%= format_duration(deck.current_video.duration) %></p>
+                    <p>Current: <%= deck["current_video"]["filename"] %></p>
+                    <p>Duration: <%= format_duration(deck["current_video"]["duration"]) %></p>
                   </div>
                 <% end %>
+
+                <!-- Add this near your deck controls for debugging -->
+                <div class="text-xs text-gray-400 mt-2">
+                  <details>
+                    <summary>Debug Info</summary>
+                    <pre class="mt-2 p-2 bg-gray-800 rounded">
+                      <%= Jason.encode!(deck, pretty: true) %>
+                    </pre>
+                  </details>
+                </div>
               </div>
             <% end %>
           </div>
@@ -874,9 +981,17 @@ defmodule DejavideoWeb.DjLive do
   end
 
   # Helper functions for the template
+  defp can_play_deck?(deck) do
+    deck["status"] in ["loaded", "stopped"]
+  end
+
+  defp can_stop_deck?(deck) do
+    deck["status"] in ["playing", "loading"]
+  end
+
   defp all_decks_ready?(decks) do
     Enum.all?(decks, fn {_, deck} ->
-      deck.status in ["loaded", "playing"] and deck.stream_health > 50
+      deck["status"] in ["loaded", "playing"] and deck["stream_health"] > 50
     end)
   end
 
@@ -890,6 +1005,10 @@ defmodule DejavideoWeb.DjLive do
     end
   end
 
+  defp stream_health_color(health) when is_nil(health) do
+    "bg-black"
+  end
+
   defp stream_health_color(health) when is_number(health) do
     cond do
       health >= 90 -> "bg-green-600"
@@ -900,8 +1019,8 @@ defmodule DejavideoWeb.DjLive do
   end
 
   defp deck_stream_url(deck) do
-    if deck.stream_url do
-      deck.stream_url
+    if deck["stream_url"] do
+      deck["stream_url"]
     else
       "/media/blank.mp4"
     end

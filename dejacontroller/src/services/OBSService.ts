@@ -8,11 +8,13 @@ export class OBSService extends EventEmitter {
   private obs: OBSWebSocket;
   private deck: Deck;
   private connected: boolean = false;
+  private readonly sourceName: string;
 
   constructor(deck: Deck) {
     super();
     this.deck = deck;
     this.obs = new OBSWebSocket();
+    this.sourceName = `Deck${deck.type}Video`;
     this.setupEventHandlers();
   }
 
@@ -49,24 +51,39 @@ export class OBSService extends EventEmitter {
 
   public async connect(): Promise<void> {
     try {
+      console.log(`Attempting to connect OBS for Deck ${this.deck.type}`);
+
       if (!process.env.OBS_PASSWORD) {
         throw new Error("OBS_PASSWORD not set in environment variables");
       }
 
-      // Connect to OBS WebSocket
-      await this.obs.connect(
-        `ws://localhost:${this.deck.obsPort}`,
-        process.env.OBS_PASSWORD,
-        {
-          rpcVersion: 1,
-        },
-      );
-      this.connected = true;
+      // Add connection retry logic
+      let retryCount = 0;
+      const maxRetries = 3;
 
-      // Initialize the scene and sources if needed
+      while (retryCount < maxRetries) {
+        try {
+          await this.obs.connect(
+            `ws://localhost:${this.deck.obsPort}`,
+            process.env.OBS_PASSWORD,
+            { rpcVersion: 1 },
+          );
+          this.connected = true;
+          console.log(`Connected to OBS WebSocket for Deck ${this.deck.type}`);
+          break;
+        } catch (error) {
+          retryCount++;
+          if (retryCount === maxRetries) {
+            throw error;
+          }
+          console.log(
+            `Retry ${retryCount} of ${maxRetries} for Deck ${this.deck.type}`,
+          );
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+      }
+
       await this.initializeScene();
-
-      console.log(`Connected to OBS WebSocket for Deck ${this.deck.type}`);
     } catch (error) {
       console.error(
         `Failed to connect to OBS WebSocket for Deck ${this.deck.type}:`,
@@ -87,14 +104,13 @@ export class OBSService extends EventEmitter {
       }
 
       // Create video source if it doesn't exist
-      const sourceName = `Deck${this.deck.type}Video`;
       try {
-        await this.obs.call("GetInputSettings", { inputName: sourceName });
+        await this.obs.call("GetInputSettings", { inputName: this.sourceName });
       } catch {
         // Source doesn't exist, create it
         await this.obs.call("CreateInput", {
           sceneName,
-          inputName: sourceName,
+          inputName: this.sourceName,
           inputKind: "ffmpeg_source",
           inputSettings: {
             is_local_file: true,
@@ -103,6 +119,13 @@ export class OBSService extends EventEmitter {
           },
         });
       }
+
+      // Make sure the source is visible in the scene
+      await this.obs.call("CreateSceneItem", {
+        sceneName: sceneName,
+        sourceName: this.sourceName,
+        sceneItemEnabled: true,
+      });
     } catch (error) {
       console.error("Error initializing OBS scene:", error);
       throw error;
@@ -144,8 +167,12 @@ export class OBSService extends EventEmitter {
 
     try {
       // Start playback
-      await this.obs.call("StartOutput", {
-        outputName: `Deck${this.deck.type}Video`,
+      await this.obs.call("TriggerMediaInputAction", {
+        inputName: this.sourceName, // Media input source name in OBS
+        mediaAction: "OBS_WEBSOCKET_MEDIA_INPUT_ACTION_PLAY",
+        // OBS_WEBSOCKET_MEDIA_INPUT_ACTION_PLAY
+        // OBS_WEBSOCKET_MEDIA_INPUT_ACTION_PAUSE
+        // OBS_WEBSOCKET_MEDIA_INPUT_ACTION_RESTART
       });
 
       // Update deck status
@@ -167,8 +194,12 @@ export class OBSService extends EventEmitter {
 
     try {
       // Stop playback
-      await this.obs.call("StopOutput", {
-        outputName: `Deck${this.deck.type}Video`,
+      await this.obs.call("TriggerMediaInputAction", {
+        inputName: this.sourceName, // Media input source name in OBS
+        mediaAction: "OBS_WEBSOCKET_MEDIA_INPUT_ACTION_PAUSE",
+        // OBS_WEBSOCKET_MEDIA_INPUT_ACTION_PLAY
+        // OBS_WEBSOCKET_MEDIA_INPUT_ACTION_PAUSE
+        // OBS_WEBSOCKET_MEDIA_INPUT_ACTION_RESTART
       });
 
       // Reset source
@@ -183,7 +214,6 @@ export class OBSService extends EventEmitter {
       // Update deck status
       const deckRepo = AppDataSource.getRepository(Deck);
       this.deck.status = "stopped";
-      this.deck.currentVideo = null;
       await deckRepo.save(this.deck);
 
       this.emit("playbackStopped");

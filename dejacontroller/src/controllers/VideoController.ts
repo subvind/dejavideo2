@@ -149,4 +149,14 @@ export class VideoController {
       });
     }
   };
+
+  public getAllVideos = async (req: Request, res: Response) => {
+    try {
+      const videos = await this.videoRepository.find();
+      res.json({ videos });
+    } catch (error) {
+      console.error("Error fetching videos:", error);
+      res.status(500).json({ error: "Failed to fetch videos" });
+    }
+  };
 }
