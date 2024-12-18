@@ -170,23 +170,55 @@ export class RTMPService extends EventEmitter {
   public async stop(): Promise<void> {
     return new Promise((resolve) => {
       if (this.nms && this.initialized) {
-        this.nms.stop();
+        // Properly stop the NodeMediaServer
+        if ((this.nms as any).nms) {
+          (this.nms as any).nms.stop();
+        }
+
+        // Clear active streams
+        this.activeStreams.clear();
+
+        // Reset initialization flag
         this.initialized = false;
+
+        // Give it a moment to clean up
+        setTimeout(() => {
+          resolve();
+        }, 1000);
+      } else {
+        resolve();
       }
-      resolve();
     });
   }
 
+  // Also improve the cleanup method:
   public async cleanupDJStreams(djId: string): Promise<void> {
-    for (const [streamPath, id] of this.activeStreams.entries()) {
-      if (id === djId) {
+    try {
+      const streamsToRemove = Array.from(this.activeStreams.entries())
+        .filter(([_, id]) => id === djId)
+        .map(([path]) => path);
+
+      for (const streamPath of streamsToRemove) {
+        console.log(`Cleaning up stream: ${streamPath}`);
         this.activeStreams.delete(streamPath);
       }
+
+      console.log(
+        `Cleaned up ${streamsToRemove.length} streams for DJ ${djId}`,
+      );
+    } catch (error) {
+      console.error(`Error cleaning up streams for DJ ${djId}:`, error);
+      throw error;
     }
   }
 
   public isStreamActive(djId: string, deckType: "A" | "B"): boolean {
     const streamPath = `/live/${djId}/${deckType}`;
     return this.activeStreams.has(streamPath);
+  }
+
+  public getStreamUrl(djId: string, deckType: "A" | "B"): string {
+    const rtmpPort = process.env.RTMP_PORT || 1935;
+    return `rtmp://localhost:${rtmpPort}/live/${djId}/${deckType}`;
   }
 }

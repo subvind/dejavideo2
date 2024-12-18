@@ -610,10 +610,10 @@ defmodule DejavideoWeb.DjLive do
 
     # IO.inspect(updated_decks)
 
-    update_deck_state(socket, "A", updated_decks["A"])
-    update_deck_state(socket, "B", updated_decks["B"])
-
-    {:noreply, assign(socket, :decks, updated_decks)}
+    {:noreply,
+     socket
+     |> update_deck_state("A", updated_decks["A"])
+     |> update_deck_state("B", updated_decks["B"])}
   end
 
   def handle_info(:update_broadcast, socket) do
@@ -657,8 +657,10 @@ defmodule DejavideoWeb.DjLive do
           Map.merge(deck, %{
             "id" => deck_data["id"],
             "status" => new_status,
+            "dj" => deck_data["dj"] || deck["dj"],
             "current_video" => deck_data["currentVideo"] || deck["current_video"],
             "stream_health" => deck_data["streamHealth"] || deck["stream_health"],
+            "stream_url" => deck_data["streamUrl"] || deck["stream_url"],
             "volume" => deck_data["volume"] || deck["volume"]
           })
         end)
@@ -982,7 +984,8 @@ defmodule DejavideoWeb.DjLive do
 
   # Helper functions for the template
   defp can_play_deck?(deck) do
-    deck["status"] in ["loaded", "stopped"]
+    is_map(deck["current_video"]) &&
+      deck["status"] in ["loaded", "stopped"]
   end
 
   defp can_stop_deck?(deck) do

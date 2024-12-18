@@ -41,6 +41,7 @@ cd dejacontroller
 2. Install dependencies:
 ```bash
 yay -S obs-studio-git
+yay -S obs-streamfx
 
 npm install
 ```

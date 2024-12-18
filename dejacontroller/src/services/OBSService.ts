@@ -9,12 +9,14 @@ export class OBSService extends EventEmitter {
   private deck: Deck;
   private connected: boolean = false;
   private readonly sourceName: string;
+  private readonly sceneName: string;
 
   constructor(deck: Deck) {
     super();
     this.deck = deck;
     this.obs = new OBSWebSocket();
-    this.sourceName = `Deck${deck.type}Video`;
+    this.sourceName = `DJ_${deck.dj.id}_Deck${deck.type}Video`;
+    this.sceneName = `DJ_${deck.dj.id}_Deck${deck.type}`;
     this.setupEventHandlers();
   }
 
@@ -59,7 +61,8 @@ export class OBSService extends EventEmitter {
 
       // Add connection retry logic
       let retryCount = 0;
-      const maxRetries = 3;
+      const maxRetries = 5;
+      const baseDelay = 1000;
 
       while (retryCount < maxRetries) {
         try {
@@ -76,10 +79,11 @@ export class OBSService extends EventEmitter {
           if (retryCount === maxRetries) {
             throw error;
           }
+          const delay = baseDelay * Math.pow(2, retryCount - 1); // Exponential backoff
           console.log(
-            `Retry ${retryCount} of ${maxRetries} for Deck ${this.deck.type}`,
+            `Retry ${retryCount} of ${maxRetries} for Deck ${this.deck.type}, waiting ${delay}ms`,
           );
-          await new Promise((resolve) => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
 
@@ -95,12 +99,11 @@ export class OBSService extends EventEmitter {
 
   private async initializeScene(): Promise<void> {
     try {
-      // Create scene if it doesn't exist
-      const sceneName = `Deck${this.deck.type}`;
       const scenes = await this.obs.call("GetSceneList");
 
-      if (!scenes.scenes.find((scene) => scene.sceneName === sceneName)) {
-        await this.obs.call("CreateScene", { sceneName });
+      // Create deck-specific scene if it doesn't exist
+      if (!scenes.scenes.find((scene) => scene.sceneName === this.sceneName)) {
+        await this.obs.call("CreateScene", { sceneName: this.sceneName });
       }
 
       // Create video source if it doesn't exist
@@ -109,7 +112,7 @@ export class OBSService extends EventEmitter {
       } catch {
         // Source doesn't exist, create it
         await this.obs.call("CreateInput", {
-          sceneName,
+          sceneName: this.sceneName,
           inputName: this.sourceName,
           inputKind: "ffmpeg_source",
           inputSettings: {
@@ -122,7 +125,7 @@ export class OBSService extends EventEmitter {
 
       // Make sure the source is visible in the scene
       await this.obs.call("CreateSceneItem", {
-        sceneName: sceneName,
+        sceneName: this.sceneName,
         sourceName: this.sourceName,
         sceneItemEnabled: true,
       });
@@ -138,16 +141,14 @@ export class OBSService extends EventEmitter {
     }
 
     try {
-      // Update the video source settings
       await this.obs.call("SetInputSettings", {
-        inputName: `Deck${this.deck.type}Video`,
+        inputName: this.sourceName, // Now using the DJ-specific source name
         inputSettings: {
           local_file: video.path,
           is_local_file: true,
         },
       });
 
-      // Update deck status
       const deckRepo = AppDataSource.getRepository(Deck);
       this.deck.currentVideo = video;
       this.deck.status = "loaded";
@@ -204,7 +205,7 @@ export class OBSService extends EventEmitter {
 
       // Reset source
       await this.obs.call("SetInputSettings", {
-        inputName: `Deck${this.deck.type}Video`,
+        inputName: this.sourceName,
         inputSettings: {
           local_file: "",
           is_local_file: false,
@@ -230,7 +231,7 @@ export class OBSService extends EventEmitter {
 
     try {
       await this.obs.call("SetInputVolume", {
-        inputName: `Deck${this.deck.type}Video`,
+        inputName: this.sourceName,
         inputVolumeDb: volume,
       });
     } catch (error) {

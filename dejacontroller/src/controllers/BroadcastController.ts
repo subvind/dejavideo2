@@ -95,13 +95,10 @@ export class BroadcastController {
         return res.status(404).json({ error: "Broadcast not found" });
       }
 
-      broadcast.crossfaderPosition = position;
-      await this.broadcastRepository.save(broadcast);
+      this.streamManager.setCrossfader(broadcast.dj.id, position);
+      console.log("====== crossfader updated", position, broadcast.dj.id);
 
-      // Update the broadcast mix
-      // Implementation depends on your mixing strategy
-
-      res.json({ message: "Crossfader updated", broadcast });
+      res.json({ message: "Crossfader updated", position });
     } catch (error) {
       console.error("Error updating crossfader:", error);
       res.status(500).json({ error: "Failed to update crossfader" });

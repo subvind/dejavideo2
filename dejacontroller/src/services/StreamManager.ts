@@ -4,6 +4,7 @@ import { RTMPService } from "./RTMPService";
 import { AppDataSource } from "../data-source";
 import { DJ } from "../entities/DJ";
 import { Deck } from "../entities/Deck";
+import AggregateError from "aggregate-error";
 
 export class StreamManager {
   private obsConnection: OBSWebSocket;
@@ -69,6 +70,16 @@ export class StreamManager {
     try {
       console.log(`Initializing streams for DJ ${djId}`);
 
+      // Create main scene first
+      const mainSceneName = `DJ_${djId}_Main`;
+      try {
+        await this.obsConnection.call("CreateScene", {
+          sceneName: mainSceneName,
+        });
+      } catch (error) {
+        console.log("Main scene might already exist, continuing...");
+      }
+
       const deckRepository = AppDataSource.getRepository(Deck);
       const decks = await deckRepository.find({
         where: { dj: { id: djId } },
@@ -81,12 +92,155 @@ export class StreamManager {
         const key = `${djId}_${deck.type}`;
         console.log(`Creating OBS service for ${key}`);
 
+        // Create video source first
+        const sourceName = `DJ_${djId}_Deck${deck.type}Video`;
+        try {
+          // Check if source exists first
+          try {
+            const sourcesList = await this.obsConnection.call(
+              "GetInputList",
+              {},
+            );
+            const sourceExists = sourcesList.inputs.some(
+              (input) => input.inputName === sourceName,
+            );
+
+            if (!sourceExists) {
+              await this.obsConnection.call("CreateInput", {
+                inputName: sourceName,
+                inputKind: "ffmpeg_source",
+                sceneItemEnabled: true,
+                sceneName: `DJ_${djId}_Deck${deck.type}`,
+              });
+              console.log(`Created video source: ${sourceName}`);
+            } else {
+              console.log(
+                `Video source ${sourceName} already exists, continuing...`,
+              );
+            }
+          } catch (error) {
+            console.error(
+              `Error checking/creating source ${sourceName}:`,
+              error,
+            );
+            throw error;
+          }
+
+          // Setup RTMP Output
+          const outputName = `DJ_${djId}_Deck${deck.type}Output`;
+
+          try {
+            // Get current outputs to check if it exists
+            const outputs = await this.obsConnection.call("GetOutputList");
+            const outputExists = outputs.outputs.some(
+              (output) => output.outputName === outputName,
+            );
+
+            if (outputExists) {
+              // Try to stop the output if it exists
+              try {
+                await this.obsConnection.call("StopOutput", {
+                  outputName: outputName,
+                });
+                console.log(`Stopped existing output: ${outputName}`);
+              } catch (error) {
+                console.log(`Output might not be running: ${outputName}`);
+              }
+            }
+
+            // Set up the RTMP output settings
+            await this.obsConnection.call("SetOutputSettings", {
+              outputName: outputName,
+              outputSettings: {
+                server: "rtmp://localhost:1935/live",
+                key: `${djId}/${deck.type}`,
+              },
+            });
+
+            console.log(`Configured RTMP output: ${outputName}`);
+
+            // Start the output
+            await this.obsConnection.call("StartOutput", {
+              outputName: outputName,
+            });
+            console.log(`Started RTMP output: ${outputName}`);
+          } catch (error) {
+            console.error(`Error setting up RTMP output ${outputName}:`, error);
+            throw error;
+          }
+        } catch (error) {
+          console.error(
+            `Failed to create/configure RTMP for ${sourceName}:`,
+            error,
+          );
+          throw error;
+        }
+
         const obsService = new OBSService(deck);
         this.obsInstances.set(key, obsService);
 
         try {
           await obsService.connect();
           console.log(`Connected OBS service for ${key}`);
+
+          // Add deck scene as a source to the main scene
+          const deckSceneName = `DJ_${djId}_Deck${deck.type}`;
+
+          try {
+            // First, ensure the scene exists
+            try {
+              await this.obsConnection.call("CreateScene", {
+                sceneName: deckSceneName,
+              });
+            } catch (error) {
+              console.log(
+                `Scene ${deckSceneName} might already exist, continuing...`,
+              );
+            }
+
+            // Add scene as source to main scene
+            try {
+              await this.obsConnection.call("CreateSceneItem", {
+                sceneName: mainSceneName,
+                sourceName: deckSceneName,
+                sceneItemEnabled: true,
+              });
+            } catch (error) {
+              console.log(
+                `Scene item might already exist in main scene, continuing...`,
+              );
+            }
+
+            // Set initial transform
+            const sceneItemId = await this.getSceneItemId(
+              mainSceneName,
+              deckSceneName,
+            );
+
+            // Set transform properties
+            await this.obsConnection.call("SetSceneItemTransform", {
+              sceneName: mainSceneName,
+              sceneItemId: sceneItemId,
+              sceneItemTransform: {
+                positionX: 0,
+                positionY: 0,
+                rotation: 0,
+                scaleX: 1,
+                scaleY: 1,
+                sourceWidth: 1920,
+                sourceHeight: 1080,
+                width: 1920,
+                height: 1080,
+                opacity: deck.type === "A" ? 100 : 0,
+              },
+            });
+          } catch (error) {
+            console.error(
+              `Failed to add deck scene ${deckSceneName} to main scene:`,
+              error,
+            );
+            throw error;
+          }
         } catch (error) {
           console.error(`Failed to connect OBS service for ${key}:`, error);
           throw error;
@@ -270,23 +424,47 @@ export class StreamManager {
   }
 
   public async cleanup(): Promise<void> {
-    try {
-      // Cleanup all OBS instances
-      for (const [key, obs] of this.obsInstances) {
+    const errors: Error[] = [];
+
+    // Cleanup all OBS instances
+    for (const [key, obs] of this.obsInstances) {
+      try {
         await obs.cleanup();
+      } catch (error) {
+        console.warn(`Warning during cleanup of OBS instance ${key}:`, error);
+        errors.push(error as Error);
       }
-      this.obsInstances.clear();
+    }
+    this.obsInstances.clear();
 
-      // Disconnect from main OBS instance
-      if (this.obsConnection) {
+    // Disconnect from main OBS instance
+    if (this.obsConnection) {
+      try {
         await this.obsConnection.disconnect();
+      } catch (error) {
+        console.warn("Warning during OBS main connection cleanup:", error);
+        errors.push(error as Error);
       }
+    }
 
-      // Stop RTMP server
-      await this.rtmpService.stop();
+    // Stop RTMP server with better error handling
+    try {
+      if (this.rtmpService) {
+        await this.rtmpService.stop().catch((error) => {
+          console.warn("Warning during RTMP service cleanup:", error);
+          errors.push(error);
+        });
+      }
     } catch (error) {
       console.error("Error during StreamManager cleanup:", error);
-      throw error;
+      errors.push(error as Error);
+    }
+
+    // If there were any errors during cleanup, throw an aggregate error
+    if (errors.length > 0) {
+      errors.forEach((error) => {
+        console.error(error);
+      });
     }
   }
 }
