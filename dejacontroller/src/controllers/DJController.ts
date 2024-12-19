@@ -5,7 +5,7 @@ import { DJ } from "../entities/DJ";
 import { Deck } from "../entities/Deck";
 import { OBSService } from "../services/OBSService";
 import { StreamManager } from "../services/StreamManager";
-import { createDJScenes } from "../scripts/setup-obs-scenes";
+// import { createDJScenes } from "../scripts/setup-obs-scenes";
 
 export class DJController {
   private djRepository = AppDataSource.getRepository(DJ);
@@ -44,7 +44,7 @@ export class DJController {
       await this.deckRepository.save([deckA, deckB]);
 
       // Set up OBS scenes for this DJ
-      await createDJScenes(dj.id);
+      // await createDJScenes(dj.id);
 
       // Initialize streams
       console.log(`Initializing streams for new DJ ${dj.id}`);

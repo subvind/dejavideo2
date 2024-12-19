@@ -5,6 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from "typeorm";
+import { Video } from "./Video";
 import { DJ } from "./DJ";
 
 @Entity()
@@ -28,6 +29,9 @@ export class Broadcast {
 
   @Column("float", { default: 0.5 })
   crossfaderPosition!: number;
+
+  @Column()
+  activeVideo!: "A" | "B";
 
   @Column("simple-json", {
     default: '{"viewers":0,"startTime":null,"bitrate":0}',

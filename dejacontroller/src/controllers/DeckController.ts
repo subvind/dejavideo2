@@ -43,22 +43,22 @@ export class DeckController {
         return res.status(404).json({ error: "Video not found" });
       }
 
-      const obsInstance = this.streamManager.getOBSInstance(
+      const ffmpegInstance = this.streamManager.getFFmpegInstance(
         deck.dj.id,
         deck.type,
       );
 
       // Add debug logging
-      if (!obsInstance) {
+      if (!ffmpegInstance) {
         console.error(
-          `No OBS instance found for DJ ${deck.dj.id} Deck ${deck.type}`,
+          `No ffmpeg instance found for DJ ${deck.dj.id} Deck ${deck.type}`,
         );
-        return res.status(500).json({ error: "OBS instance not found" });
+        return res.status(500).json({ error: "ffmpeg instance not found" });
       }
 
-      console.log(`OBS instance found, loading video...`);
+      console.log(`ffmpeg instance found, loading video...`);
 
-      await obsInstance.loadVideo(video);
+      await ffmpegInstance.loadVideo(video);
 
       deck.currentVideo = video;
       deck.status = "loaded";
@@ -74,6 +74,7 @@ export class DeckController {
           status: deck.status,
           currentVideo: deck.currentVideo,
           streamHealth: deck.streamHealth,
+          streamUrl: ffmpegInstance.getStreamUrl(),
         },
       });
     } catch (error) {
@@ -103,7 +104,7 @@ export class DeckController {
         return res.status(400).json({ error: "No video loaded" });
       }
 
-      const obsInstance = this.streamManager.getOBSInstance(
+      const obsInstance = this.streamManager.getFFmpegInstance(
         deck.dj.id,
         deck.type,
       );
@@ -154,7 +155,7 @@ export class DeckController {
         return res.status(404).json({ error: "Deck not found" });
       }
 
-      const obsInstance = this.streamManager.getOBSInstance(
+      const obsInstance = this.streamManager.getFFmpegInstance(
         deck.dj.id,
         deck.type,
       );

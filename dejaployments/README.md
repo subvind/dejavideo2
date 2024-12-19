@@ -99,6 +99,18 @@ npm start dejaploy user@host remove myapp
 ```
 
 ## Server Setup
+0. Enable ssh:
+```bash
+# check
+ssh localhost
+# install
+sudo apt update
+sudo apt install openssh-server
+# verify
+sudo service ssh status
+# enable
+sudo systemctl enable ssh
+```
 
 1. Create a deploy user:
 ```bash

@@ -20,7 +20,8 @@ defmodule DejavideoWeb.DjLive do
     broadcast_start: "#{@api_base_url}/broadcasts/dj/:djId/start",
     broadcast_stop: "#{@api_base_url}/broadcasts/:broadcastId/stop",
     broadcast_crossfader: "#{@api_base_url}/broadcasts/:broadcastId/crossfader",
-    broadcast_status: "#{@api_base_url}/broadcasts/:broadcastId/status"
+    broadcast_status: "#{@api_base_url}/broadcasts/:broadcastId/status",
+    broadcast_switch_video: "#{@api_base_url}/broadcasts/:broadcastId/video"
   }
 
   def mount(%{"id" => dj_id}, _session, socket) when is_binary(dj_id) do
@@ -69,6 +70,7 @@ defmodule DejavideoWeb.DjLive do
          channel_id: nil,
          stream_url: nil,
          crossfader_position: 0.5,
+         active_video: "A",
          uptime: 0,
          viewers: 0
        },
@@ -422,6 +424,27 @@ defmodule DejavideoWeb.DjLive do
     end
   end
 
+  def handle_event("switch_video", %{"deck" => deck}, socket) do
+    case HTTPoison.post!(
+           "#{@api_base_url}/broadcasts/#{socket.assigns.broadcast.id}/video",
+           Jason.encode!(%{deck: deck}),
+           [{"Content-Type", "application/json"}]
+         ) do
+      %{status_code: 200, body: body} ->
+        response = Jason.decode!(body)
+
+        {:noreply,
+         assign(
+           socket,
+           :broadcast,
+           Map.put(socket.assigns.broadcast, :active_video, response["activeVideo"])
+         )}
+
+      error ->
+        {:noreply, put_flash(socket, :error, "Failed to switch video source")}
+    end
+  end
+
   def handle_event("update_volume", %{"deck" => deck, "value" => volume}, socket) do
     volume_float = String.to_float(volume)
 
@@ -451,7 +474,8 @@ defmodule DejavideoWeb.DjLive do
   def handle_event("start_broadcast", %{"channel_id" => channel_id}, socket) do
     case HTTPoison.post!(
            "#{@api_base_url}/broadcasts/dj/#{socket.assigns.dj_id}/start",
-           Jason.encode!(%{channelId: channel_id})
+           Jason.encode!(%{channelId: channel_id}),
+           [{"Content-Type", "application/json"}]
          ) do
       %{status_code: 200, body: body} ->
         broadcast_data = Jason.decode!(body)
@@ -468,8 +492,13 @@ defmodule DejavideoWeb.DjLive do
            })
          )}
 
+      %{status_code: status, body: body} when status in 400..499 ->
+        error = Jason.decode!(body)["error"]
+        {:noreply, put_flash(socket, :error, "Broadcast failed: #{error}")}
+
       error ->
-        {:noreply, put_flash(socket, :error, "Failed to start broadcast")}
+        Logger.error("Broadcast start error: #{inspect(error)}")
+        {:noreply, put_flash(socket, :error, "Failed to start broadcast: Server error")}
     end
   end
 
@@ -786,6 +815,58 @@ defmodule DejavideoWeb.DjLive do
                 >
                   Stop Broadcasting
                 </button>
+              </div>
+            <% end %>
+
+            <%= if @broadcast.status == "live" do %>
+              <div class="grid grid-cols-2 gap-4 mt-4">
+                <!-- Crossfader (Audio Mix) -->
+                <div class="col-span-2">
+                  <h3 class="text-lg font-semibold mb-2">Audio Mix</h3>
+                  <div class="flex items-center space-x-4">
+                    <span class="text-sm">Deck A</span>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      value={@broadcast.crossfader_position}
+                      class="flex-1"
+                      phx-change="update_crossfader"
+                      phx-debounce="100"
+                    />
+                    <span class="text-sm">Deck B</span>
+                  </div>
+                </div>
+
+                <!-- Video Source Toggle -->
+                <div class="col-span-2">
+                  <h3 class="text-lg font-semibold mb-2">Video Source</h3>
+                  <div class="flex justify-center space-x-4">
+                    <button
+                      phx-click="switch_video"
+                      phx-value-deck="A"
+                      class={[
+                        "px-6 py-2 rounded transition",
+                        @broadcast.active_video == "A" && "bg-blue-600",
+                        @broadcast.active_video != "A" && "bg-gray-600 hover:bg-gray-700"
+                      ]}
+                    >
+                      Deck A
+                    </button>
+                    <button
+                      phx-click="switch_video"
+                      phx-value-deck="B"
+                      class={[
+                        "px-6 py-2 rounded transition",
+                        @broadcast.active_video == "B" && "bg-blue-600",
+                        @broadcast.active_video != "B" && "bg-gray-600 hover:bg-gray-700"
+                      ]}
+                    >
+                      Deck B
+                    </button>
+                  </div>
+                </div>
               </div>
             <% end %>
           </div>
